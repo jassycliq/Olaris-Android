@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import tv.olaris.android.fragments.MovieLibraryDirections
 import tv.olaris.android.fragments.movieGridSize
 import tv.olaris.android.models.Movie
 import kotlin.math.floor
@@ -28,6 +30,10 @@ class MovieItemAdapter(context: Context, movies: List<Movie>) : RecyclerView.Ada
     override fun onBindViewHolder(holder: MovieItemHolder, position: Int) {
         holder.movieCoverArt.layoutParams.width = floor((Resources.getSystem().displayMetrics.widthPixels / movieGridSize.toFloat())).toInt()
         Glide.with(holder.itemView.context).load(movies[position].posterUrl).into(holder.movieCoverArt);
+        holder.movieCoverArt.setOnClickListener{
+            val action = MovieLibraryDirections.actionMovieLibraryFragmentToMovieDetailsFragment(uuid = "1")
+            holder.view.findNavController().navigate(action)
+        }
         //holder.movieCoverArt.setImageURI(movies[position].posterUrl.toUri())
       //  holder.movieTitle.text = "The Matrix"//movies[position]
     }

@@ -6,5 +6,19 @@
     <fragment
         android:id="@+id/movieLibraryFragment"
         android:name="tv.olaris.android.fragments.MovieLibrary"
-        android:label="Movies"/>
+        android:label="Movies">
+        <action
+            android:id="@+id/action_movieLibraryFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="tv.olaris.android.fragments.MovieDetails"
+        android:label="Movie information">
+
+        <argument
+            android:name="uuid"
+            app:argType="string" />
+    </fragment>
+
 </navigation>
