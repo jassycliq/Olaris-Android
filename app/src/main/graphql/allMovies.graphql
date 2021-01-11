@@ -1,0 +1,10 @@
+query AllMovies {
+      movies {
+        uuid
+        name
+        title
+        year
+        overview
+        posterURL
+      }
+}

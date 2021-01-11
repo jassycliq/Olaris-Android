@@ -1,12 +1,15 @@
 package tv.olaris.android.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import tv.olaris.android.R
 import tv.olaris.android.databinding.FragmentMovieDetailsBinding
 import tv.olaris.android.models.Movie
@@ -38,21 +41,27 @@ class MovieDetails : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             uuid = it.getString(ARG_UUID).toString()
+            Log.d("uuid", uuid!!)
         }
 
-        if(uuid != null) {
-            _movie = moviesRepository.findMovieByUUID(uuid!!)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //TODO: Rewrite to use binding into resource file
-        binding.textMovieDetailsMovieName.text = movie.title
-        binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year, movie.uuid)
-        binding.textMovieDetailsOverview.text = movie.overview
 
-        Glide.with(view.context).load(movie.posterUrl).into(binding.imageMovieDetailsCover)
+
+        if(uuid != null) {
+            lifecycleScope.launch {
+                _movie = moviesRepository.findMovieByUUID(uuid!!)
+                binding.textMovieDetailsMovieName.text = movie.title
+                binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year, movie.uuid)
+                binding.textMovieDetailsOverview.text = movie.overview
+
+                Glide.with(view.context).load(movie.fullPosterPath()).into(binding.imageMovieDetailsCover)
+            }
+        }
+
     }
 
     override fun onCreateView(

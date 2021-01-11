@@ -1,0 +1,10 @@
+query FindMovie($uuid: String!) {
+    movies(uuid: $uuid) {
+        uuid
+        name
+        title
+        year
+        overview
+        posterURL
+    }
+}

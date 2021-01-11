@@ -30,7 +30,7 @@ class MovieItemAdapter(context: Context, movies: List<Movie>) : RecyclerView.Ada
     override fun onBindViewHolder(holder: MovieItemHolder, position: Int) {
         holder.movieCoverArt.layoutParams.width = floor((Resources.getSystem().displayMetrics.widthPixels / movieGridSize.toFloat())).toInt()
 
-        Glide.with(holder.itemView.context).load(movies[position].posterUrl).into(holder.movieCoverArt);
+        Glide.with(holder.itemView.context).load(movies[position].fullPosterPath()).into(holder.movieCoverArt);
 
         holder.movieCoverArt.setOnClickListener{
             val uuid = movies[position].uuid
