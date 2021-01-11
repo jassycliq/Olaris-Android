@@ -29,9 +29,12 @@ class MovieItemAdapter(context: Context, movies: List<Movie>) : RecyclerView.Ada
 
     override fun onBindViewHolder(holder: MovieItemHolder, position: Int) {
         holder.movieCoverArt.layoutParams.width = floor((Resources.getSystem().displayMetrics.widthPixels / movieGridSize.toFloat())).toInt()
+
         Glide.with(holder.itemView.context).load(movies[position].posterUrl).into(holder.movieCoverArt);
+
         holder.movieCoverArt.setOnClickListener{
-            val action = MovieLibraryDirections.actionMovieLibraryFragmentToMovieDetailsFragment(uuid = "1")
+            val uuid = movies[position].uuid
+            val action = MovieLibraryDirections.actionMovieLibraryFragmentToMovieDetailsFragment(uuid = uuid)
             holder.view.findNavController().navigate(action)
         }
         //holder.movieCoverArt.setImageURI(movies[position].posterUrl.toUri())

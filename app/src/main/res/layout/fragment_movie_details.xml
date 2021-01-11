@@ -14,8 +14,8 @@
             android:orientation="horizontal"
             >
             <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
+                android:id="@+id/image_movie_details_cover"
+                android:layout_width="140dp"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
@@ -26,25 +26,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="sans-serif"
-                android:paddingLeft="10dp"
-                android:paddingTop="5dp"
-                android:text="The Matrix"
-                android:textAppearance="@style/MediaTitle" />
 
                 <TextView
+                    android:id="@+id/text_movie_details_movie_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="sans-serif"
                     android:paddingLeft="10dp"
                     android:paddingTop="5dp"
-                    android:text="1999 • 126 minutes"
+                    android:textAppearance="@style/MediaTitle"
+                    tools:text="The Matrix" />
+
+                <TextView
+                    android:id="@+id/text_movie_details_year_and_runtime"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="sans-serif"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    tools:text="1999 • 126 minutes"
                     android:textAppearance="@style/MediaSubtitle" />
 
                 <TextView
+                    android:id="@+id/text_movie_details_overview"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="sans-serif"
@@ -53,7 +57,7 @@
                     android:autoSizeTextType="uniform"
                     android:autoSizeMinTextSize="8dp"
                     android:autoSizeMaxTextSize="14dp"
-                    android:text="Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth."
+                    tools:text="Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth."
                     android:textAppearance="@style/MediaSubtitle" />
 
             </LinearLayout>
