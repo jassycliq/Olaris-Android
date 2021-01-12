@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -57,11 +58,21 @@ class MovieDetails : Fragment() {
                 binding.textMovieDetailsMovieName.text = movie.title
                 binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year, movie.uuid)
                 binding.textMovieDetailsOverview.text = movie.overview
-
                 Glide.with(view.context).load(movie.fullPosterPath()).into(binding.imageMovieDetailsCover)
+
+                binding.btnPlayContent.setOnClickListener{
+                    lifecycleScope.launch{
+                        val streamingURL = moviesRepository.getStreamingUrl(movie.fileUUIDs.first())
+                        if(streamingURL != null) {
+                            val action = MovieDetailsDirections.actionMovieDetailsFragmentToMediaPlayerFragment(
+                                    streamingURL = streamingURL
+                                )
+                            findNavController().navigate(action)
+                        }
+                    }
+                }
             }
         }
-
     }
 
     override fun onCreateView(

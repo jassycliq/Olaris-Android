@@ -1,0 +1,10 @@
+mutation CreateStreamingTicket($uuid: String!){
+    createStreamingTicket(uuid: $uuid){
+        error{
+            message
+            hasError
+        }
+        dashStreamingPath
+        jwt
+    }
+}

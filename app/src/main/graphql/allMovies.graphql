@@ -1,10 +1,26 @@
 query AllMovies {
       movies {
-        uuid
-        name
-        title
-        year
-        overview
-        posterURL
+          ...movieBase
       }
+}
+
+fragment movieBase on Movie {
+    name
+    title
+    year
+    overview
+    imdbID
+    tmdbID
+    backdropPath
+    posterPath
+    posterURL(width: 480)
+    uuid
+    files{
+        fileName
+        filePath
+        libraryId
+        uuid
+        totalDuration
+        fileSize
+    }
 }
