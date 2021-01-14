@@ -17,7 +17,7 @@ import javax.inject.Inject
 class MoviesRepository @Inject constructor(){
     // TODO: Refactor so it can be used by other repos in the future.
     fun createApolloClient() : ApolloClient{
-        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcmFuIiwidXNlcl9pZCI6MSwiYWRtaW4iOnRydWUsImV4cCI6MTYxMDQ2MTk0NywiaXNzIjoiYnNzIn0.RrMye4uC6jWSR0FUQOnji_OxXLUy4CaJV4URfcRuvcA"
+        val token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1hcmFuIiwidXNlcl9pZCI6MSwiYWRtaW4iOnRydWUsImV4cCI6MTYxMDU1MzYxMCwiaXNzIjoiYnNzIn0.JAF25IgXiqML39y7QVoezFWsywbDpukqy9i6FOaCfSY"
         val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor { chain: Interceptor.Chain ->
                     val original: Request = chain.request()
