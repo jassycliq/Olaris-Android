@@ -11,27 +11,18 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.coroutineScope
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.request.post
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
+import androidx.room.Room
 import kotlinx.coroutines.launch
-
+import tv.olaris.android.OlarisApplication
+import tv.olaris.android.databases.Server
+import tv.olaris.android.databases.ServerDatabase
 import tv.olaris.android.databinding.FragmentAddServerBinding
-import tv.olaris.android.service.olaris_http_api.model.LoginResponse
-import tv.olaris.android.service.olaris_http_api.model.LoginRequest
-import java.net.ConnectException
+import tv.olaris.android.service.olaris_http_api.OlarisHttpService
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-
-
 
 /**
  * A simple [Fragment] subclass.
@@ -101,16 +92,26 @@ class AddServer : Fragment() {
                 Log.d("http", "No errors!")
 
                 lifecycle.coroutineScope.launch{
-                    val loginResponse = doLogin(binding.textEditServerUrl.text.toString(),
+                    val loginResponse = OlarisHttpService(binding.textEditServerUrl.text.toString()).LoginUser(
                             binding.textEditUsername.text.toString(),
                             binding.textEditPassword.text.toString())
+
                     if(loginResponse.hasError){
                         Log.d("http", "Got error ${loginResponse.message}")
                         Toast.makeText(v.context, "Received error while connecting to server: ${loginResponse.message}", Toast.LENGTH_LONG).show()
-                    }else{
+                    }else {
                         Log.d("http", "Everything ok! ${loginResponse.jwt}")
-                        //ServerDoa.insertServer(Server(binding.textEditServerUrl.text.toString()))
                         Toast.makeText(v.context, "Succesfully connected to server.", Toast.LENGTH_LONG).show()
+
+                        OlarisApplication.applicationContext().repository.insertServer(
+                            Server(
+                                binding.textEditServerUrl.text.toString(),
+                                binding.textEditUsername.text.toString(),
+                                binding.textEditPassword.text.toString(),
+                                "Test",
+                                ""
+                            )
+                        )
                     }
                 }
             }
@@ -118,34 +119,6 @@ class AddServer : Fragment() {
         }
         return binding.root
     }
-
-    private suspend fun doLogin(url: String, username: String, password: String) : LoginResponse {
-        val authLoginUrl = url + "/olaris/m/v1/auth"
-        Log.d("http", "Login URL: $authLoginUrl")
-        try{
-            val client = HttpClient(Android) {
-                install(JsonFeature){
-                    accept(ContentType.Application.Json)
-                    serializer = KotlinxSerializer()
-                }
-                expectSuccess = false
-            }
-            val loginResponse = client.post<LoginResponse>(authLoginUrl){
-                body = LoginRequest(username, password)
-                contentType(ContentType.Application.Json)
-            }
-            Log.d("http", "Login response $loginResponse")
-            return loginResponse
-        }catch(e: ClientRequestException){
-            Log.d("http", "Error: ${e.message}")
-            return LoginResponse(true, e.toString())
-        }catch(e: ConnectException){
-            return LoginResponse(true, e.toString())
-        }
-
-
-    }
-
 
     companion object {
         /**
