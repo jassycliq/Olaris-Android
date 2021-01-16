@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 
 @Entity(tableName = "servers")
 data class Server constructor(val url: String, val username: String, val password: String, val name: String, val currentJWT: String, @PrimaryKey val id: Int=0)
@@ -13,8 +14,14 @@ interface ServerDoa {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertServer(server: Server)
 
-    @get:Query("select * from servers")
-    val serverLiveData: LiveData<Server?>
+    @Query("select * from servers")
+    fun getServers(): Flow<List<Server>>
+
+    @get:Query("select count(*) from servers")
+    val serverCount: Int
+
+    @Delete
+    fun delete(model: Server)
 }
 
 @Database(entities = [Server::class], version = 1)

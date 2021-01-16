@@ -85,6 +85,13 @@ class AddServer : Fragment() {
                     hasErrors = true
                 }
             }
+            with(binding.textEditServerName){
+                if(this.text.toString() == ""){
+                    this.error = "Please fill in your server name."
+                    hasErrors = true
+                }
+            }
+
             val v = this
             Log.d("http", "Starting login: ${hasErrors.toString()}")
 
@@ -108,8 +115,8 @@ class AddServer : Fragment() {
                                 binding.textEditServerUrl.text.toString(),
                                 binding.textEditUsername.text.toString(),
                                 binding.textEditPassword.text.toString(),
-                                "Test",
-                                ""
+                                binding.textEditServerName.text.toString(),
+                                loginResponse.jwt.toString()
                             )
                         )
                     }

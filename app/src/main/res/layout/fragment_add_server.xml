@@ -16,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:startIconDrawable="@drawable/ic_baseline_computer_24"
-            app:startIconContentDescription="Heart icon"
             android:hint="Server URL">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -31,7 +30,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:startIconDrawable="@drawable/ic_baseline_person_outline_24"
-            app:startIconContentDescription="Heart icon"
             android:hint="Username">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -45,7 +43,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:startIconDrawable="@drawable/ic_baseline_lock_24"
-            app:startIconContentDescription="Heart icon"
             android:hint="Password">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -55,6 +52,20 @@
                 android:layout_marginBottom="25dp"
                 android:inputType="textPassword"
                 android:text="testtest" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:startIconDrawable="@drawable/ic_baseline_label_24"
+            android:hint="Password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_edit_server_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:text="Atalanta" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton

@@ -5,7 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import tv.olaris.android.OlarisApplication
 import tv.olaris.android.R
 import tv.olaris.android.databinding.FragmentServerListBinding
 
@@ -46,6 +52,16 @@ class ServerList : Fragment() {
             val action = ServerListDirections.actionFragmentServerListToFragmentAddServer()
             findNavController().navigate(action)
         }
+
+        val adapter = ServerItemAdapter(this.requireContext())
+        binding.recyclerServerList.adapter = adapter
+        binding.recyclerServerList.layoutManager = LinearLayoutManager(this.requireContext())
+        lifecycleScope.launch{
+            OlarisApplication.applicationContext().repository.allServers.collect {
+                adapter.submitList(it)
+            }
+        }
+
     }
 
     companion object {

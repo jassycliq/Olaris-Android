@@ -43,6 +43,12 @@
                     android:src="@drawable/ic_baseline_edit_24"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
+                <ImageView
+                    android:id="@+id/icon_delete_server"
+                    android:layout_gravity="bottom"
+                    android:src="@drawable/ic_baseline_delete_24"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
         </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
