@@ -38,7 +38,7 @@ class MoviesRepository @Inject constructor(){
         val res = createApolloClient().mutate(m).await()
 
         if (res.data != null && res.data?.createStreamingTicket != null){
-            return "http://192.168.178.64:4321/${res.data!!.createStreamingTicket!!.dashStreamingPath}"
+            return "http://192.168.178.64:4321/${res.data!!.createStreamingTicket.dashStreamingPath}"
         }
 
         return null

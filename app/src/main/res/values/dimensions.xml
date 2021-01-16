@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="covert_art_height">220dp</dimen>
+    <dimen name="default_card_padding">10dp</dimen>
     <dimen name="covert_art_width">140dp</dimen>
 </resources>

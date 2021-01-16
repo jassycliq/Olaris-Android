@@ -10,6 +10,9 @@
         <action
             android:id="@+id/action_movieLibraryFragment_to_movieDetailsFragment"
             app:destination="@id/movieDetailsFragment" />
+        <action
+            android:id="@+id/action_movieLibraryFragment_to_fragmentServerList"
+            app:destination="@id/fragmentServerList" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
@@ -33,4 +36,17 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/fragmentServerList"
+        android:name="tv.olaris.android.fragments.ServerList"
+        android:label="Servers">
+        <action
+            android:id="@+id/action_fragmentServerList_to_fragmentAddServer"
+            app:destination="@id/fragmentAddServer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentAddServer"
+        android:name="tv.olaris.android.fragments.AddServer"
+        android:label="Add Server"/>
 </navigation>

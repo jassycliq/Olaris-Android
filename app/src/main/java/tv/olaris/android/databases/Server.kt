@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Entity
-data class Server constructor(val url: String, val username: String, val password: String, val currentJWT: String, @PrimaryKey val id: Int=0)
+data class Server constructor(val url: String, val username: String, val password: String, val name: String, val currentJWT: String, @PrimaryKey val id: Int=0)
 
 interface  ServerDoa {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
