@@ -3,18 +3,20 @@ package tv.olaris.android
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener  {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -23,16 +25,39 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var navFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        var navFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navFragment.navController
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
-        appBarConfiguration =  AppBarConfiguration(navController.graph, drawerLayout)
+        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
 
         var navView = findViewById<NavigationView>(R.id.navigation_view)
-        navView.setupWithNavController(navController)
         navView.setNavigationItemSelectedListener(this)
+        val menu = navView.menu
+
         setupActionBarWithNavController(navController, appBarConfiguration)
+        lifecycleScope.launch {
+            OlarisApplication.applicationContext().serversRepository.allServers.collect {
+                for (s in it) {
+                    val submenu = menu.addSubMenu(s.name)
+                    val id = "${s.id}1".toInt()
+
+                    submenu.add(0, id, 0, "Movies").setOnMenuItemClickListener(
+                        MenuItem.OnMenuItemClickListener {
+                            Toast.makeText(this@MainActivity, s.name, Toast.LENGTH_SHORT).show()
+                            val bundle = bundleOf("server_id" to s.id)
+
+                            navController.navigate(R.id.movieLibraryFragment, bundle)
+                            true
+                        }
+                    )
+                    submenu.add(0, "${s.id}2".toInt(), 0, "TV Shows")
+                }
+            }
+        }
     }
+
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         Log.d("menu", item.itemId.toString())
@@ -43,6 +68,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 drawerLayout.closeDrawer(GravityCompat.START)
             }
         }
+
         return true
     }
 

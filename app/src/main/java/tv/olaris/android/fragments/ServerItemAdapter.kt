@@ -1,19 +1,14 @@
 package tv.olaris.android.fragments
 
 import android.content.Context
-import android.graphics.drawable.Icon
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.lifecycle.LiveData
-import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.R
@@ -35,7 +30,7 @@ class ServerItemAdapter(context: Context) : ListAdapter<Server, ServerItemAdapte
         holder.serverUrl.text = getItem(position).name
         holder.deleteServerIcon.setOnClickListener{
             OlarisApplication.applicationContext().applicationScope.launch {
-                OlarisApplication.applicationContext().repository.deleteServer(getItem(position))
+                OlarisApplication.applicationContext().serversRepository.deleteServer(getItem(position))
             }
         }
     }

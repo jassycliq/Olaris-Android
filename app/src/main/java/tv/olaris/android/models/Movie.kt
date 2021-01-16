@@ -1,24 +1,27 @@
 package tv.olaris.android.models
 
+import tv.olaris.android.databases.Server
+
 data class Movie(val title: String, val uuid: String, val year: Int, val overview: String, val posterUrl: String){
     var fileUUIDs : MutableList<String> = mutableListOf()
 
     companion object {
         fun createFromGraphQLMovieBase(m: fragment.MovieBase) : Movie{
-                val movie = Movie(m.title, m.uuid, m.year.toInt(), m.overview, m.posterURL)
-                if (m.files.isNotEmpty()) {
-                    for (file in m.files) {
-                        if (file != null) {
-                            movie.fileUUIDs.add(file.uuid)
-                        }
+            val movie = Movie(m.title, m.uuid, m.year.toInt(), m.overview, m.posterURL)
+
+            if (m.files.isNotEmpty()) {
+                for (file in m.files) {
+                    if (file != null) {
+                        movie.fileUUIDs.add(file.uuid)
                     }
                 }
-                return movie
+            }
+            return movie
         }
     }
 
-    fun fullPosterPath() : String {
-        return "http://192.168.178.64:4321/${this.posterUrl}"
+    fun fullPosterPath(baseUrl: String) : String {
+        return "${baseUrl}/${this.posterUrl}"
     }
 }
 

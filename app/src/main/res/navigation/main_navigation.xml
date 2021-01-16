@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/main_navigation"
-    app:startDestination="@id/movieLibraryFragment">
+    app:startDestination="@id/fragmentServerList">
 
     <fragment
         android:id="@+id/movieLibraryFragment"
@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_movieLibraryFragment_to_fragmentServerList"
             app:destination="@id/fragmentServerList" />
+        <argument
+            android:name="server_id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
@@ -25,6 +28,9 @@
         <action
             android:id="@+id/action_movieDetailsFragment_to_mediaPlayerFragment"
             app:destination="@id/mediaPlayerFragment" />
+        <argument
+            android:name="server_id"
+            app:argType="integer" />
     </fragment>
 
     <fragment
@@ -48,5 +54,9 @@
     <fragment
         android:id="@+id/fragmentAddServer"
         android:name="tv.olaris.android.fragments.AddServer"
-        android:label="Add Server"/>
+        android:label="Add Server">
+        <action
+            android:id="@+id/action_fragmentAddServer_to_fragmentServerList"
+            app:destination="@id/fragmentServerList" />
+    </fragment>
 </navigation>

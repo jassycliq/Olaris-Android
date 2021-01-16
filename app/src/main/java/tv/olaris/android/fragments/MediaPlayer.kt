@@ -26,7 +26,6 @@ private const val ARG_PARAM2 = "param2"
 class MediaPlayer : Fragment() {
     // TODO: Rename and change types of parameters
     private var streamingURL: String? = null
-    private var param2: String? = null
     private var currentWindow = 0
     private var playbackPosition: Long = 0
     private var isFullscreen = false
@@ -43,7 +42,6 @@ class MediaPlayer : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             streamingURL = it.getString(ARG_STREAMINGURL)
-            param2 = it.getString(ARG_PARAM2)
         }
 
     }

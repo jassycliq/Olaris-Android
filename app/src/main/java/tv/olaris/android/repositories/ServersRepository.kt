@@ -14,6 +14,10 @@ class ServersRepository(serverDoa: ServerDoa) {
         serverDoa.insertServer(server)
     }
 
+    suspend fun getServerById(id: Int): Server {
+       return serverDoa.getServerById(id)
+    }
+
     suspend fun getServerCount(): Int {
         return serverDoa.serverCount
     }

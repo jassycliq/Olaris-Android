@@ -11,7 +11,9 @@ import tv.olaris.android.repositories.ServersRepository
 class OlarisApplication: Application() {
     val applicationScope = CoroutineScope(SupervisorJob())
     val database by lazy { ServerDatabase.getDatabase(this, applicationScope) }
-    val repository by lazy { ServersRepository(database.serverDoa()) }
+
+    // TODO: Is this an ok way of doing this?
+    val serversRepository by lazy { ServersRepository(database.serverDoa()) }
 
     init {
         instance = this
