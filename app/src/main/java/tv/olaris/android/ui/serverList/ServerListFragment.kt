@@ -1,6 +1,7 @@
 package tv.olaris.android.ui.serverList
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -46,6 +47,7 @@ class ServerListFragment : Fragment() {
         binding.recyclerServerList.layoutManager = LinearLayoutManager(this.requireContext())
         lifecycleScope.launch{
             OlarisApplication.applicationContext().serversRepository.allServers.collect {
+                Log.d("Servers", it.toString())
                 adapter.submitList(it)
             }
         }
