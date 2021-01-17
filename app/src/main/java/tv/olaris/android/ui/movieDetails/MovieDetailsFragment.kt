@@ -54,6 +54,7 @@ class MovieDetails : Fragment() {
                 binding.textMovieDetailsMovieName.text = movie.title
                 binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year, movie.getRuntime().toString(), movie.getResolution())
                 binding.textMovieDetailsOverview.text = movie.overview
+                binding.textMovieDetailsFileName.text = movie.getFileName()
 
                 val imageUrl = movie.fullPosterUrl(server.url)
                 Glide.with(view.context).load(imageUrl).into(binding.imageMovieDetailsCover)

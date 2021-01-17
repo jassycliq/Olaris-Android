@@ -21,6 +21,14 @@ data class Movie(val title: String, val uuid: String, val year: Int, val overvie
             return movie
         }
     }
+    fun getFileName() : String {
+        val file = movieBase.files.first()
+        if(file != null){
+            return file.fileName
+        }
+        return "Unknown"
+    }
+
     fun getRuntime() : Int {
         val file = movieBase.files.first()
         if(file != null){

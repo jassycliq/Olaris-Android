@@ -102,4 +102,6 @@ dependencies {
     // Coroutines extensions for easier asynchronicity handling
     implementation("com.apollographql.apollo:apollo-coroutines-support:2.5.2")
 
+    // JWT
+    implementation 'com.auth0.android:jwtdecode:2.0.0'
 }

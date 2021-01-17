@@ -40,8 +40,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             //TODO: This is super duper horrible, can we do this differently?
             OlarisApplication.applicationContext().serversRepository.allServers.collect {
                 for (s in it) {
-                    // TODO: Do a check to see if a JWT token is still valid
-                    // OlarisApplication.applicationContext().serversRepository.refreshJwt(s.id)
                     val submenu = menu.addSubMenu(s.name)
                     val id = "${s.id}1".toInt()
 

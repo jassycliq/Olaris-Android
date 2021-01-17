@@ -22,7 +22,7 @@ class ServersRepository(serverDoa: ServerDoa) {
     suspend fun refreshJwt(serverId: Int){
         val server = getServerById(serverId)
         val result : LoginResponse = OlarisHttpService(server.url).LoginUser(server.username,server.password)
-        if(result.hasError && result.jwt != null){
+        if(!result.hasError && result.jwt != null){
             server.currentJWT = result.jwt!!
         }
         updateServer(server)

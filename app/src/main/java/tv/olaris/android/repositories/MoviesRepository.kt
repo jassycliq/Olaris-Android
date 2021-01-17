@@ -3,9 +3,11 @@ package tv.olaris.android.repositories
 import AllMoviesQuery
 import CreateStreamingTicketMutation
 import FindMovieQuery
+import android.util.Log
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloException
+import com.auth0.android.jwt.JWT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
@@ -14,26 +16,35 @@ import okhttp3.Request
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.databases.Server
 import tv.olaris.android.models.Movie
+import tv.olaris.android.service.http.OlarisHttpService
 import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(server: Server){
     private var server = server
 
     // TODO: Refactor so it can be used by other repos in the future.
-    fun createApolloClient(baseUrl: String, token: String) : ApolloClient{
+    private suspend fun createApolloClient(baseUrl: String, token: String): ApolloClient {
+        val j = JWT(server.currentJWT)
+
+        Log.d("jwt", j.expiresAt.toString())
+        if(j.isExpired(10)) {
+            OlarisApplication.applicationContext().serversRepository.refreshJwt(server.id)
+        }
+
         val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor { chain: Interceptor.Chain ->
-                    val original: Request = chain.request()
-                    val builder: Request.Builder = original.newBuilder().method(original.method(), original.body())
-                    builder.header("Authorization", "Bearer $token")
-                    chain.proceed(builder.build())
-                }
-                .build()
+            .addInterceptor { chain: Interceptor.Chain ->
+                val original: Request = chain.request()
+                val builder: Request.Builder =
+                    original.newBuilder().method(original.method(), original.body())
+                builder.header("Authorization", "Bearer $token")
+                chain.proceed(builder.build())
+            }
+            .build()
 
         return ApolloClient.builder()
-                .serverUrl("${baseUrl}/olaris/m/query")
-                .okHttpClient(okHttpClient)
-                .build()
+            .serverUrl("${baseUrl}/olaris/m/query")
+            .okHttpClient(okHttpClient)
+            .build()
     }
 
     suspend fun getStreamingUrl(uuid: String): String? {
