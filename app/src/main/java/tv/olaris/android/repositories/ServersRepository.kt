@@ -1,11 +1,10 @@
 package tv.olaris.android.repositories
 
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import tv.olaris.android.databases.Server
 import tv.olaris.android.databases.ServerDoa
-import tv.olaris.android.service.olaris_http_api.OlarisHttpService
-import tv.olaris.android.service.olaris_http_api.model.LoginResponse
+import tv.olaris.android.service.http.OlarisHttpService
+import tv.olaris.android.service.http.model.LoginResponse
 
 class ServersRepository(serverDoa: ServerDoa) {
     val serverDoa : ServerDoa = serverDoa

@@ -16,7 +16,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import tv.olaris.android.service.olaris_http_api.OlarisHttpService
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener  {
     private lateinit var navController: NavController

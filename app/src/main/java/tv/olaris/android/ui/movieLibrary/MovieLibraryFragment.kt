@@ -1,4 +1,4 @@
-package tv.olaris.android.fragments
+package tv.olaris.android.ui.movieLibrary
 
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.launch
-import tv.olaris.android.MovieItemAdapter
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.databinding.MovieLibraryFragmentBinding
 import tv.olaris.android.repositories.MoviesRepository

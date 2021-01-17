@@ -1,4 +1,4 @@
-package tv.olaris.android.fragments
+package tv.olaris.android.ui.movieDetails
 
 import androidx.lifecycle.ViewModel
 import tv.olaris.android.models.Movie

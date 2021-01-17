@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/movieLibraryFragment"
-        android:name="tv.olaris.android.fragments.MovieLibrary"
+        android:name="tv.olaris.android.ui.movieLibrary.MovieLibrary"
         android:label="Movies">
         <action
             android:id="@+id/action_movieLibraryFragment_to_movieDetailsFragment"
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="tv.olaris.android.fragments.MovieDetails"
+        android:name="tv.olaris.android.ui.movieDetails.MovieDetails"
         android:label="Movie information">
 
         <argument
@@ -47,7 +47,7 @@
 
     <fragment
         android:id="@+id/fragmentServerList"
-        android:name="tv.olaris.android.fragments.ServerList"
+        android:name="tv.olaris.android.ui.serverList.ServerListFragment"
         android:label="Servers">
         <action
             android:id="@+id/action_fragmentServerList_to_fragmentAddServer"
@@ -56,7 +56,7 @@
 
     <fragment
         android:id="@+id/fragmentAddServer"
-        android:name="tv.olaris.android.fragments.AddServer"
+        android:name="tv.olaris.android.ui.addServer.AddServerFragment"
         android:label="Add Server">
         <action
             android:id="@+id/action_fragmentAddServer_to_fragmentServerList"

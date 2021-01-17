@@ -1,4 +1,4 @@
-package tv.olaris.android.fragments
+package tv.olaris.android.ui.addServer
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

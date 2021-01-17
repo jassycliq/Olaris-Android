@@ -1,4 +1,4 @@
-package tv.olaris.android.service.olaris_http_api.model
+package tv.olaris.android.service.http.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

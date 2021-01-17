@@ -1,4 +1,4 @@
-package tv.olaris.android.fragments
+package tv.olaris.android.ui.addServer
 
 import android.os.Bundle
 import android.util.Log
@@ -14,9 +14,9 @@ import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.databases.Server
 import tv.olaris.android.databinding.FragmentAddServerBinding
-import tv.olaris.android.service.olaris_http_api.OlarisHttpService
+import tv.olaris.android.service.http.OlarisHttpService
 
-class AddServer : Fragment() {
+class AddServerFragment : Fragment() {
     private var _binding: FragmentAddServerBinding? = null
     private val binding get() = _binding!!
 
@@ -88,7 +88,8 @@ class AddServer : Fragment() {
                             )
                         )
 
-                        val action = AddServerDirections.actionFragmentAddServerToFragmentServerList()
+                     val action =
+                            AddServerFragmentDirections.actionFragmentAddServerToFragmentServerList()
                         view.findNavController().navigate(action)
                     }
                 }

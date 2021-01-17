@@ -1,4 +1,4 @@
-package tv.olaris.android
+package tv.olaris.android.ui.movieLibrary
 
 import android.content.Context
 import android.content.res.Resources
@@ -11,9 +11,8 @@ import android.widget.ImageView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import tv.olaris.android.R
 import tv.olaris.android.databases.Server
-import tv.olaris.android.fragments.MovieLibraryDirections
-import tv.olaris.android.fragments.movieGridSize
 import tv.olaris.android.models.Movie
 import kotlin.math.floor
 

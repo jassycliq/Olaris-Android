@@ -1,4 +1,4 @@
-package tv.olaris.android.service.olaris_http_api
+package tv.olaris.android.service.http
 
 import android.util.Log
 import io.ktor.client.*
@@ -8,8 +8,8 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import tv.olaris.android.service.olaris_http_api.model.LoginRequest
-import tv.olaris.android.service.olaris_http_api.model.LoginResponse
+import tv.olaris.android.service.http.model.LoginRequest
+import tv.olaris.android.service.http.model.LoginResponse
 import java.net.ConnectException
 
 class OlarisHttpService(val baseUrl: String) {

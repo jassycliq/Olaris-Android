@@ -1,7 +1,6 @@
-package tv.olaris.android.fragments
+package tv.olaris.android.ui.movieDetails
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,9 +62,10 @@ class MovieDetails : Fragment() {
                     lifecycleScope.launch{
                         val streamingURL = moviesRepository.getStreamingUrl(movie.fileUUIDs.first())
                         if(streamingURL != null) {
-                            val action = MovieDetailsDirections.actionMovieDetailsFragmentToMediaPlayerFragment(
+                            val action =
+                                MovieDetailsDirections.actionMovieDetailsFragmentToMediaPlayerFragment(
                                     streamingURL = streamingURL,
-                                     imageUrl = imageUrl
+                                    imageUrl = imageUrl
                                 )
                             findNavController().navigate(action)
                         }
