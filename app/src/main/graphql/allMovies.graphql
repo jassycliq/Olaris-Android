@@ -22,5 +22,21 @@ fragment movieBase on Movie {
         uuid
         totalDuration
         fileSize
+        streams{
+            ...streamBase
+        }
     }
+}
+fragment streamBase on Stream{
+    codecName
+    codecMime
+    profile
+    bitRate
+    streamType
+    language
+    title
+    resolution
+    totalDuration
+    streamID
+    streamURL
 }

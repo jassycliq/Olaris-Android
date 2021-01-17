@@ -52,11 +52,12 @@ class MovieDetails : Fragment() {
                 _movie = moviesRepository.findMovieByUUID(uuid!!)
 
                 binding.textMovieDetailsMovieName.text = movie.title
-                binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year, movie.uuid)
+                binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year, movie.getRuntime().toString(), movie.getResolution())
                 binding.textMovieDetailsOverview.text = movie.overview
 
-                val imageUrl = movie.fullPosterPath(server.url)
+                val imageUrl = movie.fullPosterUrl(server.url)
                 Glide.with(view.context).load(imageUrl).into(binding.imageMovieDetailsCover)
+                Glide.with(view.context).load(movie.fullCoverArtUrl(server.url)).into(binding.imageMovieDetailsCovertArt)
 
                 binding.btnPlayContent.setOnClickListener{
                     lifecycleScope.launch{
