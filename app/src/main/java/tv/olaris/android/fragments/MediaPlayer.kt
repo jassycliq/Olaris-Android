@@ -1,22 +1,26 @@
 package tv.olaris.android.fragments
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.exoplayer2.util.Util
+import tv.olaris.android.OlarisApplication
 import tv.olaris.android.databinding.FragmentMediaPlayerBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_STREAMINGURL = "streamingURL"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_IMAGE_URL = "imageUrl"
 
 /**
  * A simple [Fragment] subclass.
@@ -26,6 +30,7 @@ private const val ARG_PARAM2 = "param2"
 class MediaPlayer : Fragment() {
     // TODO: Rename and change types of parameters
     private var streamingURL: String? = null
+    private var imageUrl: String? = null
     private var currentWindow = 0
     private var playbackPosition: Long = 0
     private var isFullscreen = false
@@ -42,8 +47,9 @@ class MediaPlayer : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             streamingURL = it.getString(ARG_STREAMINGURL)
-        }
+            imageUrl = it.getString(ARG_IMAGE_URL)
 
+        }
     }
 
     override fun onCreateView(
@@ -59,7 +65,9 @@ class MediaPlayer : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val ua = Util.getUserAgent(view.context, "olaris-android")
         initPlayer(view.context)
+
     }
+
     private fun initPlayer(context: Context){
        val mi = MediaItem.Builder()
             .setUri(streamingURL)
@@ -68,7 +76,7 @@ class MediaPlayer : Fragment() {
 
         exoPlayer = SimpleExoPlayer.Builder(context).build().apply {
             playWhenReady = isPlayerPlaying
-
+            setHasOptionsMenu(true)
             setMediaItem(mi, false)
             seekTo(currentWindow, playbackPosition)
             prepare()
@@ -76,4 +84,5 @@ class MediaPlayer : Fragment() {
 
         binding.simpleExoPlayerView.player = exoPlayer
     }
+
 }

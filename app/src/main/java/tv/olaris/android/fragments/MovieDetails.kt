@@ -38,7 +38,6 @@ class MovieDetails : Fragment() {
         arguments?.let {
             uuid = it.getString(ARG_UUID).toString()
             server_id = it.getInt(ARG_SERVER_ID).toInt()
-            Log.d("uuid", uuid!!)
         }
 
     }
@@ -52,18 +51,21 @@ class MovieDetails : Fragment() {
                 val server = OlarisApplication.applicationContext().serversRepository.getServerById(server_id)
                 moviesRepository = MoviesRepository(server)
                 _movie = moviesRepository.findMovieByUUID(uuid!!)
+
                 binding.textMovieDetailsMovieName.text = movie.title
                 binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year, movie.uuid)
                 binding.textMovieDetailsOverview.text = movie.overview
 
-                Glide.with(view.context).load(movie.fullPosterPath(server.url)).into(binding.imageMovieDetailsCover)
+                val imageUrl = movie.fullPosterPath(server.url)
+                Glide.with(view.context).load(imageUrl).into(binding.imageMovieDetailsCover)
 
                 binding.btnPlayContent.setOnClickListener{
                     lifecycleScope.launch{
                         val streamingURL = moviesRepository.getStreamingUrl(movie.fileUUIDs.first())
                         if(streamingURL != null) {
                             val action = MovieDetailsDirections.actionMovieDetailsFragmentToMediaPlayerFragment(
-                                    streamingURL = streamingURL
+                                    streamingURL = streamingURL,
+                                     imageUrl = imageUrl
                                 )
                             findNavController().navigate(action)
                         }

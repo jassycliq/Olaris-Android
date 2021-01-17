@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 @Entity(tableName = "servers")
-data class Server constructor(val url: String, val username: String, val password: String, val name: String, val currentJWT: String, @PrimaryKey(autoGenerate = true) val id: Int=0)
+data class Server constructor(var url: String, var username: String, var password: String, var name: String, var currentJWT: String, @PrimaryKey(autoGenerate = true) val id: Int=0)
 
 @Dao
 interface ServerDoa {
@@ -23,8 +23,11 @@ interface ServerDoa {
     @Query("select * from servers WHERE id = :id")
     suspend fun getServerById(id: Int): Server
 
+    @Update(entity = Server::class)
+    suspend fun update(obj: Server)
+
     @Delete
-    fun delete(model: Server)
+    suspend fun delete(model: Server)
 }
 
 @Database(entities = [Server::class], version = 2)

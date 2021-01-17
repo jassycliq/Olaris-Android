@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import tv.olaris.android.databases.Server
 import tv.olaris.android.databases.ServerDoa
+import tv.olaris.android.service.olaris_http_api.OlarisHttpService
+import tv.olaris.android.service.olaris_http_api.model.LoginResponse
 
 class ServersRepository(serverDoa: ServerDoa) {
     val serverDoa : ServerDoa = serverDoa
@@ -18,6 +20,18 @@ class ServersRepository(serverDoa: ServerDoa) {
        return serverDoa.getServerById(id)
     }
 
+    suspend fun refreshJwt(serverId: Int){
+        val server = getServerById(serverId)
+        val result : LoginResponse = OlarisHttpService(server.url).LoginUser(server.username,server.password)
+        if(result.hasError && result.jwt != null){
+            server.currentJWT = result.jwt!!
+        }
+        updateServer(server)
+
+    }
+    suspend fun updateServer(server: Server) {
+        serverDoa.update(server)
+    }
     suspend fun getServerCount(): Int {
         return serverDoa.serverCount
     }

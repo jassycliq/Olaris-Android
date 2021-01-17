@@ -40,6 +40,9 @@
         <argument
             android:name="streamingURL"
             app:argType="string" />
+        <argument
+            android:name="imageUrl"
+            app:argType="string" />
     </fragment>
 
     <fragment

@@ -16,6 +16,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import tv.olaris.android.service.olaris_http_api.OlarisHttpService
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener  {
     private lateinit var navController: NavController
@@ -37,8 +38,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         lifecycleScope.launch {
+            //TODO: This is super duper horrible, can we do this differently?
             OlarisApplication.applicationContext().serversRepository.allServers.collect {
                 for (s in it) {
+                    // TODO: Do a check to see if a JWT token is still valid
+                    // OlarisApplication.applicationContext().serversRepository.refreshJwt(s.id)
                     val submenu = menu.addSubMenu(s.name)
                     val id = "${s.id}1".toInt()
 
@@ -48,6 +52,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             val bundle = bundleOf("server_id" to s.id)
 
                             navController.navigate(R.id.movieLibraryFragment, bundle)
+                            drawerLayout.closeDrawer(GravityCompat.START)
                             true
                         }
                     )
