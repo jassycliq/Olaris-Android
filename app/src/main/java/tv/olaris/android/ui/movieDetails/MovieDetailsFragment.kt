@@ -1,5 +1,6 @@
 package tv.olaris.android.ui.movieDetails
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -50,6 +51,7 @@ class MovieDetails : Fragment() {
                 val server = OlarisApplication.applicationContext().serversRepository.getServerById(server_id)
                 moviesRepository = MoviesRepository(server)
                 _movie = moviesRepository.findMovieByUUID(uuid!!)
+                binding.progressBarMovieItem.visibility = View.INVISIBLE
 
                 binding.textMovieDetailsMovieName.text = movie.title
                 binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year, movie.getRuntime().toString(), movie.getResolution())

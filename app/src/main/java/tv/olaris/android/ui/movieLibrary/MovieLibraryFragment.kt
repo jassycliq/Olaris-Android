@@ -53,6 +53,7 @@ class MovieLibrary : Fragment() {
             moviesRepository = MoviesRepository(server)
 
             recyclerView.adapter = MovieItemAdapter(context, moviesRepository.getAllMovies(), server)
+            binding.progressBarMovieLibrary.visibility = View.INVISIBLE
             recyclerView.layoutManager = GridLayoutManager(context, movieGridSize)// spanCount.toInt())//LinearLayoutManager(this.requireContext()) //
         }
 
