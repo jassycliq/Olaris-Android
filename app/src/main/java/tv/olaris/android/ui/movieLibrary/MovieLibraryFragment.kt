@@ -38,8 +38,8 @@ class MovieLibrary : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = tv.olaris.android.databinding.MovieLibraryFragmentBinding.inflate(inflater, container, false)
-        return _binding!!.root
+        _binding = MovieLibraryFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -50,16 +50,14 @@ class MovieLibrary : Fragment() {
 
         lifecycleScope.launch {
             val server = OlarisApplication.applicationContext().serversRepository.getServerById(server_id)
+
+            // TODO: Inject this somehow and keep a singleton if that's possible?
             moviesRepository = MoviesRepository(server)
 
             recyclerView.adapter = MovieItemAdapter(context, moviesRepository.getAllMovies(), server)
             binding.progressBarMovieLibrary.visibility = View.INVISIBLE
             recyclerView.layoutManager = GridLayoutManager(context, movieGridSize)// spanCount.toInt())//LinearLayoutManager(this.requireContext()) //
         }
-
-        /*recyclerView.addItemDecoration(
-            DividerItemDecoration(this.requireContext(), DividerItemDecoration.VERTICAL)
-        )*/
     }
 
 }

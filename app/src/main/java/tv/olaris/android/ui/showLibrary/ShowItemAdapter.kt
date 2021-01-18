@@ -1,4 +1,6 @@
-package tv.olaris.android.ui.movieLibrary
+package tv.olaris.android.ui.showLibrary
+
+import tv.olaris.android.ui.movieLibrary.movieGridSize
 
 import android.content.Context
 import android.content.res.Resources
@@ -8,40 +10,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tv.olaris.android.R
 import tv.olaris.android.databases.Server
-import tv.olaris.android.models.Movie
+import tv.olaris.android.models.Show
 
-class MovieItemAdapter(context: Context, movies: List<Movie>, server: Server) : RecyclerView.Adapter<MovieItemAdapter.MovieItemHolder>(){
-    private val movies = movies
+class ShowLibraryAdapter(context: Context, shows: List<Show>, server: Server) : RecyclerView.Adapter<ShowLibraryAdapter.ShowItemHolder>(){
+    private val shows = shows
     private val server = server
 
-    class MovieItemHolder(val view: View) : RecyclerView.ViewHolder(view){
+    class ShowItemHolder(val view: View) : RecyclerView.ViewHolder(view){
         val movieCoverArt: ImageView = view.findViewById<ImageView>(R.id.movieCoverArtImage)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieItemHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowItemHolder {
         val layout = LayoutInflater.from(parent.context).inflate(R.layout.media_list_item_cover_only, parent, false)
-        return MovieItemHolder(layout)
+        return ShowItemHolder(layout)
     }
 
-    override fun onBindViewHolder(holder: MovieItemHolder, position: Int) {
+    override fun onBindViewHolder(holder: ShowItemHolder, position: Int) {
         holder.movieCoverArt.layoutParams.width = ((Resources.getSystem().displayMetrics.widthPixels / movieGridSize.toFloat())).toInt() - (12* movieGridSize)
         holder.movieCoverArt.layoutParams.height = (holder.movieCoverArt.layoutParams.width.toFloat() * 1.5).toInt()
 
-        Glide.with(holder.itemView.context).load(movies[position].fullPosterUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.movieCoverArt);
+        Glide.with(holder.itemView.context).load(shows[position].fullPosterUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.movieCoverArt);
 
         holder.movieCoverArt.setOnClickListener{
-            val uuid = movies[position].uuid
-            val action = MovieLibraryDirections.actionMovieLibraryFragmentToMovieDetailsFragment(uuid = uuid, serverId = server.id)
-            holder.view.findNavController().navigate(action)
+            val uuid = shows[position].uuid
+           // val action = MovieLibraryDirections.actionMovieLibraryFragmentToMovieDetailsFragment(uuid = uuid, serverId = server.id)
+            //holder.view.findNavController().navigate(action)
         }
     }
 
     override fun getItemCount(): Int {
-        return movies.size
+        return shows.size
     }
 }

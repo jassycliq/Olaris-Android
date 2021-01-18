@@ -52,6 +52,9 @@
         <action
             android:id="@+id/action_fragmentServerList_to_fragmentAddServer"
             app:destination="@id/fragmentAddServer" />
+        <action
+            android:id="@+id/action_fragmentServerList_to_fragmentShowLibrary"
+            app:destination="@id/fragmentShowLibrary" />
     </fragment>
 
     <fragment
@@ -62,4 +65,14 @@
             android:id="@+id/action_fragmentAddServer_to_fragmentServerList"
             app:destination="@id/fragmentServerList" />
     </fragment>
+
+    <fragment
+        android:id="@+id/fragmentShowLibrary"
+        android:name="tv.olaris.android.ui.showLibrary.ShowLibrary"
+        android:label="Shows">
+        <argument
+            android:name="serverId"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>

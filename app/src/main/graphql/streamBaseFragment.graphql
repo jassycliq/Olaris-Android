@@ -1,0 +1,13 @@
+fragment streamBase on Stream{
+    codecName
+    codecMime
+    profile
+    bitRate
+    streamType
+    language
+    title
+    resolution
+    totalDuration
+    streamID
+    streamURL
+}

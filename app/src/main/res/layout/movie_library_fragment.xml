@@ -16,7 +16,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/movieRecycleview"
-    tools:listitem="@layout/movie_list_item_cover_only"
+    tools:listitem="@layout/media_list_item_cover_only"
     >
 
 </androidx.recyclerview.widget.RecyclerView>

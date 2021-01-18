@@ -16,40 +16,16 @@ import okhttp3.Request
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.databases.Server
 import tv.olaris.android.models.Movie
+import tv.olaris.android.service.graphql.GraphqlClient
 import tv.olaris.android.service.http.OlarisHttpService
 import javax.inject.Inject
 
 class MoviesRepository @Inject constructor(server: Server){
     private var server = server
 
-    // TODO: Refactor so it can be used by other repos in the future.
-    private suspend fun createApolloClient(baseUrl: String, token: String): ApolloClient {
-        val j = JWT(server.currentJWT)
-
-        Log.d("jwt", j.expiresAt.toString())
-        if(j.isExpired(10)) {
-            OlarisApplication.applicationContext().serversRepository.refreshJwt(server.id)
-        }
-
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor { chain: Interceptor.Chain ->
-                val original: Request = chain.request()
-                val builder: Request.Builder =
-                    original.newBuilder().method(original.method(), original.body())
-                builder.header("Authorization", "Bearer $token")
-                chain.proceed(builder.build())
-            }
-            .build()
-
-        return ApolloClient.builder()
-            .serverUrl("${baseUrl}/olaris/m/query")
-            .okHttpClient(okHttpClient)
-            .build()
-    }
-
     suspend fun getStreamingUrl(uuid: String): String? {
         val m = CreateStreamingTicketMutation(uuid = uuid)
-        val res = createApolloClient(server.url, server.currentJWT).mutate(m).await()
+        val res = GraphqlClient(server).get().mutate(m).await()
 
         if (res.data != null && res.data?.createStreamingTicket != null){
             return "${server.url}/${res.data!!.createStreamingTicket.dashStreamingPath}"
@@ -61,7 +37,7 @@ class MoviesRepository @Inject constructor(server: Server){
     suspend fun findMovieByUUID(uuid: String): Movie?  = withContext(Dispatchers.IO) {
         var movie : Movie? = null
         try {
-            val res = createApolloClient(server.url, server.currentJWT).query(FindMovieQuery(uuid = uuid)).await()
+            val res = GraphqlClient(server).get().query(FindMovieQuery(uuid = uuid)).await()
             if(res.data != null && res.data?.movies != null){
                 var m = res.data!!.movies.first()!!
                 movie = Movie.createFromGraphQLMovieBase(m.fragments.movieBase)
@@ -78,7 +54,7 @@ class MoviesRepository @Inject constructor(server: Server){
         var movies : MutableList<Movie> = mutableListOf()
 
         try {
-           val res = createApolloClient(server.url, server.currentJWT).query(AllMoviesQuery()).await()
+           val res = GraphqlClient(server).get().query(AllMoviesQuery()).await()
 
             if(res.data != null && res.data?.movies != null){
                 for(movie in res.data!!.movies){

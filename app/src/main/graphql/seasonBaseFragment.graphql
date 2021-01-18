@@ -1,0 +1,10 @@
+fragment seasonBase on Season {
+    name
+    overview
+    seasonNumber
+    airDate
+    posterPath
+    tmdbID
+    uuid
+    unwatchedEpisodesCount
+}

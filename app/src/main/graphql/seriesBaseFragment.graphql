@@ -1,0 +1,15 @@
+fragment seriesBase on Series {
+        name
+        overview
+        firstAirDate
+        status
+        seasons {
+            ...seasonBase
+        }
+        backdropPath
+        posterPath
+        tmdbID
+        type
+        uuid
+        unwatchedEpisodesCount
+}

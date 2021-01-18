@@ -42,11 +42,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             OlarisApplication.applicationContext().serversRepository.allServers.collect {
                 for (s in it) {
                     val submenu = menu.addSubMenu(s.name)
-                    val id = "${s.id}1".toInt()
+                    var id = "${s.id}1".toInt()
 
                     submenu.add(0, id, 0, "Movies").setOnMenuItemClickListener(
                         MenuItem.OnMenuItemClickListener {
-                            Toast.makeText(this@MainActivity, s.name, Toast.LENGTH_SHORT).show()
                             val bundle = bundleOf("server_id" to s.id)
 
                             navController.navigate(R.id.movieLibraryFragment, bundle)
@@ -54,7 +53,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             true
                         }
                     )
-                    //submenu.add(0, "${s.id}2".toInt(), 0, "TV Shows")
+                    id = "${s.id}2".toInt()
+                    submenu.add(0, id, 0, "TV Shows").setOnMenuItemClickListener(
+                        MenuItem.OnMenuItemClickListener {
+                            val bundle = bundleOf("serverId" to s.id)
+
+                            navController.navigate(R.id.fragmentShowLibrary, bundle)
+                            drawerLayout.closeDrawer(GravityCompat.START)
+                            true
+                        }
+                    )
+
                 }
             }
         }

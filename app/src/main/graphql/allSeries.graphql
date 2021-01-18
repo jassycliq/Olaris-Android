@@ -1,0 +1,6 @@
+query AllSeries{
+    series{
+        ...seriesBase
+    }
+
+}
