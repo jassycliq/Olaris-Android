@@ -35,10 +35,10 @@ class ServerItemAdapter(context: Context) : ListAdapter<Server, ServerItemAdapte
             MaterialAlertDialogBuilder(holder.context)
                     .setTitle("Remove server from application")
                     .setMessage("Are you sure you want to delete the server '${holder.serverUrl.text}' from the app?")
-                    .setNeutralButton("Cancel") { dialog, which ->
+                    .setNeutralButton("Cancel") { _, _ ->
                     }
 
-                    .setPositiveButton("Confirm") { dialog, which ->
+                    .setPositiveButton("Confirm") { _, _ ->
                         OlarisApplication.applicationContext().applicationScope.launch {
                             OlarisApplication.applicationContext().serversRepository.deleteServer(getItem(position))
                         }
@@ -52,7 +52,7 @@ class ServerItemAdapter(context: Context) : ListAdapter<Server, ServerItemAdapte
 
 class DiffCallback : DiffUtil.ItemCallback<Server>() {
     override fun areItemsTheSame(oldItem: Server, newItem:Server): Boolean {
-        return oldItem?.id == newItem?.id
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem:Server, newItem: Server): Boolean {
