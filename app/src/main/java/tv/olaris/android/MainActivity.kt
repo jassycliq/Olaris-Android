@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navView.setNavigationItemSelectedListener(this)
         val menu = navView.menu
 
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         lifecycleScope.launch {
             //TODO: This is super duper horrible, can we do this differently?
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             true
                         }
                     )
-                    submenu.add(0, "${s.id}2".toInt(), 0, "TV Shows")
+                    //submenu.add(0, "${s.id}2".toInt(), 0, "TV Shows")
                 }
             }
         }
@@ -65,27 +66,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Log.d("menu", item.itemId.toString())
 
          when(item.itemId) {
-            R.id.item_manage_servers -> {
-                navController.navigate(R.id.fragmentServerList)
-                drawerLayout.closeDrawer(GravityCompat.START)
-            }
+             R.id.item_manage_servers -> {
+                 navController.navigate(R.id.fragmentServerList)
+                 drawerLayout.closeDrawer(GravityCompat.START)
+             }
         }
 
         return true
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             android.R.id.home -> {
-                if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START)
-                }else {
+                } else {
                     drawerLayout.openDrawer(GravityCompat.START)
                 }
                 return true
             }  else -> super.onOptionsItemSelected(item)
         }
     }
+
 /*
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {

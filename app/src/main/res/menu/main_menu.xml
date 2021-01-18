@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-       <menu android:id="@+id/menu_server_list" />
+    <item android:title="">
+        <menu android:id="@+id/menu_server_list" />
+    </item>
+
 
         <item
-            android:title="Server Atalanta" />
-        <item
-            android:title="Movies"/>
-        <item
             android:id="@+id/item_manage_servers"
-            android:icon="@drawable/ic_baseline_add_24"
+            android:icon="@drawable/ic_baseline_computer_24"
             android:title="Manage servers" />
-        <item
-            android:id="@+id/item2"
-            android:icon="@drawable/ic_baseline_movie_24"
-            android:title="Test" />
 
 </menu>

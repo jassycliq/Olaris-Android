@@ -38,7 +38,7 @@ class MovieLibrary : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = MovieLibraryFragmentBinding.inflate(inflater, container, false)
+        _binding = tv.olaris.android.databinding.MovieLibraryFragmentBinding.inflate(inflater, container, false)
         return _binding!!.root
     }
 
