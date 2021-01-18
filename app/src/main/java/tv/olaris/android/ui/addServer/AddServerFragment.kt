@@ -1,20 +1,25 @@
 package tv.olaris.android.ui.addServer
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.databases.Server
 import tv.olaris.android.databinding.FragmentAddServerBinding
 import tv.olaris.android.service.http.OlarisHttpService
+import tv.olaris.android.util.*
 
 class AddServerFragment : Fragment() {
     private var _binding: FragmentAddServerBinding? = null
@@ -24,10 +29,12 @@ class AddServerFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnAddServer.setOnClickListener{
             var hasErrors = false
+            hideKeyboard()
 
             with(binding.textEditServerUrl){
                 if(this.text != null && this.text.toString() != ""){
@@ -67,13 +74,13 @@ class AddServerFragment : Fragment() {
                 Log.d("http", "No errors!")
 
                 lifecycle.coroutineScope.launch{
-                    val loginResponse = OlarisHttpService(binding.textEditServerUrl.text.toString()).LoginUser(
+                    val loginResponse = OlarisHttpService(binding.textEditServerUrl.text.toString().removeSuffix("/")).LoginUser(
                         binding.textEditUsername.text.toString(),
                         binding.textEditPassword.text.toString())
 
                     if(loginResponse.hasError){
                         Log.d("http", "Got error ${loginResponse.message}")
-                        Toast.makeText(view.context, "Received error while connecting to server: ${loginResponse.message}", Toast.LENGTH_LONG).show()
+                        Snackbar.make(view, "Error: ${loginResponse.message}", Snackbar.LENGTH_LONG).show()
                     }else {
                         Log.d("http", "Everything ok! ${loginResponse.jwt}")
                         Toast.makeText(view.context, "Succesfully added server.", Toast.LENGTH_LONG).show()

@@ -2,6 +2,7 @@ package tv.olaris.android.service.http
 
 import android.util.Log
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
@@ -35,6 +36,8 @@ class OlarisHttpService(val baseUrl: String) {
             return LoginResponse(true, e.toString())
         }catch(e: ConnectException){
             return LoginResponse(true, e.toString())
+        }catch(e: NoTransformationFoundException){
+            return LoginResponse(true, "Server did not respond with JSON, are you sure this is the correct URL?")
         }
     }
 }
