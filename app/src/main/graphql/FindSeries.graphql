@@ -1,0 +1,5 @@
+query FindSeries($uuid: String!) {
+    series(uuid: $uuid) {
+        ...seriesBase
+    }
+}

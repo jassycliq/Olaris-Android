@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tv.olaris.android.R
@@ -39,8 +40,8 @@ class ShowLibraryAdapter(context: Context, shows: List<Show>, server: Server) : 
 
         holder.movieCoverArt.setOnClickListener{
             val uuid = shows[position].uuid
-           // val action = MovieLibraryDirections.actionMovieLibraryFragmentToMovieDetailsFragment(uuid = uuid, serverId = server.id)
-            //holder.view.findNavController().navigate(action)
+            val action = ShowLibraryDirections.actionFragmentShowLibraryToFragmentShowDetails(uuid = uuid, serverId = server.id)
+            holder.view.findNavController().navigate(action)
         }
     }
 

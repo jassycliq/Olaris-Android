@@ -1,6 +1,7 @@
 package tv.olaris.android.repositories
 
 import AllSeriesQuery
+import FindSeriesQuery
 import android.util.Log
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloException
@@ -28,6 +29,18 @@ class ShowsRepository(val server: Server) {
             logException(e)
         }
         return shows
+    }
+
+    suspend fun findShowByUUID(uuid: String) : Show?{
+        try {
+            val res = GraphqlClient(server).get().query(FindSeriesQuery(uuid)).await()
+            if(res.data != null && res.data!!.series.isNotEmpty()){
+                return Show.createFromGraphQLSeriesBase(res.data!!.series.first()!!.fragments.seriesBase)
+            }
+        }   catch(e: ApolloException) {
+            logException(e)
+        }
+        return null
     }
 
     private fun logException(e: ApolloException){

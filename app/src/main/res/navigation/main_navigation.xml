@@ -73,6 +73,20 @@
         <argument
             android:name="serverId"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_fragmentShowLibrary_to_fragmentShowDetails"
+            app:destination="@id/fragmentShowDetails" />
     </fragment>
 
+    <fragment
+        android:id="@+id/fragmentShowDetails"
+        android:name="tv.olaris.android.ui.showDetails.ShowDetailsFragment"
+        android:label="Show details">
+        <argument
+            android:name="uuid"
+            app:argType="string" />
+        <argument
+            android:name="serverId"
+            app:argType="integer" />
+    </fragment>
 </navigation>
