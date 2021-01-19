@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import tv.olaris.android.databases.Server
 import tv.olaris.android.databinding.FragmentSeasonDetailsBinding
 import tv.olaris.android.models.Season
 
@@ -19,8 +20,9 @@ private const val ARG_PARAM2 = "param2"
  * Use the [SeasonDetailsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SeasonDetailsFragment(season: Season) : Fragment() {
+class SeasonDetailsFragment(season: Season, s: Server) : Fragment() {
     private val season = season
+    private val server = s
     private var _binding : FragmentSeasonDetailsBinding? = null
     private val binding get() = _binding!!
 
@@ -42,7 +44,7 @@ class SeasonDetailsFragment(season: Season) : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        binding.recyclerEpisodeList.adapter = EpisodeItemAdapter(this.requireContext(), season)
+        binding.recyclerEpisodeList.adapter = EpisodeItemAdapter(this.requireContext(), season, server)
         binding.recyclerEpisodeList.layoutManager = LinearLayoutManager(this.requireContext())
     }
 }

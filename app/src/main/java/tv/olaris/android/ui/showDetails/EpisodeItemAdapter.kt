@@ -12,10 +12,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tv.olaris.android.R
+import tv.olaris.android.databases.Server
 import tv.olaris.android.models.Season
 import kotlin.random.Random
 
-class EpisodeItemAdapter(context: Context, val seasonBase: Season) : RecyclerView.Adapter<EpisodeItemAdapter.EpisodeItemHolder>(){
+class EpisodeItemAdapter(context: Context, val season: Season, val server: Server) : RecyclerView.Adapter<EpisodeItemAdapter.EpisodeItemHolder>(){
 
     class EpisodeItemHolder(val view: View) : RecyclerView.ViewHolder(view){
         val episodeTitle: TextView = view.findViewById(R.id.text_episode_title)
@@ -32,19 +33,17 @@ class EpisodeItemAdapter(context: Context, val seasonBase: Season) : RecyclerVie
 
 
     override fun getItemCount(): Int {
-     return seasonBase.episodes.size
+     return season.episodes.size
     }
 
     override fun onBindViewHolder(holder: EpisodeItemHolder, position: Int) {
-        val episode = seasonBase.episodes[position]
-        if(episode != null){
-            holder.episodeTitle.text = episode.name
-            holder.episodeDescription.text = episode.overview
-            holder.progressBar.progress = Random.nextInt(0, 100)
-            holder.episodeDetails.text = "Episode ${episode.episodeNumber.toString()} - ${episode.airDate}"
-            Glide.with(holder.itemView.context).load("http://maran.atalanta.bysh.me/olaris/m/images/tmdb/w1280/${episode.stillPath}").placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.episodeStillImage);
-        }
-
+        val episode = season.episodes[position]
+    
+        holder.episodeTitle.text = episode.name
+        holder.episodeDescription.text = episode.overview
+        holder.progressBar.progress = Random.nextInt(0, 100)
+        holder.episodeDetails.text = "Episode ${episode.episodeNumber.toString()} - ${episode.airDate}"
+        Glide.with(holder.itemView.context).load(episode.stillPathUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.episodeStillImage);
     }
 
 }

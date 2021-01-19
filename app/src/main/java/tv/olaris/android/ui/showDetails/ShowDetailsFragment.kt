@@ -61,7 +61,7 @@ class ShowDetailsFragment : Fragment() {
                val show = ShowsRepository(server).findShowByUUID(uuid!!)
 
                 if(show != null) {
-                    seasonPageAdapter = SeasonPagerAdapter(fragment, show)
+                    seasonPageAdapter = SeasonPagerAdapter(fragment, show, server)
                     viewPager = view.findViewById(R.id.pager_show_detail_seasons)
                     viewPager.adapter = seasonPageAdapter
 
@@ -75,7 +75,9 @@ class ShowDetailsFragment : Fragment() {
                     binding.textShowDetailsAirDate.text = show.firstAirDate
                     binding.textShowDetailsShowName.text = show.name
                     binding.textShowDetailsOverview.text = show.overview
+
                     val imageUrl = show.fullPosterUrl(server.url)
+
                     Glide.with(view.context).load(imageUrl).into(binding.imageViewShowPoster)
                     Glide.with(view.context).load(show.fullCoverArtUrl(server.url)).into(binding.imageViewCoverArt
                     )
