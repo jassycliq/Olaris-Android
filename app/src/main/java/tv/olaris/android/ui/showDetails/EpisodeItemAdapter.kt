@@ -11,15 +11,11 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import fragment.EpisodeBase
-import fragment.SeasonBase
-import org.w3c.dom.Text
 import tv.olaris.android.R
-import tv.olaris.android.databases.Server
-import tv.olaris.android.ui.showLibrary.ShowLibraryAdapter
+import tv.olaris.android.models.Season
 import kotlin.random.Random
 
-class EpisodeItemAdapter(context: Context, val seasonBase: SeasonBase) : RecyclerView.Adapter<EpisodeItemAdapter.EpisodeItemHolder>(){
+class EpisodeItemAdapter(context: Context, val seasonBase: Season) : RecyclerView.Adapter<EpisodeItemAdapter.EpisodeItemHolder>(){
 
     class EpisodeItemHolder(val view: View) : RecyclerView.ViewHolder(view){
         val episodeTitle: TextView = view.findViewById(R.id.text_episode_title)
@@ -40,7 +36,7 @@ class EpisodeItemAdapter(context: Context, val seasonBase: SeasonBase) : Recycle
     }
 
     override fun onBindViewHolder(holder: EpisodeItemHolder, position: Int) {
-        val episode = seasonBase.episodes[position]?.fragments?.episodeBase
+        val episode = seasonBase.episodes[position]
         if(episode != null){
             holder.episodeTitle.text = episode.name
             holder.episodeDescription.text = episode.overview

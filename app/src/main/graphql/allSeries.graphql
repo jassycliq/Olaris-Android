@@ -1,6 +1,15 @@
 query AllSeries{
     series{
-        ...seriesBase
+          name
+          overview
+          firstAirDate
+          status
+          backdropPath
+          posterPath
+          tmdbID
+          type
+          uuid
+          unwatchedEpisodesCount
     }
 
 }

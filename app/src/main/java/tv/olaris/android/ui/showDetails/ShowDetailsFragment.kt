@@ -68,13 +68,13 @@ class ShowDetailsFragment : Fragment() {
                     val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout_season_list)
 
                     TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                        tab.text = "${(show.seriesBase.seasons[position]?.fragments?.seasonBase?.name)}"
+                        tab.text = show.seasons[position].name
                     }.attach()
 
                     binding.progressBarShowItem.visibility = View.INVISIBLE
-                    binding.textShowDetailsAirDate.text = show.seriesBase.firstAirDate
-                    binding.textShowDetailsShowName.text = show.seriesBase.name
-                    binding.textShowDetailsOverview.text = show.seriesBase.overview
+                    binding.textShowDetailsAirDate.text = show.firstAirDate
+                    binding.textShowDetailsShowName.text = show.name
+                    binding.textShowDetailsOverview.text = show.overview
                     val imageUrl = show.fullPosterUrl(server.url)
                     Glide.with(view.context).load(imageUrl).into(binding.imageViewShowPoster)
                     Glide.with(view.context).load(show.fullCoverArtUrl(server.url)).into(binding.imageViewCoverArt
