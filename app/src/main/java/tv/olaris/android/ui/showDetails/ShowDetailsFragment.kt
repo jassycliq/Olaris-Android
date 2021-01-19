@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.R
@@ -22,6 +25,10 @@ class ShowDetailsFragment : Fragment() {
 
     private var uuid: String? = null
     private var serverId: Int = 0
+
+    private lateinit var seasonPageAdapter: SeasonPagerAdapter
+    private lateinit var viewPager: ViewPager2
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,18 +51,34 @@ class ShowDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val fragment = this
+
         lifecycleScope.launch{
+
             val server = OlarisApplication.applicationContext().serversRepository.getServerById(serverId)
+
             if(uuid != null) {
                val show = ShowsRepository(server).findShowByUUID(uuid!!)
+
                 if(show != null) {
+                    seasonPageAdapter = SeasonPagerAdapter(fragment, show)
+                    viewPager = view.findViewById(R.id.pager_show_detail_seasons)
+                    viewPager.adapter = seasonPageAdapter
+
+                    val tabLayout = view.findViewById<TabLayout>(R.id.tab_layout_season_list)
+
+                    TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                        tab.text = "${(show.seriesBase.seasons[position]?.fragments?.seasonBase?.name)}"
+                    }.attach()
+
                     binding.progressBarShowItem.visibility = View.INVISIBLE
                     binding.textShowDetailsAirDate.text = show.seriesBase.firstAirDate
                     binding.textShowDetailsShowName.text = show.seriesBase.name
                     binding.textShowDetailsOverview.text = show.seriesBase.overview
                     val imageUrl = show.fullPosterUrl(server.url)
                     Glide.with(view.context).load(imageUrl).into(binding.imageViewShowPoster)
-                    Glide.with(view.context).load(show.fullCoverArtUrl(server.url)).into(binding.imageViewCoverArt)
+                    Glide.with(view.context).load(show.fullCoverArtUrl(server.url)).into(binding.imageViewCoverArt
+                    )
 
                 }
             }

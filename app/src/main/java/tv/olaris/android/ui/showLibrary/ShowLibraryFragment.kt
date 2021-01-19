@@ -54,6 +54,7 @@ class ShowLibrary : Fragment() {
             showsRepository = ShowsRepository(server)
 
             val recyclerView = binding.recyclerShowLibrary
+            // TODO: Don't grab _all_ the data here, just the bits needed for the overview
             recyclerView.adapter = ShowLibraryAdapter(context, showsRepository.getAllShows(), server)
             recyclerView.layoutManager = GridLayoutManager(context, movieGridSize)
             binding.progressBarShowLibrary.visibility = View.INVISIBLE

@@ -1,0 +1,10 @@
+fragment episodeBase on Episode {
+
+        name
+        overview
+        stillPath
+        airDate
+        episodeNumber
+        uuid
+
+}
