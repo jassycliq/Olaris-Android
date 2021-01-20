@@ -11,8 +11,9 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.*
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -25,18 +26,22 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         var navFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navFragment.navController
-        drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
-        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+
+        drawerLayout = findViewById(R.id.drawer_layout)
 
         var navView = findViewById<NavigationView>(R.id.navigation_view)
+
+        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
+        setupActionBarWithNavController(this, navController, appBarConfiguration)
+
         navView.setNavigationItemSelectedListener(this)
+
         val menu = navView.menu
 
-
-        setupActionBarWithNavController(navController, appBarConfiguration)
         lifecycleScope.launch {
             //TODO: This is super duper horrible, can we do this differently?
             OlarisApplication.applicationContext().serversRepository.allServers.collect {
@@ -69,8 +74,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-
-
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         Log.d("menu", item.itemId.toString())
 
@@ -84,36 +87,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
-            android.R.id.home -> {
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                } else {
-                    drawerLayout.openDrawer(GravityCompat.START)
-                }
-                return true
-            }  else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-/*
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
-            android.R.id.home -> {
-                if(drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START)
-                }else {
-                    drawerLayout.openDrawer(GravityCompat.START)
-                }
-                return true
-            }  else -> super.onOptionsItemSelected(item)
-    }}*/
-
     override fun onSupportNavigateUp(): Boolean {
         val navFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        return navFragment.navController.navigateUp()
+        return navFragment.navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
 
