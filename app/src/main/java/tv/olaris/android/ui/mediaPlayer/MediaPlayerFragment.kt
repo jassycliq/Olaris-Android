@@ -13,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Renderer
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DataSource
@@ -47,7 +49,7 @@ class MediaPlayerFragment : Fragment() {
     }
     private val showPart2Runnable = Runnable {
         // Delayed display of UI elements
-        fullscreenContentControls?.visibility = View.VISIBLE
+     //   fullscreenContentControls?.visibility = View.VISIBLE
     }
     private var visible: Boolean = false
     private val hideRunnable = Runnable { hide() }
@@ -66,7 +68,7 @@ class MediaPlayerFragment : Fragment() {
 
    // private var dummyButton: Button? = null
     private var fullscreenContent: View? = null
-    private var fullscreenContentControls: View? = null
+       //private var fullscreenContentControls: View? = null
 
     private var currentWindow = 0
     private var serverId: Int = 0
@@ -98,7 +100,7 @@ class MediaPlayerFragment : Fragment() {
 
     //    dummyButton = view.findViewById(R.id.dummy_button)
         fullscreenContent = view.findViewById(R.id.exo_player_full_screen)
-        fullscreenContentControls = view.findViewById(R.id.fullscreen_content_controls)
+        //fullscreenContentControls = view.findViewById(R.id.fullscreen_content_controls)
         // Set up the user interaction to manually show or hide the system UI.
         fullscreenContent?.setOnClickListener { toggle() }
 
@@ -137,7 +139,7 @@ class MediaPlayerFragment : Fragment() {
         super.onDestroy()
        // dummyButton = null
         fullscreenContent = null
-        fullscreenContentControls = null
+       // fullscreenContentControls = null
     }
 
     private fun toggle() {
@@ -150,7 +152,7 @@ class MediaPlayerFragment : Fragment() {
 
     private fun hide() {
         // Hide UI first
-        fullscreenContentControls?.visibility = View.GONE
+       // fullscreenContentControls?.visibility = View.GONE
         visible = false
 
         // Schedule a runnable to remove the status and navigation bar after a delay
@@ -192,9 +194,9 @@ class MediaPlayerFragment : Fragment() {
             setHasOptionsMenu(true)
             setMediaItem(mi, false)
             seekTo(currentWindow, playbackPosition)
+            videoScalingMode = Renderer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
             prepare()
         }
-
         binding.exoPlayerFullScreen.player = exoPlayer
     }
 

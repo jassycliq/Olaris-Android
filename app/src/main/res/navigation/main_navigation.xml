@@ -31,6 +31,9 @@
         <argument
             android:name="server_id"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_fragmentFullScreenMediaPlayer"
+            app:destination="@id/fragmentFullScreenMediaPlayer" />
     </fragment>
 
     <fragment

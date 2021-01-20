@@ -14,10 +14,16 @@ class MediaPlayerViewModel(): ViewModel() {
         val moviesRepository = MoviesRepository(s)
         var streamingURL = moviesRepository.getStreamingUrl(uuid)
         if (streamingURL != null) {
+            //TODO: Fix this hardcoded codec crap.
             streamingURL += "?playableCodecs=avc1.640029&playableCodecs=avc1.64001f&playableCodecs=avc1.64001e&playableCodecs=avc1.640020&playableCodecs=avc1.640028&playableCodecs=avc1.640029&playableCodecs=avc1.64001f&playableCodecs=mp4a.40.2"
             emit(streamingURL)
         }
     }
+
+    private val currentWindow: LiveData<Double> = liveData{
+
+    }
+    // TODO: Fix these arguments here.
     fun getStreamingUrl(s: Int, u: String): LiveData<String>{
         serverId = s
         uuid = u

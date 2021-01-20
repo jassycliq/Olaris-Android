@@ -66,7 +66,7 @@ class MovieDetails : Fragment() {
                     val uuid = movie.fileUUIDs.first()
 
                     val action =
-                        MovieDetailsDirections.actionMovieDetailsFragmentToMediaPlayerFragment(
+                        MovieDetailsDirections.actionMovieDetailsFragmentToFragmentFullScreenMediaPlayer(
                             uuid,
                             server_id
                         )
