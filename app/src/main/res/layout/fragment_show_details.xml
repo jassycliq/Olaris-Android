@@ -21,7 +21,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:indeterminate="true" />
-            
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/image_view_cover_art"
                 android:layout_width="match_parent"
@@ -116,6 +118,8 @@
                 </LinearLayout>
 
             </LinearLayout>
+            </FrameLayout>
         </LinearLayout>
+
     </ScrollView>
 </FrameLayout>
