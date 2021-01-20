@@ -6,9 +6,11 @@ import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tv.olaris.android.R
@@ -16,7 +18,7 @@ import tv.olaris.android.databases.Server
 import tv.olaris.android.models.Season
 import kotlin.random.Random
 
-class EpisodeItemAdapter(context: Context, val season: Season, val server: Server) : RecyclerView.Adapter<EpisodeItemAdapter.EpisodeItemHolder>(){
+class EpisodeItemAdapter(context: Context, val seasonBase: Season, val server: Server) : RecyclerView.Adapter<EpisodeItemAdapter.EpisodeItemHolder>(){
 
     class EpisodeItemHolder(val view: View) : RecyclerView.ViewHolder(view){
         val episodeTitle: TextView = view.findViewById(R.id.text_episode_title)
@@ -24,6 +26,7 @@ class EpisodeItemAdapter(context: Context, val season: Season, val server: Serve
         val episodeDetails: TextView = view.findViewById(R.id.text_episode_number)
         val episodeStillImage: ImageView = view.findViewById(R.id.image_view_episode_item_cover)
         val progressBar: ProgressBar = view.findViewById(R.id.progress_bar_episode_item)
+        val playButton: Button = view.findViewById(R.id.btn_play_episode)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeItemHolder {
@@ -33,17 +36,29 @@ class EpisodeItemAdapter(context: Context, val season: Season, val server: Serve
 
 
     override fun getItemCount(): Int {
-     return season.episodes.size
+     return seasonBase.episodes.size
     }
 
     override fun onBindViewHolder(holder: EpisodeItemHolder, position: Int) {
-        val episode = season.episodes[position]
-    
+        val episode = seasonBase.episodes[position]
+
         holder.episodeTitle.text = episode.name
         holder.episodeDescription.text = episode.overview
         holder.progressBar.progress = Random.nextInt(0, 100)
         holder.episodeDetails.text = "Episode ${episode.episodeNumber.toString()} - ${episode.airDate}"
-        Glide.with(holder.itemView.context).load(episode.stillPathUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.episodeStillImage);
-    }
 
+        Glide.with(holder.itemView.context).load(episode.stillPathUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.episodeStillImage);
+
+        holder.playButton.setOnClickListener{
+            val nav =  holder.view.findNavController()
+
+            val action =
+                    ShowDetailsFragmentDirections.actionFragmentShowDetailsToFragmentFullScreenMediaPlayer(
+                            uuid = episode.files.first().uuid,
+                            serverId = server.id
+                    )
+            nav.navigate(action)
+
+        }
+    }
 }

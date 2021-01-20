@@ -1,18 +1,30 @@
 package tv.olaris.android.repositories
 
 import AllSeriesQuery
+import FindSeasonQuery
 import FindSeriesQuery
 import android.util.Log
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloException
 import tv.olaris.android.databases.Server
+import tv.olaris.android.models.Season
 import tv.olaris.android.models.Show
 import tv.olaris.android.service.graphql.GraphqlClient
 
 class ShowsRepository(val server: Server) {
+    suspend fun findSeasonByUUID(uuid: String): Season?{
+        try {
+            val res = GraphqlClient(server).get().query(FindSeasonQuery(uuid)).await()
+            if(res.data != null && res.data!!.season != null){
+                return Show.buildSeason(res.data!!.season.fragments.seasonBase)
+            }
+        }   catch(e: ApolloException) {
+            logException(e)
+        }
+        return null
+    }
     suspend fun getAllShows(): List<Show>{
         val shows : MutableList<Show> = mutableListOf()
-
         try {
             val res = GraphqlClient(server).get().query(AllSeriesQuery()).await()
             Log.d("shows", res.toString())

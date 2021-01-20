@@ -1,0 +1,10 @@
+fragment fileBase on EpisodeFile{
+    fileName
+    filePath
+    uuid
+    totalDuration
+    fileSize
+    streams{
+        ...streamBase
+    }
+}

@@ -6,5 +6,8 @@ fragment episodeBase on Episode {
         airDate
         episodeNumber
         uuid
+        files {
+         ...fileBase
+        }
 
 }

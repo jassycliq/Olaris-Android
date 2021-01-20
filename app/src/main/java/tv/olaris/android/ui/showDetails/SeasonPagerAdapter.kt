@@ -19,10 +19,11 @@ class SeasonPagerAdapter(fragment: Fragment, s: Show, server: Server) : Fragment
     override fun createFragment(position: Int): Fragment {
         // Return a NEW fragment instance in createFragment(int)
         val season = show.seasons[position]
-        val fragment = SeasonDetailsFragment(season, server)
+        val fragment = SeasonDetailsFragment()
         fragment.arguments = Bundle().apply {
             // Our object is just an integer :-P
-            putInt(ARG_PARAM1, position + 1)
+            putInt("serverId", server.id)
+            putString("seasonUUID", season.uuid)
         }
         return fragment
     }

@@ -82,6 +82,7 @@
                     android:layout_marginBottom="4dp"
                     />
                 <Button
+                    android:id="@+id/btn_play_episode"
                     android:layout_width="wrap_content"
                     android:layout_gravity="end"
                     android:drawableLeft="@drawable/exo_icon_play"

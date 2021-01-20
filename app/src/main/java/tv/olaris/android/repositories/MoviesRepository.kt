@@ -28,7 +28,7 @@ class MoviesRepository @Inject constructor(server: Server){
         val res = GraphqlClient(server).get().mutate(m).await()
 
         if (res.data != null && res.data?.createStreamingTicket != null){
-            return "${server.url}/${res.data!!.createStreamingTicket.dashStreamingPath}"
+            return "${server.url}${res.data!!.createStreamingTicket.dashStreamingPath}"
         }
 
         return null

@@ -1,11 +1,51 @@
 package tv.olaris.android.models
 
 import android.util.Log
+import fragment.SeasonBase
 
 data class Show(val name: String, val overview: String, val backdropPath: String, val firstAirDate: String, val posterPath: String, val unwatchedEpisodeCount: Int, val uuid: String, val seriesBase: fragment.SeriesBase? = null){
     var seasons : MutableList<Season> = mutableListOf()
 
     companion object {
+        fun buildSeason(seasonBase: SeasonBase): Season?{
+            var season : Season? = null
+            with(seasonBase) {
+                season = Season(
+                    name,
+                    overview,
+                    seasonNumber,
+                    airDate,
+                    posterPath,
+                    uuid,
+                    unwatchedEpisodesCount
+                )
+
+                for (episode in this.episodes) {
+                    with(episode!!.fragments.episodeBase) {
+                        val episode =
+                            Episode(name, overview, stillPath, airDate, episodeNumber, uuid)
+                        for (file in this.files) {
+                            with(file!!.fragments.fileBase) {
+                                episode.files.add(
+                                    File(
+                                        fileName,
+                                        filePath,
+                                        uuid,
+                                        totalDuration,
+                                        fileSize,
+                                        this
+                                    )
+                                )
+                            }
+                        }
+                        if(season != null) {
+                            season!!.episodes.add(episode)
+                        }
+                    }
+                }
+            }
+            return season
+        }
         fun createFromGraphQLSeries(m: AllSeriesQuery.Series) : Show{
             return Show(name = m.name, uuid = m.uuid,  overview = m.overview, posterPath =  m.posterPath, backdropPath = m.backdropPath, unwatchedEpisodeCount = m.unwatchedEpisodesCount, firstAirDate = m.firstAirDate)
         }
@@ -14,14 +54,11 @@ data class Show(val name: String, val overview: String, val backdropPath: String
             val show = Show(name = m.name, uuid = m.uuid,  overview = m.overview, seriesBase = m, posterPath =  m.posterPath, backdropPath = m.backdropPath, unwatchedEpisodeCount = m.unwatchedEpisodesCount, firstAirDate = m.firstAirDate)
             for(s in m.seasons){
                 with(s!!.fragments.seasonBase){
-                    val season = Season(name, overview, seasonNumber, airDate, posterPath, uuid, unwatchedEpisodesCount)
-                    for(episode in this.episodes){
-                        with(episode!!.fragments.episodeBase){
-                            season.episodes.add(Episode(name, overview, stillPath, airDate, episodeNumber, uuid))
-                        }
+                    val season = buildSeason(this)
+                    if(season != null) {
+                        season.episodes.sortBy { it.episodeNumber }
+                        show.seasons.add(season)
                     }
-                    season.episodes.sortBy { it.episodeNumber }
-                    show.seasons.add(season)
                 }
             }
             show.seasons.sortBy { it.seasonNumber }

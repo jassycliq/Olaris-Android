@@ -1,0 +1,5 @@
+query FindSeason($uuid: String!) {
+    season(uuid: $uuid) {
+        ...seasonBase
+    }
+}

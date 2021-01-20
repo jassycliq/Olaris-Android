@@ -38,11 +38,12 @@
         android:name="tv.olaris.android.fragments.MediaPlayer"
         android:label="Media player">
         <argument
-            android:name="streamingURL"
-            app:argType="string" />
+            android:name="uuid"
+            app:argType="string"
+            android:defaultValue='""' />
         <argument
-            android:name="imageUrl"
-            app:argType="string" />
+            android:name="serverId"
+            app:argType="integer" />
     </fragment>
 
     <fragment
@@ -82,6 +83,24 @@
         android:id="@+id/fragmentShowDetails"
         android:name="tv.olaris.android.ui.showDetails.ShowDetailsFragment"
         android:label="Show details">
+        <argument
+            android:name="uuid"
+            app:argType="string" />
+        <argument
+            android:name="serverId"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_fragmentShowDetails_to_mediaPlayerFragment"
+            app:destination="@id/mediaPlayerFragment" />
+        <action
+            android:id="@+id/action_fragmentShowDetails_to_fragmentFullScreenMediaPlayer"
+            app:destination="@id/fragmentFullScreenMediaPlayer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentFullScreenMediaPlayer"
+        android:name="tv.olaris.android.ui.mediaPlayer.MediaPlayerFragment"
+        android:label="Player">
         <argument
             android:name="uuid"
             app:argType="string" />

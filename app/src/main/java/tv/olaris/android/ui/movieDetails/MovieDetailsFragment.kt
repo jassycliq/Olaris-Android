@@ -63,17 +63,15 @@ class MovieDetails : Fragment() {
                 Glide.with(view.context).load(movie.fullCoverArtUrl(server.url)).into(binding.imageMovieDetailsCovertArt)
 
                 binding.btnPlayContent.setOnClickListener{
-                    lifecycleScope.launch{
-                        val streamingURL = moviesRepository.getStreamingUrl(movie.fileUUIDs.first())
-                        if(streamingURL != null) {
-                            val action =
-                                MovieDetailsDirections.actionMovieDetailsFragmentToMediaPlayerFragment(
-                                    streamingURL = streamingURL,
-                                    imageUrl = imageUrl
-                                )
-                            findNavController().navigate(action)
-                        }
-                    }
+                    val uuid = movie.fileUUIDs.first()
+
+                    val action =
+                        MovieDetailsDirections.actionMovieDetailsFragmentToMediaPlayerFragment(
+                            uuid,
+                            server_id
+                        )
+                    findNavController().navigate(action)
+
                 }
             }
         }
