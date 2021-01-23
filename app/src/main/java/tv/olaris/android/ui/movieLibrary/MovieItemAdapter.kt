@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tv.olaris.android.R
@@ -36,11 +37,12 @@ class MovieItemAdapter(context: Context, movies: List<Movie>, server: Server) : 
         holder.movieCoverArt.layoutParams.height = (holder.movieCoverArt.layoutParams.width.toFloat() * 1.5).toInt()
         holder.textEpisodeCounter.visibility = View.INVISIBLE
         Glide.with(holder.itemView.context).load(movies[position].fullPosterUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.movieCoverArt);
-
+        holder.movieCoverArt.transitionName = movies[position].fullPosterUrl(server.url)
         holder.movieCoverArt.setOnClickListener{
             val uuid = movies[position].uuid
+            val extras = FragmentNavigatorExtras(holder.movieCoverArt to uuid)
             val action = MovieLibraryDirections.actionMovieLibraryFragmentToMovieDetailsFragment(uuid = uuid, serverId = server.id)
-            holder.view.findNavController().navigate(action)
+            holder.view.findNavController().navigate(action, extras)
         }
     }
 

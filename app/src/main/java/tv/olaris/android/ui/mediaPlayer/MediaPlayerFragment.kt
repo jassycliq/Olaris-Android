@@ -23,6 +23,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.util.MimeTypes
+import tv.olaris.android.MainActivity
 import tv.olaris.android.R
 import tv.olaris.android.databinding.FragmentFullScreenMediaPlayerBinding
 import tv.olaris.android.databinding.FragmentMediaPlayerBinding
@@ -52,6 +53,8 @@ class MediaPlayerFragment : Fragment() {
             serverId = it.getInt(ARG_SERVERID)
             uuid = it.getString(ARG_UUID).toString()
         }
+
+        val act: MainActivity = activity as MainActivity
         _binding = FragmentFullScreenMediaPlayerBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -84,7 +87,7 @@ class MediaPlayerFragment : Fragment() {
         })
 
         // TODO: WHY WONT YOU GO AWAY :(
-        activity?.actionBar?.hide()
+
     }
 
     private fun initPlayer(context: Context, streamingUrl: String){

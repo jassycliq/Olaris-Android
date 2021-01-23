@@ -1,5 +1,6 @@
 package tv.olaris.android.ui.movieLibrary
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
+import tv.olaris.android.R
 import tv.olaris.android.databinding.MovieLibraryFragmentBinding
 import tv.olaris.android.repositories.MoviesRepository
 
@@ -56,7 +58,16 @@ class MovieLibrary : Fragment() {
 
             recyclerView.adapter = MovieItemAdapter(context, moviesRepository.getAllMovies(), server)
             binding.progressBarMovieLibrary.visibility = View.INVISIBLE
-            recyclerView.layoutManager = GridLayoutManager(context, movieGridSize)// spanCount.toInt())//LinearLayoutManager(this.requireContext()) //
+
+            if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                recyclerView.layoutManager =
+                    GridLayoutManager(context, resources.getInteger(R.integer.landscape_library_column_count))
+            }else {
+                recyclerView.layoutManager =
+                    GridLayoutManager(context, resources.getInteger(R.integer.library_column_count))
+            }
+
+        // spanCount.toInt())//LinearLayoutManager(this.requireContext()) //
         }
     }
 

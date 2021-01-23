@@ -14,7 +14,8 @@
         android:indeterminate="true"/>
     <ImageView
         android:id="@+id/imageMovieDetailsCovertArt"
-        android:src="@drawable/matrix_coverart"
+        tools:src="@drawable/matrix_coverart"
+
         android:alpha="0.3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -29,12 +30,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <ImageView
-                android:id="@+id/image_movie_details_cover"
+                android:id="@+id/image_movie_details_postert_art"
                 android:layout_width="140dp"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
-
+                android:transitionName="transition_movie_details"
                 tools:src="@drawable/matrix" />
             <LinearLayout
                 android:layout_width="match_parent"

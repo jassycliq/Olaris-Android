@@ -9,7 +9,8 @@
         android:label="Movies">
         <action
             android:id="@+id/action_movieLibraryFragment_to_movieDetailsFragment"
-            app:destination="@id/movieDetailsFragment" />
+            app:destination="@id/movieDetailsFragment"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim" />
         <action
             android:id="@+id/action_movieLibraryFragment_to_fragmentServerList"
             app:destination="@id/fragmentServerList" />
