@@ -33,13 +33,8 @@ class MovieDetails : Fragment() {
     private val binding get() = _binding!!
 
     private var uuid: String? = null
-
-    private var _movie: Movie? = null
-    private val movie get() = _movie!!
-
     private var server_id: Int = 0
     private val viewModel: MovieDetailsViewModel by viewModels()
-    lateinit var moviesRepository: MoviesRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,63 +47,63 @@ class MovieDetails : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //TODO: Rewrite viewbinding
+
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-        postponeEnterTransition()
+         postponeEnterTransition()
 
-        if(uuid != null) {
-            lifecycleScope.launch {
-                val server = OlarisApplication.applicationContext().serversRepository.getServerById(server_id)
-                moviesRepository = MoviesRepository(server)
-                _movie = moviesRepository.findMovieByUUID(uuid!!)
-                binding.progressBarMovieItem.visibility = View.INVISIBLE
-
-                binding.textMovieDetailsMovieName.text = movie.title
-                binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year, movie.getRuntime().toString(), movie.getResolution())
-                binding.textMovieDetailsOverview.text = movie.overview
-                binding.textMovieDetailsFileName.text = movie.getFileName()
-                binding.imageMovieDetailsPostertArt.transitionName = movie.uuid
-
-                val imageUrl = movie.fullPosterUrl(server.url)
-
-                Glide.with(view.context).load(imageUrl).dontAnimate().listener(object : RequestListener<Drawable> {
-                    override fun onResourceReady(
-                        resource: Drawable?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        dataSource: DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        startPostponedEnterTransition()
-                        return false
-                    }
-
-                    override fun onLoadFailed(
-                        e: GlideException?,
-                        model: Any?,
-                        target: Target<Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        return false
-                    }
-                }).into(binding.imageMovieDetailsPostertArt)
-
-                Glide.with(view.context).load(movie.fullCoverArtUrl(server.url)).into(binding.imageMovieDetailsCovertArt)
-
-
-
-                binding.btnPlayContent.setOnClickListener{
-                    val uuid = movie.fileUUIDs.first()
-
-                    val action =
-                        MovieDetailsDirections.actionMovieDetailsFragmentToFragmentFullScreenMediaPlayer(
-                            uuid,
-                            server_id
-                        )
-                    findNavController().navigate(action)
+        viewModel.coverArtUrl.observe(viewLifecycleOwner){
+            Glide.with(view.context).load(it).into(binding.imageMovieDetailsCovertArt)
+        }
+        
+        viewModel.posterUrl.observe(viewLifecycleOwner){
+            Glide.with(view.context).load(it).dontAnimate().listener(object : RequestListener<Drawable> {
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    startPostponedEnterTransition()
+                    return false
                 }
+
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
+            }).into(binding.imageMovieDetailsPostertArt)
+        }
+
+        viewModel.movie.observe(viewLifecycleOwner){
+            val movie = it!!
+
+            binding.progressBarMovieItem.visibility = View.INVISIBLE
+
+            binding.textMovieDetailsMovieName.text = movie.title
+            binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year, movie.getRuntime().toString(), movie.getResolution())
+            binding.textMovieDetailsOverview.text = movie.overview
+            binding.textMovieDetailsFileName.text = movie.getFileName()
+            binding.imageMovieDetailsPostertArt.transitionName = movie.uuid
+
+
+            binding.btnPlayContent.setOnClickListener{
+                val uuid = movie.fileUUIDs.first()
+
+                val action =
+                    MovieDetailsDirections.actionMovieDetailsFragmentToFragmentFullScreenMediaPlayer(
+                        uuid,
+                        server_id
+                    )
+                findNavController().navigate(action)
             }
         }
+
+        viewModel.getMovie(uuid = uuid!!, server_id = server_id)
     }
 
     override fun onCreateView(

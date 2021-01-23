@@ -85,9 +85,6 @@ class MediaPlayerFragment : Fragment() {
             Log.d("mediaplayer", streamingUrl)
             viewModel.play(streamingUrl)
         })
-
-        // TODO: WHY WONT YOU GO AWAY :(
-
     }
 
     private fun initPlayer(context: Context, streamingUrl: String){
