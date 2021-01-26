@@ -19,6 +19,11 @@ class MediaPlayerLifecycleObserver(private val viewModel: MediaPlayerViewModel) 
         Log.d("mediaplayer", "INIT PLAYER")
         viewModel.initPlayer()
     }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun onStop() {
+      viewModel.pause()
+    }
 }
 
 class MediaPlayerViewModel(): ViewModel(), Player.EventListener {
@@ -81,6 +86,7 @@ class MediaPlayerViewModel(): ViewModel(), Player.EventListener {
         }
     }
 
+
     fun play(mediaUrl: String, startPos: Long = 0){
         val player = playerOrNull?: return
         val mi = MediaItem.Builder()
@@ -94,6 +100,11 @@ class MediaPlayerViewModel(): ViewModel(), Player.EventListener {
         player.playWhenReady = true
     }
 
+    fun pause() {
+        playerOrNull?.playWhenReady = false
+    }
+
+
     fun initPlayer(){
         _player.value = SimpleExoPlayer.Builder(OlarisApplication.applicationContext()).setTrackSelector(DefaultTrackSelector(OlarisApplication.applicationContext())).build().apply {
             videoScalingMode = Renderer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
@@ -103,7 +114,14 @@ class MediaPlayerViewModel(): ViewModel(), Player.EventListener {
         }
     }
 
+    private fun destroyPlayer(){
+        playerOrNull?.release()
+        _player.value = null
+    }
+
     override fun onCleared() {
+        Log.d("playerViewModel", "onCleared()")
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
+        destroyPlayer()
     }
 }

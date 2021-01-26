@@ -5,10 +5,7 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.Button
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +24,8 @@ import tv.olaris.android.MainActivity
 import tv.olaris.android.R
 import tv.olaris.android.databinding.FragmentFullScreenMediaPlayerBinding
 import tv.olaris.android.databinding.FragmentMediaPlayerBinding
+import tv.olaris.android.util.disableFullscreen
+import tv.olaris.android.util.enableFullscreen
 
 private const val ARG_UUID = "uuid"
 private const val ARG_SERVERID = "serverId"
@@ -64,7 +63,7 @@ class MediaPlayerFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         //This can force landscape
-        // requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
 
         viewModel.player.observe(this) { player ->
             Log.d("mediaplyer", "Got a player!")
@@ -73,8 +72,33 @@ class MediaPlayerFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.exoPlayerFullScreen.player = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        with(requireActivity()){
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            disableFullscreen(true)
+        }
+    }
+
+    override fun onPause() {
+        viewModel.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        requireActivity().enableFullscreen()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         viewModel.player.observe(viewLifecycleOwner, {
             Log.d("mediaplyer", "Got a player part two")

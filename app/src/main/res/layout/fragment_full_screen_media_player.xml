@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/fullscreenBackgroundColor"
-    android:theme="@style/ThemeOverlay.OlarisAndroid.FullscreenContainer"
+    android:fitsSystemWindows="true"
     tools:context=".ui.mediaPlayer.MediaPlayerFragment">
 
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
     <com.google.android.exoplayer2.ui.StyledPlayerView
         android:id="@+id/exo_player_full_screen"
         app:show_subtitle_button="true"
         app:resize_mode="fill"
+        android:fitsSystemWindows="true"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</LinearLayout>
+</FrameLayout>
