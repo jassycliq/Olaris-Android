@@ -76,7 +76,8 @@ class AddServerFragment : Fragment() {
                 Log.d("http", "No errors!")
 
                 lifecycle.coroutineScope.launch{
-                    val loginResponse = OlarisHttpService(binding.textEditServerUrl.text.toString().removeSuffix("/")).LoginUser(
+                    val service = OlarisHttpService(binding.textEditServerUrl.text.toString().removeSuffix("/"))
+                    val loginResponse = service.LoginUser(
                         binding.textEditUsername.text.toString(),
                         binding.textEditPassword.text.toString())
 
@@ -86,14 +87,15 @@ class AddServerFragment : Fragment() {
                     }else {
                         Log.d("http", "Everything ok! ${loginResponse.jwt}")
                         Toast.makeText(view.context, "Succesfully added server.", Toast.LENGTH_LONG).show()
-
+                        val version = service.GetVersion()
                         OlarisApplication.applicationContext().serversRepository.insertServer(
                             Server(
                                 binding.textEditServerUrl.text.toString(),
                                 binding.textEditUsername.text.toString(),
                                 binding.textEditPassword.text.toString(),
                                 binding.textEditServerName.text.toString(),
-                                loginResponse.jwt.toString()
+                                loginResponse.jwt.toString(),
+                                version
                             )
                         )
 

@@ -14,9 +14,21 @@ import tv.olaris.android.service.http.model.LoginResponse
 import java.net.ConnectException
 
 class OlarisHttpService(val baseUrl: String) {
+
+    suspend fun GetVersion() : String{
+        val versionURL = baseUrl + "/olaris/m/v1/version"
+        try {
+            val client = HttpClient(Android)
+            return client.get<String>(versionURL)
+        }catch(e: ClientRequestException){
+            Log.e("olarisHttpServer", "Received an error: ${e.message}")
+            return ""
+        }
+    }
+
     suspend fun LoginUser(username: String, password: String) : LoginResponse {
         val authLoginUrl = baseUrl + "/olaris/m/v1/auth"
-        Log.d("http", "Login URL: $authLoginUrl")
+        Log.d("olarisHttpServer", "Login URL: $authLoginUrl")
         try{
             val client = HttpClient(Android) {
                 install(JsonFeature){

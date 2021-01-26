@@ -17,9 +17,9 @@ import tv.olaris.android.databases.Server
 
 class ServerItemAdapter(context: Context) : ListAdapter<Server, ServerItemAdapter.ServerItemHolder>(DiffCallback()) {
     class ServerItemHolder(val view: View) : RecyclerView.ViewHolder(view){
-        val serverUrl = view.findViewById<TextView>(R.id.text_server_label)
-        val deleteServerIcon = view.findViewById<ImageView>(R.id.icon_delete_server)
-        val context = view.context
+        val serverUrl : TextView = view.findViewById<TextView>(R.id.text_server_label)
+        val deleteServerIcon: ImageView = view.findViewById<ImageView>(R.id.icon_delete_server)
+        var serverVersion : TextView = view.findViewById<TextView>(R.id.text_server_version)
 
     }
 
@@ -29,10 +29,14 @@ class ServerItemAdapter(context: Context) : ListAdapter<Server, ServerItemAdapte
     }
 
     override fun onBindViewHolder(holder: ServerItemHolder, position: Int) {
-        holder.serverUrl.text = getItem(position).name
+        val s = getItem(position)
+        
+        holder.serverUrl.text = s.name
+        holder.serverVersion.text = s.version
+
         holder.deleteServerIcon.setOnClickListener{
 
-            MaterialAlertDialogBuilder(holder.context)
+            MaterialAlertDialogBuilder(holder.view.context)
                     .setTitle("Remove server from application")
                     .setMessage("Are you sure you want to delete the server '${holder.serverUrl.text}' from the app?")
                     .setNeutralButton("Cancel") { _, _ ->

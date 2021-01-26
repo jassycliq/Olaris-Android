@@ -29,13 +29,13 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                tools:text="Version 0.5">
 
-            </com.google.android.material.textview.MaterialTextView>
+                <TextView
+                    android:id="@+id/text_server_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    tools:text="Version 0.5" />
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="0dp"

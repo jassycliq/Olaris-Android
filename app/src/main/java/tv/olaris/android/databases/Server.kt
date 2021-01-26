@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 
 @Entity(tableName = "servers")
-data class Server constructor(var url: String, var username: String, var password: String, var name: String, var currentJWT: String, @PrimaryKey(autoGenerate = true) val id: Int=0)
+data class Server constructor(var url: String, var username: String, var password: String, var name: String, var currentJWT: String, var version: String, @PrimaryKey(autoGenerate = true) val id: Int=0)
 
 @Dao
 interface ServerDoa {
@@ -30,7 +30,7 @@ interface ServerDoa {
     suspend fun delete(model: Server)
 }
 
-@Database(entities = [Server::class], version = 2)
+@Database(entities = [Server::class], version = 3)
 abstract class ServerDatabase: RoomDatabase(){
     abstract fun serverDoa(): ServerDoa
     companion object {
