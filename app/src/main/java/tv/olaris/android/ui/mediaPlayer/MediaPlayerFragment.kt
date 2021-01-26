@@ -54,7 +54,7 @@ class MediaPlayerFragment : Fragment() {
             uuid = it.getString(ARG_UUID).toString()
         }
 
-        val act: MainActivity = activity as MainActivity
+
         _binding = FragmentFullScreenMediaPlayerBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -87,6 +87,7 @@ class MediaPlayerFragment : Fragment() {
         })
     }
 
+/*
     private fun initPlayer(context: Context, streamingUrl: String){
         val mi = MediaItem.Builder()
                 .setUri(streamingUrl)
@@ -102,5 +103,5 @@ class MediaPlayerFragment : Fragment() {
             prepare()
         }
         binding.exoPlayerFullScreen.player = exoPlayer
-    }
+    }*/
 }

@@ -47,7 +47,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             OlarisApplication.applicationContext().serversRepository.allServers.collect {
                 for (s in it) {
                     val submenu = menu.addSubMenu(s.name)
-                    var id = "${s.id}1".toInt()
+                    var id = 0
+
+                    submenu.add(0, id, 0, "Dashboard").setOnMenuItemClickListener(
+                        MenuItem.OnMenuItemClickListener {
+                            val bundle = bundleOf("serverId" to s.id)
+
+                            navController.navigate(R.id.dashboard, bundle)
+                            drawerLayout.closeDrawer(GravityCompat.START)
+                            true
+                        }
+                    )
+
+                    id = "${s.id}1".toInt()
 
                     submenu.add(0, id, 0, "Movies").setOnMenuItemClickListener(
                         MenuItem.OnMenuItemClickListener {
@@ -68,7 +80,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             true
                         }
                     )
-
                 }
             }
         }

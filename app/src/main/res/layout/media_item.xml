@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/movieCoverArtCard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="2dp"
+        app:layout_constraintHeight_percent="0.78"
+        app:layout_constraintDimensionRatio="1:1.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <!-- Media -->
+        <ImageView
+            android:id="@+id/movieCoverArtImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:transitionName="mediaItemList"
+            app:srcCompat="@drawable/matrix" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/text_media_item_name"
+        android:layout_width="0dp"
+        android:layout_marginTop="8dp"
+        android:maxLines="1"
+        android:letterSpacing="0.1"
+        android:ellipsize="end"
+        app:layout_constraintWidth_percent="1"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movieCoverArtCard"
+        tools:text="The Matrix or something a lot longer" />
+
+    <TextView
+        android:id="@+id/text_media_item_subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:textColor="@color/exo_gray"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_media_item_name"
+        tools:text="S3 E14" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

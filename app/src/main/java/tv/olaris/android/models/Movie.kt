@@ -4,13 +4,16 @@ import android.util.Log
 import tv.olaris.android.databases.Server
 import kotlin.math.roundToInt
 
-data class Movie(val title: String, val uuid: String, val year: Int, val overview: String, val posterUrl: String, val movieBase: fragment.MovieBase){
+class Movie(uuid: String, val backdropPath: String, posterUrl: String,  val title: String, val year: Int, val overview: String, val movieBase: fragment.MovieBase) : MediaItem(
+    uuid = uuid,
+    posterUrl = posterUrl,
+    name = title
+) {
     var fileUUIDs : MutableList<String> = mutableListOf()
 
     companion object {
         fun createFromGraphQLMovieBase(m: fragment.MovieBase) : Movie{
-            val movie = Movie(m.title, m.uuid, m.year.toInt(), m.overview, m.posterURL, m)
-
+            val movie = Movie(title = m.title, year = m.year.toInt(), overview =  m.overview, movieBase =  m, uuid = m.uuid, backdropPath = m.backdropPath, posterUrl = m.posterURL)
             if (m.files.isNotEmpty()) {
                 for (file in m.files) {
                     if (file != null) {
@@ -18,6 +21,7 @@ data class Movie(val title: String, val uuid: String, val year: Int, val overvie
                     }
                 }
             }
+            movie.fileUuid = movie.fileUUIDs.first()
             return movie
         }
     }
@@ -37,7 +41,14 @@ data class Movie(val title: String, val uuid: String, val year: Int, val overvie
         }
 
         return 0
+    }
 
+    fun fullCoverArtUrl(baseUrl: String?) : String {
+        return if(baseUrl != null) {
+            "${baseUrl}/olaris/m/images/tmdb/w1280/${this.backdropPath}"
+        }else{
+            ""
+        }
     }
 
     fun getResolution(): String {
@@ -57,15 +68,5 @@ data class Movie(val title: String, val uuid: String, val year: Int, val overvie
         }
         return "unknown"
     }
-
-    fun fullPosterUrl(baseUrl: String) : String {
-        return "${baseUrl}/${this.posterUrl}"
-    }
-
-    // TODO: Fix this on the server side
-    fun fullCoverArtUrl(baseUrl: String) : String {
-        return "${baseUrl}/olaris/m/images/tmdb/w1280/${this.movieBase.backdropPath.toString()}"
-    }
-
 }
 

@@ -1,0 +1,14 @@
+query ContinueWatching() {
+    upNext() {
+    ...on Episode{
+        ...episodeBase
+    		season{
+            ...seasonBase
+          }
+    }
+    ...on Movie{
+      ...movieBase
+  }
+
+    }
+}

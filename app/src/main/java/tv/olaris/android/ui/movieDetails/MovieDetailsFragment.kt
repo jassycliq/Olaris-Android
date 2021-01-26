@@ -54,7 +54,7 @@ class MovieDetails : Fragment() {
         viewModel.coverArtUrl.observe(viewLifecycleOwner){
             Glide.with(view.context).load(it).into(binding.imageMovieDetailsCovertArt)
         }
-        
+
         viewModel.posterUrl.observe(viewLifecycleOwner){
             Glide.with(view.context).load(it).dontAnimate().listener(object : RequestListener<Drawable> {
                 override fun onResourceReady(

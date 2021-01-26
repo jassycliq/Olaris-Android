@@ -125,11 +125,12 @@
                     android:autoSizeMaxTextSize="14dp"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF" />
-            </LinearLayout>
 
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
+
 
 
 </FrameLayout>
