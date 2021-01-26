@@ -89,6 +89,7 @@ class MovieDetails : Fragment() {
             binding.textMovieDetailsOverview.text = movie.overview
             binding.textMovieDetailsFileName.text = movie.getFileName()
             binding.imageMovieDetailsPostertArt.transitionName = movie.uuid
+            binding.textMovieDetailsResolution.text = movie.getResolution()
 
 
             binding.btnPlayContent.setOnClickListener{

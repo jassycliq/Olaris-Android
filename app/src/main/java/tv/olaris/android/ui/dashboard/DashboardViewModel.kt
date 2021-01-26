@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.databases.Server
 import tv.olaris.android.models.MediaItem
+import tv.olaris.android.repositories.DashboardRepository
 import tv.olaris.android.repositories.MoviesRepository
 
 class DashboardViewModel : ViewModel() {
@@ -30,10 +31,10 @@ class DashboardViewModel : ViewModel() {
             val s = OlarisApplication.applicationContext().serversRepository.getServerById(serverId)
             _server.value = s
 
-            _continueWatchingItems.value = MoviesRepository(s).findContinueWatchingItems()
+            _continueWatchingItems.value = DashboardRepository(s).findContinueWatchingItems()
             Log.d("dashboard", _continueWatchingItems.value?.size.toString())
 
-            _recentlyAddedItems.value = MoviesRepository(s).findRecentlyAddedItems()
+            _recentlyAddedItems.value = DashboardRepository(s).findRecentlyAddedItems()
             Log.d("dashboard", _recentlyAddedItems.value?.size.toString())
         }
 

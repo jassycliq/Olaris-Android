@@ -6,21 +6,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
+import tv.olaris.android.R
 import tv.olaris.android.databinding.FragmentServerListBinding
 import tv.olaris.android.fragments.ServerItemAdapter
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ServerListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ServerListFragment : Fragment() {
     private var _binding: FragmentServerListBinding? = null
     private val binding get() = _binding!!
@@ -45,10 +41,18 @@ class ServerListFragment : Fragment() {
         val adapter = ServerItemAdapter(this.requireContext())
         binding.recyclerServerList.adapter = adapter
         binding.recyclerServerList.layoutManager = LinearLayoutManager(this.requireContext())
+
         lifecycleScope.launch{
             OlarisApplication.applicationContext().serversRepository.allServers.collect {
                 Log.d("Servers", it.toString())
                 adapter.submitList(it)
+                if(it.isNotEmpty()){
+                    view.findViewById<TextView>(R.id.text_help_add_server).visibility = View.INVISIBLE
+                    view.findViewById<TextView>(R.id.text_help_explanation_servers).visibility = View.INVISIBLE
+                }else{
+                    view.findViewById<TextView>(R.id.text_help_add_server).visibility = View.VISIBLE
+                    view.findViewById<TextView>(R.id.text_help_explanation_servers).visibility = View.VISIBLE
+                }
             }
         }
     }

@@ -32,6 +32,8 @@ class AddServerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         binding.btnAddServer.setOnClickListener{
             var hasErrors = false
             hideKeyboard()

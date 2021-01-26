@@ -43,6 +43,7 @@ data class Show(val name: String, val overview: String, val backdropPath: String
                         }
                     }
                 }
+                season!!.episodes.sortBy { it.episodeNumber }
             }
             return season
         }
