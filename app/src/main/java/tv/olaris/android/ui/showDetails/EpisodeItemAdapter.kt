@@ -19,9 +19,10 @@ import tv.olaris.android.databases.Server
 import tv.olaris.android.models.Season
 import kotlin.random.Random
 
-class EpisodeItemAdapter(context: Context, val seasonBase: Season, val server: Server) : RecyclerView.Adapter<EpisodeItemAdapter.EpisodeItemHolder>(){
+class EpisodeItemAdapter(context: Context, val seasonBase: Season, val server: Server) :
+    RecyclerView.Adapter<EpisodeItemAdapter.EpisodeItemHolder>() {
 
-    class EpisodeItemHolder(val view: View) : RecyclerView.ViewHolder(view){
+    class EpisodeItemHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val episodeTitle: TextView = view.findViewById(R.id.text_episode_title)
         val episodeDescription: TextView = view.findViewById(R.id.text_episode_description)
         val episodeDetails: TextView = view.findViewById(R.id.text_episode_number)
@@ -31,13 +32,14 @@ class EpisodeItemAdapter(context: Context, val seasonBase: Season, val server: S
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EpisodeItemHolder {
-        val layout = LayoutInflater.from(parent.context).inflate(R.layout.season_list_item, parent, false)
+        val layout =
+            LayoutInflater.from(parent.context).inflate(R.layout.season_list_item, parent, false)
         return EpisodeItemHolder(layout)
     }
 
 
     override fun getItemCount(): Int {
-     return seasonBase.episodes.size
+        return seasonBase.episodes.size
     }
 
     override fun onBindViewHolder(holder: EpisodeItemHolder, position: Int) {
@@ -47,18 +49,22 @@ class EpisodeItemAdapter(context: Context, val seasonBase: Season, val server: S
         holder.episodeDescription.text = episode.overview
         holder.progressBar.progress = episode.playProgress().toInt()
         Log.d("episodeProgresS", "${episode.name}: ${episode.playProgress().toInt()}")
-        holder.episodeDetails.text = "Episode ${episode.episodeNumber.toString()} - ${episode.airDate}"
+        holder.episodeDetails.text =
+            "Episode ${episode.episodeNumber.toString()} - ${episode.airDate}"
 
-        Glide.with(holder.itemView.context).load(episode.stillPathUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.episodeStillImage);
+        Glide.with(holder.itemView.context).load(episode.stillPathUrl(server.url))
+            .placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED))
+            .into(holder.episodeStillImage);
 
-        holder.playButton.setOnClickListener{
-            val nav =  holder.view.findNavController()
+        holder.playButton.setOnClickListener {
+            val nav = holder.view.findNavController()
 
             val action =
-                    ShowDetailsFragmentDirections.actionFragmentShowDetailsToFragmentFullScreenMediaPlayer(
-                            uuid = episode.files.first().uuid,
-                            serverId = server.id
-                    )
+                ShowDetailsFragmentDirections.actionFragmentShowDetailsToFragmentFullScreenMediaPlayer(
+                    uuid = episode.files.first().uuid,
+                    serverId = server.id,
+                    episode.playtime.toInt()
+                )
             nav.navigate(action)
 
         }

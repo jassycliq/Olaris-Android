@@ -97,7 +97,9 @@ class MovieDetails : Fragment() {
                 val action =
                     MovieDetailsDirections.actionMovieDetailsFragmentToFragmentFullScreenMediaPlayer(
                         uuid,
-                        server_id
+                        server_id,
+                        movie.playtime.toInt()
+
                     )
                 findNavController().navigate(action)
             }

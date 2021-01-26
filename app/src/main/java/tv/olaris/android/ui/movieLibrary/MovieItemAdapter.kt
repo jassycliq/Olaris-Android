@@ -39,7 +39,13 @@ class MovieItemAdapter(context: Context, movies: List<Movie>, server: Server) : 
        // holder.movieCoverArt.layoutParams.width = ((Resources.getSystem().displayMetrics.widthPixels / movieGridSize.toFloat())).toInt() - (12* movieGridSize)
        // holder.movieCoverArt.layoutParams.height = (holder.movieCoverArt.layoutParams.width.toFloat() * 1.5).toInt()
         val m = movies[position]
-        holder.progressBar.progress = m.playProgress().toInt()
+
+        if(m.hasStarted()){
+            holder.progressBar.progress = m.playProgress().toInt()
+        }else{
+            holder.progressBar.visibility = View.INVISIBLE
+        }
+        
         holder.textEpisodeCounter.visibility = View.INVISIBLE
         Glide.with(holder.itemView.context).load(m.fullPosterUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.movieCoverArt);
         holder.movieCoverArt.transitionName = m.fullPosterUrl(server.url)

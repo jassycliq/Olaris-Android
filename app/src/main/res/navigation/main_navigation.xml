@@ -50,6 +50,9 @@
         <argument
             android:name="serverId"
             app:argType="integer" />
+        <argument
+            android:name="playtime"
+            app:argType="integer" />
     </fragment>
 
     <fragment
@@ -115,6 +118,9 @@
             app:argType="string" />
         <argument
             android:name="serverId"
+            app:argType="integer" />
+        <argument
+            android:name="playtime"
             app:argType="integer" />
     </fragment>
     <fragment

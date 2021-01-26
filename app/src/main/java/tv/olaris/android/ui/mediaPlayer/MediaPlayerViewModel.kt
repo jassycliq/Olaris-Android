@@ -88,15 +88,16 @@ class MediaPlayerViewModel(): ViewModel(), Player.EventListener {
 
 
     fun play(mediaUrl: String, startPos: Long = 0){
+        currentPos = startPos * 1000
         val player = playerOrNull?: return
         val mi = MediaItem.Builder()
             .setUri(mediaUrl)
             .setMimeType(MimeTypes.APPLICATION_MPD)
             .build()
         player.setMediaItem(mi)
-        player.seekTo(currentPos)
+        player.setSeekParameters(SeekParameters.NEXT_SYNC)
         player.prepare()
-        if (startPos > 0) player.seekTo(startPos)
+        if (startPos > 0) player.seekTo(currentPos)
         player.playWhenReady = true
     }
 
