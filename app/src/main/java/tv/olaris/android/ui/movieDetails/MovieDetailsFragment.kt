@@ -98,8 +98,8 @@ class MovieDetails : Fragment() {
                     MovieDetailsDirections.actionMovieDetailsFragmentToFragmentFullScreenMediaPlayer(
                         uuid,
                         server_id,
-                        movie.playtime.toInt()
-
+                        movie.playtime.toInt(),
+                        mediaUuid = movie.uuid
                     )
                 findNavController().navigate(action)
             }

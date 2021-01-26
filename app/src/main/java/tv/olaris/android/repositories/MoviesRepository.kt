@@ -2,6 +2,7 @@ package tv.olaris.android.repositories
 
 import AllMoviesQuery
 import ContinueWatchingQuery
+import CreatePlayStateMutation
 import CreateStreamingTicketMutation
 import FindMovieQuery
 import RecentlyAddedQuery
@@ -77,6 +78,12 @@ class MoviesRepository @Inject constructor(server: Server) {
             }
         }
         return list
+    }
+
+    suspend fun updatePlayState(uuid: String, finished: Boolean, playtime: Double){
+        Log.d("playstate", "$playtime.toString(), $uuid, $finished")
+        val m = CreatePlayStateMutation(mediaFileUUID = uuid, finished = finished, playtime = playtime)
+        GraphqlClient(server).get().mutate(m).await()
     }
 
     suspend fun getStreamingUrl(uuid: String): String? {

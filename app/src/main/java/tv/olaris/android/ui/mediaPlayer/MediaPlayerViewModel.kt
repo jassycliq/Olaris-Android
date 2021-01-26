@@ -11,8 +11,10 @@ import tv.olaris.android.repositories.MoviesRepository
 import androidx.lifecycle.*
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.util.Log
+import tv.olaris.android.databases.Server
 
-class MediaPlayerLifecycleObserver(private val viewModel: MediaPlayerViewModel) : LifecycleObserver {
+class MediaPlayerLifecycleObserver(private val viewModel: MediaPlayerViewModel) :
+    LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
@@ -22,20 +24,24 @@ class MediaPlayerLifecycleObserver(private val viewModel: MediaPlayerViewModel) 
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
-      viewModel.pause()
+        viewModel.pause()
     }
 }
 
-class MediaPlayerViewModel(): ViewModel(), Player.EventListener {
+class MediaPlayerViewModel() : ViewModel(), Player.EventListener {
     var serverId: Int = 0
     var uuid: String = ""
-
-    private val _player = MutableLiveData<ExoPlayer?>()
+    var mediaUUID = ""
+    var currentPos: Long = 0
     val playerOrNull: ExoPlayer? get() = _player.value
+
     val player: LiveData<ExoPlayer?> get() = _player
+    private val _player = MutableLiveData<ExoPlayer?>()
+
+
     private val lifecycleObserver = MediaPlayerLifecycleObserver(this)
 
-    private val streamingUrl: LiveData<String> = liveData{
+    private val streamingUrl: LiveData<String> = liveData {
         val s = OlarisApplication.applicationContext().serversRepository.getServerById(serverId)
         val moviesRepository = MoviesRepository(s)
         var streamingURL = moviesRepository.getStreamingUrl(uuid)
@@ -46,16 +52,29 @@ class MediaPlayerViewModel(): ViewModel(), Player.EventListener {
         }
     }
 
+    private var _repo: MoviesRepository? = null
+    private var _server: Server? = null
+
+    // TODO: I'm getting so tired of passing this shit around all the time, I need to learn a better way of doing this!?
+    private suspend fun getOrInitRepo(): MoviesRepository {
+        if (_server == null) {
+            _server =
+                OlarisApplication.applicationContext().serversRepository.getServerById(serverId)
+        }
+
+        if (_repo == null) {
+            _repo = MoviesRepository(_server!!)
+        }
+
+        return _repo!!
+    }
+
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
     }
 
-    private var _playbackPositionMillis = MutableLiveData<Long>()
-    val playbackPositionMillis : LiveData<Long> = _playbackPositionMillis
-    var currentPos: Long = 0
-
     // TODO: Fix these arguments here.
-    fun getStreamingUrl(s: Int, u: String): LiveData<String>{
+    fun getStreamingUrl(s: Int, u: String): LiveData<String> {
         serverId = s
         uuid = u
 
@@ -65,6 +84,9 @@ class MediaPlayerViewModel(): ViewModel(), Player.EventListener {
     private suspend fun reportPlaybackState() {
         val player = playerOrNull ?: return
         currentPos = player.currentPosition
+
+        getOrInitRepo().updatePlayState(mediaUUID, false, (currentPos / 1000).toDouble())
+
         Log.d("mediaplayer", currentPos.toString())
     }
 
@@ -86,10 +108,10 @@ class MediaPlayerViewModel(): ViewModel(), Player.EventListener {
         }
     }
 
-
-    fun play(mediaUrl: String, startPos: Long = 0){
+    fun play(mediaUrl: String, uuid: String, startPos: Long = 0) {
+        mediaUUID = uuid
         currentPos = startPos * 1000
-        val player = playerOrNull?: return
+        val player = playerOrNull ?: return
         val mi = MediaItem.Builder()
             .setUri(mediaUrl)
             .setMimeType(MimeTypes.APPLICATION_MPD)
@@ -106,16 +128,18 @@ class MediaPlayerViewModel(): ViewModel(), Player.EventListener {
     }
 
 
-    fun initPlayer(){
-        _player.value = SimpleExoPlayer.Builder(OlarisApplication.applicationContext()).setTrackSelector(DefaultTrackSelector(OlarisApplication.applicationContext())).build().apply {
-            videoScalingMode = Renderer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
-            prepare()
-        }.apply {
+    fun initPlayer() {
+        _player.value = SimpleExoPlayer.Builder(OlarisApplication.applicationContext())
+            .setTrackSelector(DefaultTrackSelector(OlarisApplication.applicationContext())).build()
+            .apply {
+                videoScalingMode = Renderer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
+                prepare()
+            }.apply {
             addListener(this@MediaPlayerViewModel)
         }
     }
 
-    private fun destroyPlayer(){
+    private fun destroyPlayer() {
         playerOrNull?.release()
         _player.value = null
     }

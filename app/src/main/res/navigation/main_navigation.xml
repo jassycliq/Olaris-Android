@@ -122,6 +122,9 @@
         <argument
             android:name="playtime"
             app:argType="integer" />
+        <argument
+            android:name="mediaUuid"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/dashboard"

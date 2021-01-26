@@ -1,0 +1,7 @@
+mutation CreatePlayState($mediaFileUUID: String!, $finished: Boolean!, $playtime: Float!){
+  createPlayState(uuid: $mediaFileUUID, finished: $finished, playtime: $playtime){
+    playState{
+      playtime
+    }
+  }
+}

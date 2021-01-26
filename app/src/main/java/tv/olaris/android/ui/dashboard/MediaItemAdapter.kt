@@ -60,7 +60,7 @@ class MediaItemAdapter(context: Context) :
             .placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED))
             .into(holder.coverArt);
         holder.itemView.setOnClickListener{
-            val action = DashboardDirections.actionDashboardToFragmentFullScreenMediaPlayer(uuid =mi.fileUuid, serverId = server!!.id, playtime = mi.playtime.toInt())
+            val action = DashboardDirections.actionDashboardToFragmentFullScreenMediaPlayer(mediaUuid = mi.uuid , uuid =mi.fileUuid, serverId = server!!.id, playtime = mi.playtime.toInt())
             holder.view.findNavController().navigate(action)
         }
     }

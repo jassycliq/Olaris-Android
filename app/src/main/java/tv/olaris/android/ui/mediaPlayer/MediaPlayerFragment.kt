@@ -30,11 +30,13 @@ import tv.olaris.android.util.enableFullscreen
 private const val ARG_UUID = "uuid"
 private const val ARG_SERVERID = "serverId"
 private const val ARG_PLAYTIME = "playtime"
+private const val ARG_MEDIA_UUID = "mediaUuid"
 
 class MediaPlayerFragment : Fragment() {
        private var currentWindow = 0
     private var serverId: Int = 0
     private var uuid: String  = ""
+    private var mediaUuid: String  = ""
     private var playbackPosition: Int = 0
     private var isFullscreen = false
     private var isPlayerPlaying = true
@@ -52,6 +54,7 @@ class MediaPlayerFragment : Fragment() {
         arguments?.let {
             serverId = it.getInt(ARG_SERVERID)
             uuid = it.getString(ARG_UUID).toString()
+            mediaUuid = it.getString(ARG_MEDIA_UUID).toString()
             playbackPosition = it.getInt(ARG_PLAYTIME)
         }
 
@@ -109,7 +112,7 @@ class MediaPlayerFragment : Fragment() {
 
         viewModel.getStreamingUrl(serverId, uuid).observe(viewLifecycleOwner, { streamingUrl ->
             Log.d("mediaplayer", streamingUrl)
-            viewModel.play(streamingUrl, playbackPosition.toLong())
+            viewModel.play(streamingUrl, mediaUuid, playbackPosition.toLong())
         })
     }
 

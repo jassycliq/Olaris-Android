@@ -63,7 +63,8 @@ class EpisodeItemAdapter(context: Context, val seasonBase: Season, val server: S
                 ShowDetailsFragmentDirections.actionFragmentShowDetailsToFragmentFullScreenMediaPlayer(
                     uuid = episode.files.first().uuid,
                     serverId = server.id,
-                    episode.playtime.toInt()
+                    episode.playtime.toInt(),
+                    episode.uuid
                 )
             nav.navigate(action)
 
