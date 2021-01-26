@@ -3,12 +3,15 @@ package tv.olaris.android.ui.dashboard
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -28,6 +31,7 @@ class MediaItemAdapter(context: Context) :
         val coverArt: ImageView = view.findViewById<ImageView>(R.id.movieCoverArtImage)
         val nameText: TextView = view.findViewById<TextView>(R.id.text_media_item_name)
         val subText: TextView = view.findViewById<TextView>(R.id.text_media_item_subtitle)
+        val progress: ProgressBar = view.findViewById<ProgressBar>(R.id.progress_bar_media_item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaItemHolder {
@@ -42,6 +46,15 @@ class MediaItemAdapter(context: Context) :
         val mi = getItem(position)
         Log.d("dashboard", "View holder ${mi.toString()}")
         holder.nameText.text = mi.name
+
+        if(mi.hasStarted()) {
+            val p = mi.playProgress()
+            Log.d("dashboard", "Progress; $p : ${mi.uuid}")
+            holder.progress.progress = p.toInt()
+        }else{
+            holder.progress.isVisible = false
+        }
+
         holder.subText.text = mi.subTitle
         Glide.with(holder.itemView.context).load(mi.fullPosterUrl(server?.url))
             .placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED))

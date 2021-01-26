@@ -7,11 +7,11 @@ fun test(mi: MediaItem): Boolean{
     return true
 }
 class Episode(name: String,
-                   val overview: String,
-                   val stillPath: String,
-                   val airDate: String,
-                   val episodeNumber: Int,
-                   uuid: String) : MediaItem(uuid = uuid, name = name, posterUrl = "olaris/m/images/tmdb/w300/${stillPath}") {
+              val overview: String,
+              private val stillPath: String,
+              val airDate: String,
+              val episodeNumber: Int,
+              uuid: String) : MediaItem(uuid = uuid, name = name, posterUrl = "olaris/m/images/tmdb/w300/${stillPath}") {
 
     //lateinit var posterUrl: String
 
@@ -21,13 +21,17 @@ class Episode(name: String,
 
     constructor(base: EpisodeBase, seasonBase: SeasonBase?) : this(base.name, base.overview, base.stillPath, base.airDate, base.episodeNumber, base.uuid){
         if(seasonBase != null) {
-            if (seasonBase.posterPath != null) {
-                this.posterUrl = "olaris/m/images/tmdb/w300/${seasonBase.posterPath}"
-            }
+            this.posterUrl = "olaris/m/images/tmdb/w300/${seasonBase.posterPath}"
             this.subTitle = "S${seasonBase.seasonNumber} E${this.episodeNumber}"
 
             // TODO: At one point we want this smarter
             this.fileUuid = base.files.first()?.fragments?.fileBase?.uuid.toString()
+            this.playtime = base.playState?.fragments?.playstateBase?.playtime!!
+            this.finished = base.playState?.fragments?.playstateBase?.finished == true
+
+            if(base.files.isNotEmpty()){
+                this.runtime = base.files.first()!!.fragments.fileBase.totalDuration!!
+            }
         }
     }
 

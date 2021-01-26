@@ -1,7 +1,5 @@
 package tv.olaris.android.models
 
-import android.util.Log
-import tv.olaris.android.databases.Server
 import kotlin.math.roundToInt
 
 class Movie(uuid: String, val backdropPath: String, posterUrl: String,  val title: String, val year: Int, val overview: String, val movieBase: fragment.MovieBase) : MediaItem(
@@ -22,9 +20,16 @@ class Movie(uuid: String, val backdropPath: String, posterUrl: String,  val titl
                 }
             }
             movie.fileUuid = movie.fileUUIDs.first()
+
+            if(m.files.isNotEmpty()) {
+                movie.runtime = m.files.first()!!.totalDuration!!
+            }
+            movie.playtime = m.playState?.fragments?.playstateBase?.playtime!!
+            movie.subTitle = movie.year.toString()
             return movie
         }
     }
+
     fun getFileName() : String {
         val file = movieBase.files.first()
         if(file != null){

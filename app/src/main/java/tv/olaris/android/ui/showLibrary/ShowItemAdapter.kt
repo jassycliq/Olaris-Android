@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,7 @@ class ShowLibraryAdapter(context: Context, shows: List<Show>, server: Server) : 
     class ShowItemHolder(val view: View) : RecyclerView.ViewHolder(view){
         val movieCoverArt: ImageView = view.findViewById<ImageView>(R.id.movieCoverArtImage)
         val episodeCount: TextView = view.findViewById<TextView>(R.id.text_episode_count)
+        val progressBar: ProgressBar = view.findViewById<ProgressBar>(R.id.progress_bar_cover_item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowItemHolder {
@@ -33,13 +35,13 @@ class ShowLibraryAdapter(context: Context, shows: List<Show>, server: Server) : 
     }
 
     override fun onBindViewHolder(holder: ShowItemHolder, position: Int) {
-        holder.movieCoverArt.layoutParams.width = ((Resources.getSystem().displayMetrics.widthPixels / movieGridSize.toFloat())).toInt() - (12* movieGridSize)
-        holder.movieCoverArt.layoutParams.height = (holder.movieCoverArt.layoutParams.width.toFloat() * 1.5).toInt()
-        holder.episodeCount.text = shows[position].unwatchedEpisodeCount.toString()
-        Glide.with(holder.itemView.context).load(shows[position].fullPosterUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.movieCoverArt);
+        val s = shows[position]
+        holder.progressBar.visibility = View.INVISIBLE
+        holder.episodeCount.text = s.unwatchedEpisodeCount.toString()
+        Glide.with(holder.itemView.context).load(s.fullPosterUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.movieCoverArt);
 
         holder.movieCoverArt.setOnClickListener{
-            val uuid = shows[position].uuid
+            val uuid = s.uuid
             val action = ShowLibraryDirections.actionFragmentShowLibraryToFragmentShowDetails(uuid = uuid, serverId = server.id)
             holder.view.findNavController().navigate(action)
         }

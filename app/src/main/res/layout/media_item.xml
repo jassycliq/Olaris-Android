@@ -15,6 +15,9 @@
         app:layout_constraintDimensionRatio="1:1.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
         <!-- Media -->
         <ImageView
@@ -24,6 +27,19 @@
             android:scaleType="centerCrop"
             android:transitionName="mediaItemList"
             app:srcCompat="@drawable/matrix" />
+            <ProgressBar
+                android:id="@+id/progress_bar_media_item"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/olaris_orange"
+                android:foregroundTint="@color/olaris_orange"
+                android:progressTint="@color/olaris_orange"
+                tools:progress="73"
+                android:layout_marginTop="-6dp"
+
+                android:indeterminate="false"/>
+        </FrameLayout>
     </com.google.android.material.card.MaterialCardView>
 
     <TextView

@@ -23,7 +23,7 @@ data class Show(val name: String, val overview: String, val backdropPath: String
                 for (episode in this.episodes) {
                     with(episode!!.fragments.episodeBase) {
                         val episode =
-                            Episode(name, overview, stillPath, airDate, episodeNumber, uuid)
+                            Episode(this, seasonBase)
                         for (file in this.files) {
                             with(file!!.fragments.fileBase) {
                                 episode.files.add(

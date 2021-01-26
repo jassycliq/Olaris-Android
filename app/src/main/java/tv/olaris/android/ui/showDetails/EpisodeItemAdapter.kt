@@ -3,6 +3,7 @@ package tv.olaris.android.ui.showDetails
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +45,8 @@ class EpisodeItemAdapter(context: Context, val seasonBase: Season, val server: S
 
         holder.episodeTitle.text = episode.name
         holder.episodeDescription.text = episode.overview
-        holder.progressBar.progress = Random.nextInt(0, 100)
+        holder.progressBar.progress = episode.playProgress().toInt()
+        Log.d("episodeProgresS", "${episode.name}: ${episode.playProgress().toInt()}")
         holder.episodeDetails.text = "Episode ${episode.episodeNumber.toString()} - ${episode.airDate}"
 
         Glide.with(holder.itemView.context).load(episode.stillPathUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.episodeStillImage);

@@ -20,4 +20,8 @@ fragment movieBase on Movie {
             ...streamBase
         }
     }
+    playState{
+    ...playstateBase
+    }
+
 }

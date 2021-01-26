@@ -12,14 +12,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.R
-import tv.olaris.android.databinding.MovieLibraryFragmentBinding
+import tv.olaris.android.databinding.FragmentMovieLibraryBinding
+
 import tv.olaris.android.repositories.MoviesRepository
 
 private const val ARG_SERVER_ID = "server_id"
 const val movieGridSize = 3
 
 class MovieLibrary : Fragment() {
-    private var _binding : MovieLibraryFragmentBinding? = null
+    private var _binding : FragmentMovieLibraryBinding? = null
     private val binding get() = _binding!!
     private var server_id : Int = 0
     lateinit var moviesRepository: MoviesRepository
@@ -40,7 +41,7 @@ class MovieLibrary : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = MovieLibraryFragmentBinding.inflate(inflater, container, false)
+        _binding = FragmentMovieLibraryBinding.inflate(inflater, container, false)
         return binding.root
     }
 

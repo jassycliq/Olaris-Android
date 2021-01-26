@@ -1,0 +1,5 @@
+fragment playstateBase on PlayState {
+    finished
+    playtime
+    uuid
+}
