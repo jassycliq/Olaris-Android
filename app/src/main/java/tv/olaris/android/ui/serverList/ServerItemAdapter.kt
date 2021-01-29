@@ -37,12 +37,12 @@ class ServerItemAdapter(context: Context) : ListAdapter<Server, ServerItemAdapte
         holder.deleteServerIcon.setOnClickListener{
 
             MaterialAlertDialogBuilder(holder.view.context)
-                    .setTitle("Remove server from application")
-                    .setMessage("Are you sure you want to delete the server '${holder.serverUrl.text}' from the app?")
-                    .setNeutralButton("Cancel") { _, _ ->
+                    .setTitle(holder.view.context.getString(R.string.remove_server_title))
+                    .setMessage(holder.view.context.getString(R.string.remove_server_confirmation, s.name))
+                    .setNeutralButton(holder.view.context.getString(R.string.cancel_button)) { _, _ ->
                     }
 
-                    .setPositiveButton("Confirm") { _, _ ->
+                    .setPositiveButton(context.getString(R.string.confirm_button)) { _, _ ->
                         OlarisApplication.applicationContext().applicationScope.launch {
                             OlarisApplication.applicationContext().serversRepository.deleteServer(getItem(position))
                         }

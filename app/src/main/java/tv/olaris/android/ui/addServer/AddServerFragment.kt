@@ -1,25 +1,23 @@
 package tv.olaris.android.ui.addServer
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.webkit.URLUtil
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
+import tv.olaris.android.R
 import tv.olaris.android.databases.Server
 import tv.olaris.android.databinding.FragmentAddServerBinding
 import tv.olaris.android.service.http.OlarisHttpService
-import tv.olaris.android.util.*
+import tv.olaris.android.util.hideKeyboard
 
 class AddServerFragment : Fragment() {
     private var _binding: FragmentAddServerBinding? = null
@@ -41,31 +39,31 @@ class AddServerFragment : Fragment() {
             with(binding.textEditServerUrl){
                 if(this.text != null && this.text.toString() != ""){
                     if(!URLUtil.isValidUrl(this.text.toString())){
-                        this.error = "This is not a valid URL."
+                        this.error = context.getString(R.string.error_invalid_url)
                         hasErrors = true
                     }
                 }else{
-                    this.error = "Please fill in your server address in URL format."
+                    this.error = context.getString(R.string.error_invalid_url_format)
                     hasErrors = true
                 }
             }
 
             with(binding.textEditUsername){
                 if(this.text.toString() == ""){
-                    this.error = "Please fill in your username."
+                    this.error = context.getString(R.string.error_no_username)
                     hasErrors = true
                 }
             }
 
             with(binding.textEditPassword){
                 if(this.text.toString() == ""){
-                    this.error = "Please fill in your password."
+                    this.error = context.getString(R.string.error_no_password)
                     hasErrors = true
                 }
             }
             with(binding.textEditServerName){
                 if(this.text.toString() == ""){
-                    this.error = "Please fill in your server name."
+                    this.error = context.getString(R.string.error_no_server_label)
                     hasErrors = true
                 }
             }

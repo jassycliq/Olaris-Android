@@ -1,5 +1,6 @@
 package tv.olaris.android.ui.showLibrary
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -53,7 +54,14 @@ class ShowLibrary : Fragment() {
             val recyclerView = binding.recyclerShowLibrary
 
             recyclerView.adapter = ShowLibraryAdapter(context, OlarisGraphQLRepository.getAllShows(), server)
-            recyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.library_column_count))
+
+            var spanCount = resources.getInteger(R.integer.library_column_count)
+            if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                spanCount = resources.getInteger(R.integer.landscape_library_column_count)
+            }
+
+            recyclerView.layoutManager =
+                GridLayoutManager(context, spanCount)
 
             binding.progressBarShowLibrary.visibility = View.INVISIBLE
         }
