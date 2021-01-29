@@ -17,7 +17,7 @@
             android:id="@+id/action_movieLibraryFragment_to_fragmentServerList"
             app:destination="@id/fragmentServerList" />
         <argument
-            android:name="server_id"
+            android:name="serverId"
             app:argType="integer" />
     </fragment>
     <fragment
@@ -28,31 +28,12 @@
         <argument
             android:name="uuid"
             app:argType="string" />
-        <action
-            android:id="@+id/action_movieDetailsFragment_to_mediaPlayerFragment"
-            app:destination="@id/mediaPlayerFragment" />
         <argument
             android:name="server_id"
             app:argType="integer" />
         <action
             android:id="@+id/action_movieDetailsFragment_to_fragmentFullScreenMediaPlayer"
             app:destination="@id/fragmentFullScreenMediaPlayer" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/mediaPlayerFragment"
-        android:name="tv.olaris.android.fragments.MediaPlayer"
-        android:label="Media player">
-        <argument
-            android:name="uuid"
-            app:argType="string"
-            android:defaultValue='""' />
-        <argument
-            android:name="serverId"
-            app:argType="integer" />
-        <argument
-            android:name="playtime"
-            app:argType="integer" />
     </fragment>
 
     <fragment
@@ -101,9 +82,6 @@
         <argument
             android:name="serverId"
             app:argType="integer" />
-        <action
-            android:id="@+id/action_fragmentShowDetails_to_mediaPlayerFragment"
-            app:destination="@id/mediaPlayerFragment" />
         <action
             android:id="@+id/action_fragmentShowDetails_to_fragmentFullScreenMediaPlayer"
             app:destination="@id/fragmentFullScreenMediaPlayer" />

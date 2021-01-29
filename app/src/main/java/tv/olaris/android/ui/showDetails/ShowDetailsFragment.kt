@@ -1,10 +1,10 @@
 package tv.olaris.android.ui.showDetails
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.R
 import tv.olaris.android.databinding.FragmentShowDetailsBinding
-import tv.olaris.android.repositories.ShowsRepository
 
 private const val ARG_UUID = "uuid"
 private const val ARG_SERVER_ID = "serverId"
@@ -54,14 +53,11 @@ class ShowDetailsFragment : Fragment() {
         val fragment = this
 
         lifecycleScope.launch{
-
-            val server = OlarisApplication.applicationContext().serversRepository.getServerById(serverId)
-
             if(uuid != null) {
-               val show = ShowsRepository(server).findShowByUUID(uuid!!)
+               val show = OlarisApplication.applicationContext().getOrInitRepo(serverId).findShowByUUID(uuid!!)
 
                 if(show != null) {
-                    seasonPageAdapter = SeasonPagerAdapter(fragment, show, server)
+                    seasonPageAdapter = SeasonPagerAdapter(fragment, show, serverId)
                     viewPager = view.findViewById(R.id.pager_show_detail_seasons)
                     viewPager.adapter = seasonPageAdapter
 
@@ -76,10 +72,9 @@ class ShowDetailsFragment : Fragment() {
                     binding.textShowDetailsShowName.text = show.name
                     binding.textShowDetailsOverview.text = show.overview
 
-                    val imageUrl = show.fullPosterUrl(server.url)
-
+                    val imageUrl = show.fullPosterUrl()
                     Glide.with(view.context).load(imageUrl).into(binding.imageViewShowPoster)
-                    Glide.with(view.context).load(show.fullCoverArtUrl(server.url)).into(binding.imageViewCoverArt
+                    Glide.with(view.context).load(show.fullCoverArtUrl()).into(binding.imageViewCoverArt
                     )
 
                 }

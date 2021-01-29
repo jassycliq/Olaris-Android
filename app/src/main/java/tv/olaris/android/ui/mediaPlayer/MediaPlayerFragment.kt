@@ -1,28 +1,14 @@
 package tv.olaris.android.ui.mediaPlayer
 
-import android.app.Activity
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
-import android.view.*
-import android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-import android.widget.Button
-import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.util.MimeTypes
-import tv.olaris.android.MainActivity
-import tv.olaris.android.R
 import tv.olaris.android.databinding.FragmentFullScreenMediaPlayerBinding
-import tv.olaris.android.databinding.FragmentMediaPlayerBinding
 import tv.olaris.android.util.disableFullscreen
 import tv.olaris.android.util.enableFullscreen
 
@@ -37,11 +23,8 @@ class MediaPlayerFragment : Fragment() {
     private var uuid: String = ""
     private var mediaUuid: String = ""
     private var playbackPosition: Int = 0
-    private var isFullscreen = false
-    private var isPlayerPlaying = true
     private val viewModel: MediaPlayerViewModel by viewModels()
 
-    private lateinit var dataSourceFactory: DataSource.Factory
     private var _binding: FragmentFullScreenMediaPlayerBinding? = null
     private val binding get() = _binding!!
 

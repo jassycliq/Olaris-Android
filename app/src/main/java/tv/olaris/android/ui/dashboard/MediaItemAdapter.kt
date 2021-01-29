@@ -3,7 +3,6 @@ package tv.olaris.android.ui.dashboard
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,14 +17,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tv.olaris.android.R
-import tv.olaris.android.databases.Server
 import tv.olaris.android.models.MediaItem
 
-class MediaItemAdapter(context: Context) :
-
+class MediaItemAdapter(context: Context, serverId: Int) :
     ListAdapter<MediaItem, MediaItemAdapter.MediaItemHolder>(DiffCallback()) {
+    private val serverId = serverId
 
-    var server: Server? = null
 
     class MediaItemHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val coverArt: ImageView = view.findViewById<ImageView>(R.id.movieCoverArtImage)
@@ -47,20 +44,25 @@ class MediaItemAdapter(context: Context) :
         Log.d("dashboard", "View holder ${mi.toString()}")
         holder.nameText.text = mi.name
 
-        if(mi.hasStarted()) {
+        if (mi.hasStarted()) {
             val p = mi.playProgress()
             Log.d("dashboard", "Progress; $p : ${mi.uuid}")
             holder.progress.progress = p.toInt()
-        }else{
+        } else {
             holder.progress.isVisible = false
         }
 
         holder.subText.text = mi.subTitle
-        Glide.with(holder.itemView.context).load(mi.fullPosterUrl(server?.url))
+        Glide.with(holder.itemView.context).load(mi.fullPosterUrl())
             .placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED))
             .into(holder.coverArt);
-        holder.itemView.setOnClickListener{
-            val action = DashboardDirections.actionDashboardToFragmentFullScreenMediaPlayer(mediaUuid = mi.uuid , uuid =mi.fileUuid, serverId = server!!.id, playtime = mi.playtime.toInt())
+        holder.itemView.setOnClickListener {
+            val action = DashboardDirections.actionDashboardToFragmentFullScreenMediaPlayer(
+                mediaUuid = mi.uuid,
+                uuid = mi.fileUuid,
+                serverId = serverId,
+                playtime = mi.playtime.toInt()
+            )
             holder.view.findNavController().navigate(action)
         }
     }

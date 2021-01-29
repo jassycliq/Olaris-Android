@@ -1,28 +1,21 @@
 package tv.olaris.android.ui.movieDetails
 
 import android.graphics.drawable.Drawable
-import android.opengl.Visibility
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import kotlinx.coroutines.launch
-import tv.olaris.android.OlarisApplication
 import tv.olaris.android.R
 import tv.olaris.android.databinding.FragmentMovieDetailsBinding
-import tv.olaris.android.models.Movie
-import tv.olaris.android.repositories.MoviesRepository
 
 
 private const val ARG_UUID = "uuid"
@@ -33,14 +26,14 @@ class MovieDetails : Fragment() {
     private val binding get() = _binding!!
 
     private var uuid: String? = null
-    private var server_id: Int = 0
+    private var serverId: Int = 0
     private val viewModel: MovieDetailsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             uuid = it.getString(ARG_UUID).toString()
-            server_id = it.getInt(ARG_SERVER_ID).toInt()
+            serverId = it.getInt(ARG_SERVER_ID).toInt()
         }
 
     }
@@ -98,7 +91,7 @@ class MovieDetails : Fragment() {
                 val action =
                     MovieDetailsDirections.actionMovieDetailsFragmentToFragmentFullScreenMediaPlayer(
                         uuid,
-                        server_id,
+                        serverId,
                         movie.playtime.toInt(),
                         mediaUuid = movie.uuid
                     )
@@ -106,7 +99,7 @@ class MovieDetails : Fragment() {
             }
         }
 
-        viewModel.getMovie(uuid = uuid!!, server_id = server_id)
+        viewModel.getMovie(uuid = uuid!!, serverId = serverId)
     }
 
     override fun onCreateView(

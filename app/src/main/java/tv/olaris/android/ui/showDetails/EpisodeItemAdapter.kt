@@ -3,7 +3,6 @@ package tv.olaris.android.ui.showDetails
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +14,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tv.olaris.android.R
-import tv.olaris.android.databases.Server
 import tv.olaris.android.models.Season
-import kotlin.random.Random
 
-class EpisodeItemAdapter(context: Context, val seasonBase: Season, val server: Server) :
+class EpisodeItemAdapter(context: Context, val seasonBase: Season, val serverId: Int) :
     RecyclerView.Adapter<EpisodeItemAdapter.EpisodeItemHolder>() {
 
     class EpisodeItemHolder(val view: View) : RecyclerView.ViewHolder(view) {
@@ -48,11 +45,10 @@ class EpisodeItemAdapter(context: Context, val seasonBase: Season, val server: S
         holder.episodeTitle.text = episode.name
         holder.episodeDescription.text = episode.overview
         holder.progressBar.progress = episode.playProgress().toInt()
-        Log.d("episodeProgresS", "${episode.name}: ${episode.playProgress().toInt()}")
         holder.episodeDetails.text =
             "Episode ${episode.episodeNumber.toString()} - ${episode.airDate}"
 
-        Glide.with(holder.itemView.context).load(episode.stillPathUrl(server.url))
+        Glide.with(holder.itemView.context).load(episode.stillPathUrl())
             .placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED))
             .into(holder.episodeStillImage);
 
@@ -62,12 +58,11 @@ class EpisodeItemAdapter(context: Context, val seasonBase: Season, val server: S
             val action =
                 ShowDetailsFragmentDirections.actionFragmentShowDetailsToFragmentFullScreenMediaPlayer(
                     uuid = episode.files.first().uuid,
-                    serverId = server.id,
+                    serverId = serverId,
                     episode.playtime.toInt(),
                     episode.uuid
                 )
             nav.navigate(action)
-
         }
     }
 }

@@ -11,17 +11,16 @@ class Episode(name: String,
               private val stillPath: String,
               val airDate: String,
               val episodeNumber: Int,
-              uuid: String) : MediaItem(uuid = uuid, name = name, posterUrl = "olaris/m/images/tmdb/w300/${stillPath}") {
+              uuid: String) : MediaItem(uuid = uuid, name = name, posterPath = stillPath, posterUrl = "olaris/m/images/tmdb/w300/${stillPath}") {
 
     //lateinit var posterUrl: String
 
-    constructor(base: EpisodeBase) : this(base.name, base.overview, base.stillPath, base.airDate, base.episodeNumber, base.uuid) {
-        //this.posterUrl = base.stillPath
-    }
+    constructor(base: EpisodeBase) : this(base.name, base.overview, base.stillPath, base.airDate, base.episodeNumber, base.uuid)
 
     constructor(base: EpisodeBase, seasonBase: SeasonBase?) : this(base.name, base.overview, base.stillPath, base.airDate, base.episodeNumber, base.uuid){
         if(seasonBase != null) {
             this.posterUrl = "olaris/m/images/tmdb/w300/${seasonBase.posterPath}"
+            this.posterPath = seasonBase.posterPath
             this.subTitle = "S${seasonBase.seasonNumber} E${this.episodeNumber}"
 
             // TODO: At one point we want this smarter
@@ -38,7 +37,8 @@ class Episode(name: String,
     val files: MutableList<File> = mutableListOf()
 
 
-    fun stillPathUrl(baseUrl: String) : String{
-        return "${baseUrl}/olaris/m/images/tmdb/w300/${stillPath}"
+    fun stillPathUrl() : String{
+       // return "${baseUrl}/olaris/m/images/tmdb/w300/${stillPath}"
+        return "${baseImageUrl}/w300/${stillPath}"
     }
 }

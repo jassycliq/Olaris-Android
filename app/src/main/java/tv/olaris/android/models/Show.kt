@@ -1,6 +1,6 @@
 package tv.olaris.android.models
 
-import android.util.Log
+import AllSeriesQuery
 import fragment.SeasonBase
 
 data class Show(val name: String, val overview: String, val backdropPath: String, val firstAirDate: String, val posterPath: String, val unwatchedEpisodeCount: Int, val uuid: String, val seriesBase: fragment.SeriesBase? = null){
@@ -67,12 +67,13 @@ data class Show(val name: String, val overview: String, val backdropPath: String
         }
     }
 
-    fun fullPosterUrl(baseUrl: String) : String {
-        return "${baseUrl}/olaris/m/images/tmdb/w780/${this.posterPath}"
+    fun fullPosterUrl() : String {
+        return "https://image.tmdb.org/t/p/w780/${this.posterPath}"
     }
 
     // TODO: Fix this on the server side
-    fun fullCoverArtUrl(baseUrl: String) : String {
-        return "${baseUrl}/olaris/m/images/tmdb/w1280/${this.backdropPath.toString()}"
+    fun fullCoverArtUrl() : String {
+        //return "${baseUrl}/olaris/m/images/tmdb/w1280/${this.backdropPath.toString()}"
+        return "ttps://image.tmdb.org/t/p/w1280/${this.backdropPath.toString()}"
     }
 }

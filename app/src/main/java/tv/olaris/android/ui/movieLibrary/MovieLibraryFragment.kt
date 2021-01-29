@@ -14,16 +14,16 @@ import tv.olaris.android.OlarisApplication
 import tv.olaris.android.R
 import tv.olaris.android.databinding.FragmentMovieLibraryBinding
 
-import tv.olaris.android.repositories.MoviesRepository
+import tv.olaris.android.repositories.OlarisGraphQLRepository
 
-private const val ARG_SERVER_ID = "server_id"
+private const val ARG_SERVER_ID = "serverId"
 const val movieGridSize = 3
 
 class MovieLibrary : Fragment() {
     private var _binding : FragmentMovieLibraryBinding? = null
     private val binding get() = _binding!!
-    private var server_id : Int = 0
-    lateinit var moviesRepository: MoviesRepository
+    private var serverId : Int = 0
+    lateinit var OlarisGraphQLRepository: OlarisGraphQLRepository
 
     companion object {
         fun newInstance() = MovieLibrary()
@@ -31,8 +31,8 @@ class MovieLibrary : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            server_id = it.getInt(ARG_SERVER_ID).toInt()
-            Log.d("server_id", server_id.toString())
+            serverId = it.getInt(ARG_SERVER_ID).toInt()
+            Log.d("server_id", serverId.toString())
         }
 
     }
@@ -52,12 +52,7 @@ class MovieLibrary : Fragment() {
         val context = this.requireContext()
 
         lifecycleScope.launch {
-            val server = OlarisApplication.applicationContext().serversRepository.getServerById(server_id)
-
-            // TODO: Inject this somehow and keep a singleton if that's possible?
-            moviesRepository = MoviesRepository(server)
-
-            recyclerView.adapter = MovieItemAdapter(context, moviesRepository.getAllMovies(), server)
+            recyclerView.adapter = MovieItemAdapter(context, OlarisApplication.applicationContext().getOrInitRepo(serverId).getAllMovies(), serverId)
             binding.progressBarMovieLibrary.visibility = View.INVISIBLE
 
             if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -67,8 +62,6 @@ class MovieLibrary : Fragment() {
                 recyclerView.layoutManager =
                     GridLayoutManager(context, resources.getInteger(R.integer.library_column_count))
             }
-
-        // spanCount.toInt())//LinearLayoutManager(this.requireContext()) //
         }
     }
 

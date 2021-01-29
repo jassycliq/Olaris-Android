@@ -1,9 +1,6 @@
 package tv.olaris.android.ui.showLibrary
 
-import tv.olaris.android.ui.movieLibrary.movieGridSize
-
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
@@ -38,7 +35,7 @@ class ShowLibraryAdapter(context: Context, shows: List<Show>, server: Server) : 
         val s = shows[position]
         holder.progressBar.visibility = View.INVISIBLE
         holder.episodeCount.text = s.unwatchedEpisodeCount.toString()
-        Glide.with(holder.itemView.context).load(s.fullPosterUrl(server.url)).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.movieCoverArt);
+        Glide.with(holder.itemView.context).load(s.fullPosterUrl()).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.movieCoverArt);
 
         holder.movieCoverArt.setOnClickListener{
             val uuid = s.uuid

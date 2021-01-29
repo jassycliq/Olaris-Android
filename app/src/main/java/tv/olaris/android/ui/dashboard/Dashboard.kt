@@ -3,13 +3,12 @@ package tv.olaris.android.ui.dashboard
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import tv.olaris.android.R
 import tv.olaris.android.databinding.DashboardFragmentBinding
 
@@ -54,13 +53,13 @@ class Dashboard : Fragment() {
             resources.getInteger(R.integer.dashboard_column_count)
         }
 
-        val continueAdapter = MediaItemAdapter(requireContext())
+        val continueAdapter = MediaItemAdapter(requireContext(), serverId)
 
         binding.recyclerContinueWatching.adapter = continueAdapter
         binding.recyclerContinueWatching.layoutManager = GridLayoutManager(context, spanCount)//LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
 
-        val recentlyAddedAdapter = MediaItemAdapter(requireContext())
+        val recentlyAddedAdapter = MediaItemAdapter(requireContext(), serverId)
 
         binding.recyclerRecentlyAdded.adapter = recentlyAddedAdapter
         binding.recyclerRecentlyAdded.layoutManager = GridLayoutManager(context, spanCount)
@@ -74,10 +73,6 @@ class Dashboard : Fragment() {
 
         viewModel.server.observe(viewLifecycleOwner){
             Log.d("dashboard", "Server observer ${it.toString()}")
-
-            // TODO: Fix this hot steaming mess
-            continueAdapter.server = it
-            recentlyAddedAdapter.server = it
         }
 
         viewModel.recentlyAddedItems.observe(viewLifecycleOwner){

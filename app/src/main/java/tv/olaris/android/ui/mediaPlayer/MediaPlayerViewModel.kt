@@ -1,17 +1,13 @@
 package tv.olaris.android.ui.mediaPlayer
 
-import android.content.Context
 import androidx.lifecycle.*
+import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.MimeTypes
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
-import tv.olaris.android.repositories.MoviesRepository
-import androidx.lifecycle.*
-import com.google.android.exoplayer2.*
-import com.google.android.exoplayer2.util.Log
-import tv.olaris.android.databases.Server
 
 class MediaPlayerLifecycleObserver(private val viewModel: MediaPlayerViewModel) :
     LifecycleObserver {
@@ -42,31 +38,12 @@ class MediaPlayerViewModel() : ViewModel(), Player.EventListener {
     private val lifecycleObserver = MediaPlayerLifecycleObserver(this)
 
     private val streamingUrl: LiveData<String> = liveData {
-        val s = OlarisApplication.applicationContext().serversRepository.getServerById(serverId)
-        val moviesRepository = MoviesRepository(s)
-        var streamingURL = moviesRepository.getStreamingUrl(uuid)
+        var streamingURL = OlarisApplication.applicationContext().getOrInitRepo(serverId).getStreamingUrl(uuid)
         if (streamingURL != null) {
             //TODO: Fix this hardcoded codec crap.
             streamingURL += "?playableCodecs=avc1.640029&playableCodecs=avc1.64001f&playableCodecs=avc1.64001e&playableCodecs=avc1.640020&playableCodecs=avc1.640028&playableCodecs=avc1.640029&playableCodecs=avc1.64001f&playableCodecs=mp4a.40.2"
             emit(streamingURL)
         }
-    }
-
-    private var _repo: MoviesRepository? = null
-    private var _server: Server? = null
-
-    // TODO: I'm getting so tired of passing this shit around all the time, I need to learn a better way of doing this!?
-    private suspend fun getOrInitRepo(): MoviesRepository {
-        if (_server == null) {
-            _server =
-                OlarisApplication.applicationContext().serversRepository.getServerById(serverId)
-        }
-
-        if (_repo == null) {
-            _repo = MoviesRepository(_server!!)
-        }
-
-        return _repo!!
     }
 
     init {
@@ -85,7 +62,7 @@ class MediaPlayerViewModel() : ViewModel(), Player.EventListener {
         val player = playerOrNull ?: return
         currentPos = player.currentPosition
 
-        getOrInitRepo().updatePlayState(mediaUUID, false, (currentPos / 1000).toDouble())
+        OlarisApplication.applicationContext().getOrInitRepo(serverId).updatePlayState(mediaUUID, false, (currentPos / 1000).toDouble())
 
         Log.d("mediaplayer", currentPos.toString())
     }
