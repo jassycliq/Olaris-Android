@@ -23,4 +23,22 @@
         <item name="android:background">@color/black_overlay</item>
         <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
+
+    <style name="OnlineProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:backgroundTint">@color/teal_200</item>
+        <item name="android:foregroundTint">@color/teal_200</item>
+        <item name="android:progressTint">@color/teal_200</item>
+    </style>
+
+    <style name="OfflineProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:backgroundTint">@color/error</item>
+        <item name="android:foregroundTint">@color/error</item>
+        <item name="android:progressTint">@color/error</item>
+    </style>
+
+    <style name="PlaystateProgress" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:backgroundTint">@color/olaris_orange</item>
+        <item name="android:foregroundTint">@color/olaris_orange</item>
+        <item name="android:progressTint">@color/olaris_orange</item>
+    </style>
 </resources>

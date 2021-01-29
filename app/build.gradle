@@ -106,4 +106,7 @@ dependencies {
 
     // JWT
     implementation 'com.auth0.android:jwtdecode:2.0.0'
+
+    // Applying styles
+    implementation 'com.airbnb.android:paris:1.7.2'
 }

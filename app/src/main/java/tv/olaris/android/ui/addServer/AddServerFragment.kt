@@ -93,7 +93,8 @@ class AddServerFragment : Fragment() {
                                 binding.textEditPassword.text.toString(),
                                 binding.textEditServerName.text.toString(),
                                 loginResponse.jwt.toString(),
-                                version
+                                version,
+                                isOnline = true
                             )
                         )
 

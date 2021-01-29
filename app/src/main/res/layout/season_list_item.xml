@@ -22,12 +22,9 @@
 
         <ProgressBar
             android:id="@+id/progress_bar_episode_item"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            style="@style/PlaystateProgress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/olaris_orange"
-            android:foregroundTint="@color/olaris_orange"
-            android:progressTint="@color/olaris_orange"
             android:progress="100"
             android:layout_marginTop="-7dp"
             android:indeterminate="false"/>

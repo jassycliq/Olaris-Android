@@ -71,10 +71,6 @@ class Dashboard : Fragment() {
             continueAdapter.submitList(it)
         }
 
-        viewModel.server.observe(viewLifecycleOwner){
-            Log.d("dashboard", "Server observer ${it.toString()}")
-        }
-
         viewModel.recentlyAddedItems.observe(viewLifecycleOwner){
             recentlyAddedAdapter.submitList(it)
         }

@@ -21,8 +21,13 @@ class OlarisHttpService(val baseUrl: String) {
             val client = HttpClient(Android)
             return client.get<String>(versionURL)
         }catch(e: ClientRequestException){
-            Log.e("olarisHttpServer", "Received an error: ${e.message}")
-            return ""
+            if(e.response.status.value == 404) {
+                return ""
+            }else{
+                Log.e("olarisHttpServer", "Received an error: ${e.message}")
+                return "TODO"
+            }
+
         }
     }
 

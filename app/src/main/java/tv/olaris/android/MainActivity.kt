@@ -18,10 +18,11 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener  {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
+    var initialNavigation: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,44 +47,56 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             //TODO: This is super duper horrible, can we do this differently?
             OlarisApplication.applicationContext().serversRepository.allServers.collect {
                 for (s in it) {
-                    val submenu = menu.addSubMenu(s.name)
-                    var id = 0
+                    if (OlarisApplication.applicationContext().checkServer(s)) {
+                        val submenu = menu.addSubMenu(s.name)
+                        var id = 0
 
-                    submenu.add(0, id, 0, "Dashboard").setOnMenuItemClickListener(
-                        MenuItem.OnMenuItemClickListener {
-                            navigateTo(R.id.dashboard, s.id)
-                            true
-                        }
-                    )
+                        submenu.add(0, id, 0, "Dashboard").setOnMenuItemClickListener(
+                            MenuItem.OnMenuItemClickListener {
+                                navigateTo(R.id.dashboard, s.id)
+                                true
+                            }
+                        )
 
-                    id = "${s.id}1".toInt()
-                    submenu.add(0, id, 0, "Movies").setOnMenuItemClickListener(
-                        MenuItem.OnMenuItemClickListener {
-                            navigateTo(R.id.movieLibraryFragment, s.id)
-                            true
-                        }
-                    )
-                    id = "${s.id}2".toInt()
-                    submenu.add(0, id, 0, "TV Shows").setOnMenuItemClickListener(
-                        MenuItem.OnMenuItemClickListener {
-                            navigateTo(R.id.fragmentShowLibrary, s.id)
-                            true
-                        }
-                    )
+                        id = "${s.id}1".toInt()
+                        submenu.add(0, id, 0, "Movies").setOnMenuItemClickListener(
+                            MenuItem.OnMenuItemClickListener {
+                                navigateTo(R.id.movieLibraryFragment, s.id)
+                                true
+                            }
+                        )
+                        id = "${s.id}2".toInt()
+                        submenu.add(0, id, 0, "TV Shows").setOnMenuItemClickListener(
+                            MenuItem.OnMenuItemClickListener {
+                                navigateTo(R.id.fragmentShowLibrary, s.id)
+                                true
+                            }
+                        )
+                    }
                 }
+
                 // TODO: Build-in server online checks
-                if(it.isNotEmpty()){
+                if (it.isNotEmpty() && !initialNavigation) {
+                    initialNavigation = true
                     val s = it.first()
-                    val bundle = bundleOf("serverId" to s.id)
-                    navController.graph.startDestination = R.id.dashboard
-                    val navOptions = NavOptions.Builder().setPopUpTo(R.id.fragmentServerList, false).build()
-                    navController.navigate(R.id.action_fragmentServerList_to_dashboard, bundle, navOptions)
+                    if (OlarisApplication.applicationContext().checkServer(s)) {
+                        val bundle = bundleOf("serverId" to s.id)
+                        navController.graph.startDestination = R.id.dashboard
+                        val navOptions =
+                            NavOptions.Builder().setPopUpTo(R.id.fragmentServerList, false).build()
+                        navController.navigate(
+                            R.id.action_fragmentServerList_to_dashboard,
+                            bundle,
+                            navOptions
+                        )
+                    }
                 }
             }
         }
 
     }
-    private fun navigateTo(fragment: Int, serverId: Int){
+
+    private fun navigateTo(fragment: Int, serverId: Int) {
         val bundle = bundleOf("serverId" to serverId)
 
         navController.navigate(fragment, bundle)
@@ -94,18 +107,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         Log.d("menu", item.itemId.toString())
 
-         when(item.itemId) {
-             R.id.item_manage_servers -> {
-                 navController.navigate(R.id.fragmentServerList)
-                 drawerLayout.closeDrawer(GravityCompat.START)
-             }
+        when (item.itemId) {
+            R.id.item_manage_servers -> {
+                navController.navigate(R.id.fragmentServerList)
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
         }
 
         return true
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         return navFragment.navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
