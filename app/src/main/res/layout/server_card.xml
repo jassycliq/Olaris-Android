@@ -24,7 +24,6 @@
             android:id="@+id/text_server_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             tools:text="Bytesized"></TextView>
 

@@ -10,4 +10,8 @@
     <string name="remove_server_confirmation">Are you sure you want to delete the server \'%s\' from the app?</string>
     <string name="cancel_button">Cancel</string>
     <string name="confirm_button">Confirm</string>
+    <string name="server_url">Server URL</string>
+    <string name="hint_username">Username</string>
+    <string name="password">Password</string>
+    <string name="add_server">Add server</string>
 </resources>

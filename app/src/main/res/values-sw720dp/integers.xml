@@ -2,8 +2,8 @@
 <resources>
     <integer name="grid_column_count">3</integer>
     <integer name="library_column_count">5</integer>
-    <integer name="landscape_library_column_count">6</integer>
+    <integer name="landscape_library_column_count">9</integer>
 
-    <integer name="dashboard_column_count">3</integer>
-    <integer name="landscape_dashboard_column_count">3</integer>
+    <integer name="dashboard_column_count">6</integer>
+    <integer name="landscape_dashboard_column_count">9</integer>
 </resources>

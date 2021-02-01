@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
-    var initialNavigation: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,8 +75,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 // TODO: Build-in server online checks
-                if (it.isNotEmpty() && !initialNavigation) {
-                    initialNavigation = true
+                if (it.isNotEmpty() && !OlarisApplication.applicationContext().initialNavigation) {
+                    OlarisApplication.applicationContext().initialNavigation = true
                     val s = it.first()
                     if (OlarisApplication.applicationContext().checkServer(s)) {
                         val bundle = bundleOf("serverId" to s.id)

@@ -17,6 +17,8 @@ import java.util.*
 
 @HiltAndroidApp
 class OlarisApplication : Application() {
+    var initialNavigation: Boolean = false
+
     val applicationScope = CoroutineScope(SupervisorJob())
     val database by lazy { ServerDatabase.getDatabase(this, applicationScope) }
 

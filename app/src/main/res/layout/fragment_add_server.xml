@@ -16,12 +16,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:startIconDrawable="@drawable/ic_baseline_computer_24"
-            android:hint="Server URL">
+            android:hint="@string/server_url">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_edit_server_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="http://"
                 tools:text="http://192.168.11.23:8080" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -30,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:startIconDrawable="@drawable/ic_baseline_person_outline_24"
-            android:hint="Username">
+            android:hint="@string/hint_username">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_edit_username"
@@ -43,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:startIconDrawable="@drawable/ic_baseline_lock_24"
-            android:hint="Password">
+            android:hint="@string/password">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/text_edit_password"
@@ -71,7 +72,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_add_server"
             android:layout_width="match_parent"
-            android:text="Add server"
+            android:text="@string/add_server"
             android:layout_height="wrap_content">
 
         </com.google.android.material.button.MaterialButton>
