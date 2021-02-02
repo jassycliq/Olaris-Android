@@ -67,11 +67,12 @@ class Dashboard : Fragment() {
 
         viewModel.continueWatchingItems.observe(viewLifecycleOwner){
             Log.d("dashboard", "Observer ${it.toString()}")
-
+            binding.progressBarUpnext.visibility = View.INVISIBLE
             continueAdapter.submitList(it)
         }
 
         viewModel.recentlyAddedItems.observe(viewLifecycleOwner){
+            binding.progressRecentlyAdded.visibility = View.INVISIBLE
             recentlyAddedAdapter.submitList(it)
         }
 
