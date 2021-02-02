@@ -2,21 +2,16 @@
     <!-- Base application theme. -->
     <style name="Theme.OlarisAndroid" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/olaris_orange</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/olaris_pink</item>
+        <item name="colorPrimaryVariant">@color/olaris_purple</item>
+        <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">@color/olaris_pink</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:windowTranslucentStatus">true</item>
-    </style>
-
-    <style name="ThemeOverlay.OlarisAndroid.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/black</item>
-        <item name="fullscreenTextColor">@color/black</item>
     </style>
 </resources>

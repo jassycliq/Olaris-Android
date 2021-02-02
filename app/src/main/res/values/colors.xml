@@ -10,6 +10,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background">#1A1A26</color>
     <color name="olaris_orange">#FF9B3D</color>
+    <color name="olaris_purple">#BF00B7</color>
+    <color name="olaris_pink">#E83773</color>
+    <color name="olaris_blue">#002270</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
     <color name="light_blue_A200">#FF40C4FF</color>
