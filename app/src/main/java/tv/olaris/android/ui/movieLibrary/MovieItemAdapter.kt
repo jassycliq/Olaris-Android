@@ -16,9 +16,7 @@ import com.bumptech.glide.Glide
 import tv.olaris.android.R
 import tv.olaris.android.models.Movie
 
-class MovieItemAdapter(context: Context, movies: List<Movie>, serverId: Int) : RecyclerView.Adapter<MovieItemAdapter.MovieItemHolder>(){
-    private val movies = movies
-    private val serverId: Int = serverId
+class MovieItemAdapter(context: Context, private val movies: List<Movie>, var serverId: Int) : RecyclerView.Adapter<MovieItemAdapter.MovieItemHolder>(){
 
     class MovieItemHolder(val view: View) : RecyclerView.ViewHolder(view){
         val movieCoverArt: ImageView = view.findViewById<ImageView>(R.id.movieCoverArtImage)

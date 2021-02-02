@@ -1,4 +1,4 @@
-package tv.olaris.android.fragments
+package tv.olaris.android.ui.serverList
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -45,7 +45,7 @@ class ServerItemAdapter(context: Context) :
         }else{
             holder.progressStatusOffline.visibility = View.VISIBLE
             holder.progressStatusOnline.visibility = View.INVISIBLE
-            holder.serverVersion.text = "OFFLINE"
+            holder.serverVersion.text = holder.view.context.getString(R.string.server_offline)
         }
 
         holder.deleteServerIcon.setOnClickListener {

@@ -2,11 +2,11 @@ package tv.olaris.android.ui.serverList
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.R
 import tv.olaris.android.databinding.FragmentServerListBinding
-import tv.olaris.android.fragments.ServerItemAdapter
 
 class ServerListFragment : Fragment() {
     private var _binding: FragmentServerListBinding? = null
@@ -26,7 +25,7 @@ class ServerListFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         _binding = FragmentServerListBinding.inflate(inflater, container, false)
         return binding.root
     }

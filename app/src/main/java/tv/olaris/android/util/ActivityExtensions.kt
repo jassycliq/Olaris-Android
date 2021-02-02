@@ -5,9 +5,7 @@ import android.content.pm.ActivityInfo
 import android.graphics.Point
 import android.view.Surface
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatActivity
 
 // Copied from Jellyfin codebase at Git Commit 122448f
 // https://github.com/jellyfin/jellyfin-android/blob/122448fadff259b9573382f100605f1ec99d6411/app/src/main/java/org/jellyfin/mobile/utils/ActivityExtensions.kt

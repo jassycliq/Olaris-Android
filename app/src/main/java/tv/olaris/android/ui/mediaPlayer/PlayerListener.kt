@@ -6,8 +6,7 @@ import android.view.WindowManager
 import com.google.android.exoplayer2.Player
 
 
-class PlayerListener(window: Window) : Player.EventListener {
-    private val window = window
+class PlayerListener(private val window: Window) : Player.EventListener {
 
     override fun onIsPlayingChanged(isPlaying: Boolean) {
 

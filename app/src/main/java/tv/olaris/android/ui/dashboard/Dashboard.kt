@@ -27,7 +27,7 @@ class Dashboard : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            serverId = it.getInt(ARG_SERVER_ID).toInt()
+            serverId = it.getInt(ARG_SERVER_ID)
         }
 
     }
@@ -37,7 +37,7 @@ class Dashboard : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = DashboardFragmentBinding.inflate(inflater, container, false)
 

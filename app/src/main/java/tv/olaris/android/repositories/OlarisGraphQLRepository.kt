@@ -18,10 +18,8 @@ import tv.olaris.android.databases.Server
 import tv.olaris.android.models.*
 import tv.olaris.android.service.graphql.GraphqlClient
 
-class OlarisGraphQLRepository(server: Server) {
-    private var server = server
+class OlarisGraphQLRepository(private var server: Server) {
     // TODO: DRY these two methods up as they are essentially the same thing with a different GrapqhL class. Perhaps use GrapphQL interfaces here? Would need changes on the server side
-
     suspend fun findRecentlyAddedItems(): List<MediaItem> {
         val list = mutableListOf<MediaItem>()
         try {
@@ -29,14 +27,14 @@ class OlarisGraphQLRepository(server: Server) {
             if (res.data != null && !res.data!!.recentlyAdded.isNullOrEmpty()) {
                 for (item in res.data!!.recentlyAdded!!) {
                     if (item!!.__typename == "Movie") {
-                        val m = item!!.asMovie!!.fragments.movieBase
+                        val m = item.asMovie!!.fragments.movieBase
                         list.add(Movie.createFromGraphQLMovieBase(m) as MediaItem)
-                    } else if (item!!.__typename == "Episode") {
-                        val m = item!!.asEpisode!!.fragments.episodeBase
+                    } else if (item.__typename == "Episode") {
+                        val m = item.asEpisode!!.fragments.episodeBase
                         list.add(
                             Episode(
                                 m,
-                                item!!.asEpisode!!.season?.fragments?.seasonBase
+                                item.asEpisode.season?.fragments?.seasonBase
                             ) as MediaItem
                         )
                     }
@@ -55,14 +53,14 @@ class OlarisGraphQLRepository(server: Server) {
             if (res.data != null && !res.data!!.upNext.isNullOrEmpty()) {
                 for (item in res.data!!.upNext!!) {
                     if (item!!.__typename == "Movie") {
-                        val m = item!!.asMovie!!.fragments.movieBase
+                        val m = item.asMovie!!.fragments.movieBase
                         list.add(Movie.createFromGraphQLMovieBase(m) as MediaItem)
-                    } else if (item!!.__typename == "Episode") {
-                        val m = item!!.asEpisode!!.fragments.episodeBase
+                    } else if (item.__typename == "Episode") {
+                        val m = item.asEpisode!!.fragments.episodeBase
                         list.add(
                             Episode(
                                 m,
-                                item!!.asEpisode!!.season?.fragments?.seasonBase
+                                item.asEpisode.season?.fragments?.seasonBase
                             ) as MediaItem
                         )
                     }
@@ -144,7 +142,7 @@ class OlarisGraphQLRepository(server: Server) {
     suspend fun findSeasonByUUID(uuid: String): Season? {
         try {
             val res = GraphqlClient(server).get().query(FindSeasonQuery(uuid)).await()
-            if (res.data != null && res.data!!.season != null) {
+            if (res.data != null) {
                 return Show.buildSeason(res.data!!.season.fragments.seasonBase)
             }
         } catch (e: ApolloException) {

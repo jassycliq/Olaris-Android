@@ -33,7 +33,7 @@ class MovieDetails : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             uuid = it.getString(ARG_UUID).toString()
-            serverId = it.getInt(ARG_SERVER_ID).toInt()
+            serverId = it.getInt(ARG_SERVER_ID)
         }
 
     }
@@ -105,7 +105,7 @@ class MovieDetails : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentMovieDetailsBinding.inflate(inflater, container, false)
         return binding.root

@@ -32,7 +32,7 @@ class MediaPlayerFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         arguments?.let {
             serverId = it.getInt(ARG_SERVERID)
             uuid = it.getString(ARG_UUID).toString()

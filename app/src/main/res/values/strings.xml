@@ -16,4 +16,5 @@
     <string name="add_server">Add server</string>
     <string name="continue_watching">Continue Watching</string>
     <string name="recently_added">Recently Added</string>
+    <string name="server_offline">OFFLINE</string>
 </resources>

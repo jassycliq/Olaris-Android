@@ -1,7 +1,6 @@
 package tv.olaris.android.models
 
 import fragment.FileBase
-import fragment.StreamBase
 
 data class File(val fileName: String,
                 val filePath: String,

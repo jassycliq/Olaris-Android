@@ -8,7 +8,7 @@ data class Show(val name: String, val overview: String, val backdropPath: String
 
     companion object {
         fun buildSeason(seasonBase: SeasonBase): Season?{
-            var season : Season? = null
+            var season : Season?
             with(seasonBase) {
                 season = Season(
                     name,
@@ -22,11 +22,11 @@ data class Show(val name: String, val overview: String, val backdropPath: String
 
                 for (episode in this.episodes) {
                     with(episode!!.fragments.episodeBase) {
-                        val episode =
+                        val ep =
                             Episode(this, seasonBase)
                         for (file in this.files) {
                             with(file!!.fragments.fileBase) {
-                                episode.files.add(
+                                ep.files.add(
                                     File(
                                         fileName,
                                         filePath,
@@ -39,7 +39,7 @@ data class Show(val name: String, val overview: String, val backdropPath: String
                             }
                         }
                         if(season != null) {
-                            season!!.episodes.add(episode)
+                            season!!.episodes.add(ep)
                         }
                     }
                 }
@@ -74,6 +74,6 @@ data class Show(val name: String, val overview: String, val backdropPath: String
     // TODO: Fix this on the server side
     fun fullCoverArtUrl() : String {
         //return "${baseUrl}/olaris/m/images/tmdb/w1280/${this.backdropPath.toString()}"
-        return "ttps://image.tmdb.org/t/p/w1280/${this.backdropPath.toString()}"
+        return "https://image.tmdb.org/t/p/w1280/${this.backdropPath}"
     }
 }

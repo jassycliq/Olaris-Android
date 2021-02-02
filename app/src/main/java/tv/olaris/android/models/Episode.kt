@@ -3,9 +3,6 @@ package tv.olaris.android.models
 import fragment.EpisodeBase
 import fragment.SeasonBase
 
-fun test(mi: MediaItem): Boolean{
-    return true
-}
 class Episode(name: String,
               val overview: String,
               private val stillPath: String,
@@ -26,7 +23,7 @@ class Episode(name: String,
             // TODO: At one point we want this smarter
             this.fileUuid = base.files.first()?.fragments?.fileBase?.uuid.toString()
             this.playtime = base.playState?.fragments?.playstateBase?.playtime!!
-            this.finished = base.playState?.fragments?.playstateBase?.finished == true
+            this.finished = base.playState.fragments.playstateBase.finished == true
 
             if(base.files.isNotEmpty()){
                 this.runtime = base.files.first()!!.fragments.fileBase.totalDuration!!

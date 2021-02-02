@@ -12,11 +12,11 @@ import tv.olaris.android.models.MediaItem
 class DashboardViewModel : ViewModel() {
     private var _continueWatchingItems = MutableLiveData<List<MediaItem>>()
     val continueWatchingItems: LiveData<List<MediaItem>> =
-        _continueWatchingItems!!
+        _continueWatchingItems
 
     private var _recentlyAddedItems = MutableLiveData<List<MediaItem>>()
     val recentlyAddedItems: LiveData<List<MediaItem>> =
-        _recentlyAddedItems!!
+        _recentlyAddedItems
 
 
     fun loadData(serverId: Int) = viewModelScope.launch {

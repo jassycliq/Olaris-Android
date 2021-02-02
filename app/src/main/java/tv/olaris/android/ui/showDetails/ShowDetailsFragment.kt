@@ -33,14 +33,14 @@ class ShowDetailsFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             uuid = it.getString(ARG_UUID).toString()
-            serverId = it.getInt(ARG_SERVER_ID).toInt()
+            serverId = it.getInt(ARG_SERVER_ID)
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
 

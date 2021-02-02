@@ -77,8 +77,8 @@ class MediaPlayerViewModel() : ViewModel(), Player.EventListener {
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        val player = playerOrNull ?: return
         when (playbackState) {
+
             Player.STATE_READY -> {
                 setupTimeUpdates()
             }

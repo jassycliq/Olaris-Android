@@ -16,10 +16,7 @@ import tv.olaris.android.R
 import tv.olaris.android.databases.Server
 import tv.olaris.android.models.Show
 
-class ShowLibraryAdapter(context: Context, shows: List<Show>, server: Server) : RecyclerView.Adapter<ShowLibraryAdapter.ShowItemHolder>(){
-    private val shows = shows
-    private val server = server
-
+class ShowLibraryAdapter(context: Context, private val shows: List<Show>, private val server: Server) : RecyclerView.Adapter<ShowLibraryAdapter.ShowItemHolder>(){
     class ShowItemHolder(val view: View) : RecyclerView.ViewHolder(view){
         val movieCoverArt: ImageView = view.findViewById<ImageView>(R.id.movieCoverArtImage)
         val episodeCount: TextView = view.findViewById<TextView>(R.id.text_episode_count)

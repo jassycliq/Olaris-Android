@@ -46,7 +46,7 @@ class OlarisApplication : Application() {
 
     suspend fun checkServer(server: Server): Boolean {
         try {
-            val version = OlarisHttpService(server.url).GetVersion()
+            val version = OlarisHttpService(server.url).getVersion()
 
             if (version != server.version || !server.isOnline) {
                 server.version = version
@@ -64,7 +64,6 @@ class OlarisApplication : Application() {
             }
             return false
         }
-        return false
     }
 
     init {

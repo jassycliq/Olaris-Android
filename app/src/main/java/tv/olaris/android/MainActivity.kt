@@ -50,31 +50,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         val submenu = menu.addSubMenu(s.name)
                         var id = 0
 
-                        submenu.add(0, id, 0, "Dashboard").setOnMenuItemClickListener(
-                            MenuItem.OnMenuItemClickListener {
-                                navigateTo(R.id.dashboard, s.id)
-                                true
-                            }
-                        )
+                        submenu.add(0, id, 0, "Dashboard").setOnMenuItemClickListener {
+                            navigateTo(R.id.dashboard, s.id)
+                            true
+                        }
+
 
                         id = "${s.id}1".toInt()
-                        submenu.add(0, id, 0, "Movies").setOnMenuItemClickListener(
-                            MenuItem.OnMenuItemClickListener {
-                                navigateTo(R.id.movieLibraryFragment, s.id)
-                                true
-                            }
-                        )
+                        submenu.add(0, id, 0, "Movies").setOnMenuItemClickListener {
+                            navigateTo(R.id.movieLibraryFragment, s.id)
+                            true
+                        }
+
                         id = "${s.id}2".toInt()
-                        submenu.add(0, id, 0, "TV Shows").setOnMenuItemClickListener(
-                            MenuItem.OnMenuItemClickListener {
-                                navigateTo(R.id.fragmentShowLibrary, s.id)
-                                true
-                            }
-                        )
+                        submenu.add(0, id, 0, "TV Shows").setOnMenuItemClickListener {
+                            navigateTo(R.id.fragmentShowLibrary, s.id)
+                            true
+                        }
                     }
                 }
 
-                // TODO: Build-in server online checks
                 if (it.isNotEmpty() && !OlarisApplication.applicationContext().initialNavigation) {
                     OlarisApplication.applicationContext().initialNavigation = true
                     val s = it.first()

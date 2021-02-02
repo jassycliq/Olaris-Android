@@ -15,7 +15,7 @@ import java.net.ConnectException
 
 class OlarisHttpService(val baseUrl: String) {
 
-    suspend fun GetVersion() : String{
+    suspend fun getVersion() : String{
         val versionURL = baseUrl + "/olaris/m/v1/version"
         try {
             val client = HttpClient(Android)
@@ -31,7 +31,7 @@ class OlarisHttpService(val baseUrl: String) {
         }
     }
 
-    suspend fun LoginUser(username: String, password: String) : LoginResponse {
+    suspend fun loginUser(username: String, password: String) : LoginResponse {
         val authLoginUrl = baseUrl + "/olaris/m/v1/auth"
         Log.d("olarisHttpServer", "Login URL: $authLoginUrl")
         try{

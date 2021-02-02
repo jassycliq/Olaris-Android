@@ -6,9 +6,7 @@ import tv.olaris.android.databases.ServerDoa
 import tv.olaris.android.service.http.OlarisHttpService
 import tv.olaris.android.service.http.model.LoginResponse
 
-class ServersRepository(serverDoa: ServerDoa) {
-    val serverDoa : ServerDoa = serverDoa
-
+class ServersRepository(private val serverDoa: ServerDoa) {
     val allServers: Flow<List<Server>> = serverDoa.getServers()
 
     suspend fun insertServer(server: Server){
@@ -21,9 +19,9 @@ class ServersRepository(serverDoa: ServerDoa) {
 
     suspend fun refreshJwt(serverId: Int){
         val server = getServerById(serverId)
-        val result : LoginResponse = OlarisHttpService(server.url).LoginUser(server.username,server.password)
+        val result : LoginResponse = OlarisHttpService(server.url).loginUser(server.username,server.password)
         if(!result.hasError && result.jwt != null){
-            server.currentJWT = result.jwt!!
+            server.currentJWT = result.jwt
         }
         updateServer(server)
 
@@ -31,7 +29,8 @@ class ServersRepository(serverDoa: ServerDoa) {
     suspend fun updateServer(server: Server) {
         serverDoa.update(server)
     }
-    suspend fun getServerCount(): Int {
+
+    fun getServerCount(): Int {
         return serverDoa.serverCount
     }
 

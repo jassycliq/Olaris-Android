@@ -31,7 +31,7 @@ class MovieLibrary : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            serverId = it.getInt(ARG_SERVER_ID).toInt()
+            serverId = it.getInt(ARG_SERVER_ID)
             Log.d("server_id", serverId.toString())
         }
 
@@ -40,7 +40,7 @@ class MovieLibrary : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMovieLibraryBinding.inflate(inflater, container, false)
         return binding.root
     }
