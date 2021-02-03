@@ -1,5 +1,5 @@
 query AllSeries{
-    series{
+    series(limit: 999){
           name
           overview
           firstAirDate
@@ -11,5 +11,4 @@ query AllSeries{
           uuid
           unwatchedEpisodesCount
     }
-
 }

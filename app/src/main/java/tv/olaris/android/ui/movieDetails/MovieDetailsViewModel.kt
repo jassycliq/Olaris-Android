@@ -26,7 +26,6 @@ class MovieDetailsViewModel() : ViewModel() {
                 _movie.value =  OlarisApplication.applicationContext().getOrInitRepo(serverId = serverId).findMovieByUUID(uuid)
                 _posterUrl.value = _movie.value?.fullPosterUrl()
                 _coverArtUrl.value = _movie.value?.fullCoverArtUrl()
-
             }
         }
 
