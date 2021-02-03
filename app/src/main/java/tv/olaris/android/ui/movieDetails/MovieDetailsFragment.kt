@@ -78,7 +78,7 @@ class MovieDetails : Fragment() {
             binding.progressBarMovieItem.visibility = View.INVISIBLE
 
             binding.textMovieDetailsMovieName.text = movie.title
-            binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year, movie.getRuntime().toString(), movie.getResolution())
+            binding.textMovieDetailsYearAndRuntime.text = getString(R.string.movie_year_and_runtime, movie.year.toString(), movie.getRuntime().toString(), movie.getResolution())
             binding.textMovieDetailsOverview.text = movie.overview
             binding.textMovieDetailsFileName.text = movie.getFileName()
             binding.imageMovieDetailsPostertArt.transitionName = movie.uuid
