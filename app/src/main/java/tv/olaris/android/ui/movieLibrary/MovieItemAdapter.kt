@@ -11,12 +11,16 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tv.olaris.android.R
 import tv.olaris.android.models.Movie
 
-class MovieItemAdapter(context: Context, private val movies: List<Movie>, var serverId: Int) : RecyclerView.Adapter<MovieItemAdapter.MovieItemHolder>(){
+class MovieItemAdapter(context: Context, val serverId: Int): ListAdapter<Movie, MovieItemAdapter.MovieItemHolder>(
+    DiffCallback()
+) {
 
     class MovieItemHolder(val view: View) : RecyclerView.ViewHolder(view){
         val movieCoverArt: ImageView = view.findViewById<ImageView>(R.id.movieCoverArtImage)
@@ -30,7 +34,7 @@ class MovieItemAdapter(context: Context, private val movies: List<Movie>, var se
     }
 
     override fun onBindViewHolder(holder: MovieItemHolder, position: Int) {
-        val m = movies[position]
+        val m = getItem(position)
 
         if(m.hasStarted()){
             holder.progressBar.progress = m.playProgress().toInt()
@@ -42,14 +46,20 @@ class MovieItemAdapter(context: Context, private val movies: List<Movie>, var se
         Glide.with(holder.itemView.context).load(m.fullPosterUrl()).placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED)).into(holder.movieCoverArt);
         holder.movieCoverArt.transitionName = m.fullPosterUrl()
         holder.movieCoverArt.setOnClickListener{
-            val uuid = movies[position].uuid
+            val uuid = m.uuid
             val extras = FragmentNavigatorExtras(holder.movieCoverArt to uuid)
             val action = MovieLibraryDirections.actionMovieLibraryFragmentToMovieDetailsFragment(uuid = uuid, serverId = serverId)
             holder.view.findNavController().navigate(action, extras)
         }
     }
+}
 
-    override fun getItemCount(): Int {
-        return movies.size
+class DiffCallback : DiffUtil.ItemCallback<Movie>() {
+    override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem.uuid == newItem.uuid
+    }
+
+    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem.hashCode() == newItem.hashCode()
     }
 }
