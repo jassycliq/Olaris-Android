@@ -43,33 +43,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val menu = navView.menu
 
         lifecycleScope.launch {
-            //TODO: This is super duper horrible, can we do this differently?
             OlarisApplication.applicationContext().serversRepository.allServers.collect {
                 for (s in it) {
                     if (OlarisApplication.applicationContext().checkServer(s)) {
-                        val submenu = menu.addSubMenu(s.name)
-                        var id = 0
+                        menu.removeGroup(s.id)
 
-                        submenu.add(0, id, 0, "Dashboard").setOnMenuItemClickListener {
+                        menu.add(s.id, 0, 0, "Dashboard").setOnMenuItemClickListener {
                             navigateTo(R.id.dashboard, s.id)
                             true
                         }
 
-
-                        id = "${s.id}1".toInt()
-                        submenu.add(0, id, 0, "Movies").setOnMenuItemClickListener {
+                        menu.add(s.id, 1, 0, "Movies").setOnMenuItemClickListener {
                             navigateTo(R.id.movieLibraryFragment, s.id)
                             true
                         }
 
-                        id = "${s.id}2".toInt()
-                        submenu.add(0, id, 0, "TV Shows").setOnMenuItemClickListener {
+                        menu.add(s.id, 2, 0, "TV Shows").setOnMenuItemClickListener {
                             navigateTo(R.id.fragmentShowLibrary, s.id)
                             true
                         }
+                    } else {
+                        menu.removeGroup(s.id)
                     }
                 }
 
+                // TODO: Replace this with a proper dashboard that replaces the Server overview as start
                 if (it.isNotEmpty() && !OlarisApplication.applicationContext().initialNavigation) {
                     OlarisApplication.applicationContext().initialNavigation = true
                     val s = it.first()
@@ -87,7 +85,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
         }
-
     }
 
     private fun navigateTo(fragment: Int, serverId: Int) {

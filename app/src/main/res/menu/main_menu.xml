@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:title="" android:id="@+id/menu_server_list">
-        <menu  />
-    </item>
+    <group
+        android:id="@+id/group_static_menu_items">
 
+        <item
+            android:id="@+id/item_manage_servers"
+            android:icon="@drawable/ic_baseline_computer_24"
+            android:title="Manage servers" />
 
-    <item
-        android:id="@+id/item_manage_servers"
-        android:icon="@drawable/ic_baseline_computer_24"
-        android:title="Manage servers" />
-
+    </group>
 </menu>
