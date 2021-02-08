@@ -28,13 +28,14 @@ class OlarisGraphQLRepository(private var server: Server) {
                 for (item in res.data!!.recentlyAdded!!) {
                     if (item!!.__typename == "Movie") {
                         val m = item.asMovie!!.fragments.movieBase
-                        list.add(Movie.createFromGraphQLMovieBase(m) as MediaItem)
+                        list.add(Movie.createFromGraphQLMovieBase(m, server.id) as MediaItem)
                     } else if (item.__typename == "Episode") {
                         val m = item.asEpisode!!.fragments.episodeBase
                         list.add(
                             Episode(
                                 m,
-                                item.asEpisode.season?.fragments?.seasonBase
+                                item.asEpisode.season?.fragments?.seasonBase,
+                                server.id
                             ) as MediaItem
                         )
                     }
@@ -54,13 +55,14 @@ class OlarisGraphQLRepository(private var server: Server) {
                 for (item in res.data!!.upNext!!) {
                     if (item!!.__typename == "Movie") {
                         val m = item.asMovie!!.fragments.movieBase
-                        list.add(Movie.createFromGraphQLMovieBase(m) as MediaItem)
+                        list.add(Movie.createFromGraphQLMovieBase(m, server.id) as MediaItem)
                     } else if (item.__typename == "Episode") {
                         val m = item.asEpisode!!.fragments.episodeBase
                         list.add(
                             Episode(
                                 m,
-                                item.asEpisode.season?.fragments?.seasonBase
+                                item.asEpisode.season?.fragments?.seasonBase,
+                                server.id
                             ) as MediaItem
                         )
                     }
@@ -109,7 +111,7 @@ class OlarisGraphQLRepository(private var server: Server) {
             val res = GraphqlClient(server).get().query(FindMovieQuery(uuid = uuid)).await()
             if (res.data != null && res.data?.movies != null) {
                 var m = res.data!!.movies.first()!!
-                movie = Movie.createFromGraphQLMovieBase(m.fragments.movieBase)
+                movie = Movie.createFromGraphQLMovieBase(m.fragments.movieBase, server.id)
             }
 
         } catch (e: ApolloException) {
@@ -128,7 +130,7 @@ class OlarisGraphQLRepository(private var server: Server) {
             if (res.data != null && res.data?.movies != null) {
                 for (movie in res.data!!.movies) {
                     val m = movie!!
-                    movies.add(Movie.createFromGraphQLMovieBase(m.fragments.movieBase))
+                    movies.add(Movie.createFromGraphQLMovieBase(m.fragments.movieBase, server.id))
                 }
                 return@withContext movies.toList()
             }
@@ -143,7 +145,7 @@ class OlarisGraphQLRepository(private var server: Server) {
         try {
             val res = GraphqlClient(server).get().query(FindSeasonQuery(uuid)).await()
             if (res.data != null) {
-                return Show.buildSeason(res.data!!.season.fragments.seasonBase)
+                return Show.buildSeason(res.data!!.season.fragments.seasonBase, server.id)
             }
         } catch (e: ApolloException) {
             logException(e)
@@ -174,7 +176,7 @@ class OlarisGraphQLRepository(private var server: Server) {
         try {
             val res = GraphqlClient(server).get().query(FindSeriesQuery(uuid)).await()
             if (res.data != null && res.data!!.series.isNotEmpty()) {
-                return Show.createFromGraphQLSeriesBase(res.data!!.series.first()!!.fragments.seriesBase)
+                return Show.createFromGraphQLSeriesBase(res.data!!.series.first()!!.fragments.seriesBase, server.id)
             }
         } catch (e: ApolloException) {
             logException(e)

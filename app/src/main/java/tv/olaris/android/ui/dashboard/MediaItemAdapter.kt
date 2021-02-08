@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -19,10 +20,8 @@ import com.bumptech.glide.Glide
 import tv.olaris.android.R
 import tv.olaris.android.models.MediaItem
 
-class MediaItemAdapter(context: Context, serverId: Int) :
+class MediaItemAdapter(context: Context) :
     ListAdapter<MediaItem, MediaItemAdapter.MediaItemHolder>(DiffCallback()) {
-    private val serverId = serverId
-
 
     class MediaItemHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val coverArt: ImageView = view.findViewById<ImageView>(R.id.movieCoverArtImage)
@@ -57,13 +56,17 @@ class MediaItemAdapter(context: Context, serverId: Int) :
             .placeholder(R.drawable.placeholder_coverart).error(ColorDrawable(Color.RED))
             .into(holder.coverArt);
         holder.itemView.setOnClickListener {
-            val action = DashboardDirections.actionDashboardToFragmentFullScreenMediaPlayer(
-                mediaUuid = mi.uuid,
-                uuid = mi.fileUuid,
-                serverId = serverId,
-                playtime = mi.playtime.toInt()
-            )
-            holder.view.findNavController().navigate(action)
+            if(mi.serverId != null) {
+                val action = DashboardDirections.actionDashboardToFragmentFullScreenMediaPlayer(
+                    mediaUuid = mi.uuid,
+                    uuid = mi.fileUuid,
+                    serverId = mi.serverId!!,
+                    playtime = mi.playtime.toInt()
+                )
+                holder.view.findNavController().navigate(action)
+            }else{
+                Toast.makeText(holder.view.context, "Seems there was no server associated with this item, you should never see this, report please.", Toast.LENGTH_LONG).show()
+            }
         }
     }
 

@@ -8,10 +8,10 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import tv.olaris.android.OlarisApplication
 import tv.olaris.android.databases.Server
-import tv.olaris.android.databases.ServerDatabase
 
 class GraphqlClient(val server: Server) {
      suspend fun get(): ApolloClient {
+         // TODO: This should not be here
         val j = JWT(server.currentJWT)
 
         Log.d("jwt", j.expiresAt.toString())

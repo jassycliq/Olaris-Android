@@ -7,7 +7,7 @@ data class Show(val name: String, val overview: String, val backdropPath: String
     var seasons : MutableList<Season> = mutableListOf()
 
     companion object {
-        fun buildSeason(seasonBase: SeasonBase): Season?{
+        fun buildSeason(seasonBase: SeasonBase, serverId: Int): Season?{
             var season : Season?
             with(seasonBase) {
                 season = Season(
@@ -23,7 +23,7 @@ data class Show(val name: String, val overview: String, val backdropPath: String
                 for (episode in this.episodes) {
                     with(episode!!.fragments.episodeBase) {
                         val ep =
-                            Episode(this, seasonBase)
+                            Episode(this, seasonBase, serverId)
                         for (file in this.files) {
                             with(file!!.fragments.fileBase) {
                                 ep.files.add(
@@ -51,11 +51,11 @@ data class Show(val name: String, val overview: String, val backdropPath: String
             return Show(name = m.name, uuid = m.uuid,  overview = m.overview, posterPath =  m.posterPath, backdropPath = m.backdropPath, unwatchedEpisodeCount = m.unwatchedEpisodesCount, firstAirDate = m.firstAirDate)
         }
 
-        fun createFromGraphQLSeriesBase(m: fragment.SeriesBase) : Show{
+        fun createFromGraphQLSeriesBase(m: fragment.SeriesBase, serverId: Int) : Show{
             val show = Show(name = m.name, uuid = m.uuid,  overview = m.overview, seriesBase = m, posterPath =  m.posterPath, backdropPath = m.backdropPath, unwatchedEpisodeCount = m.unwatchedEpisodesCount, firstAirDate = m.firstAirDate)
             for(s in m.seasons){
                 with(s!!.fragments.seasonBase){
-                    val season = buildSeason(this)
+                    val season = buildSeason(this, serverId)
                     if(season != null) {
                         season.episodes.sortBy { it.episodeNumber }
                         show.seasons.add(season)

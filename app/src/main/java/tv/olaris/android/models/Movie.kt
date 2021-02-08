@@ -4,9 +4,10 @@ import kotlin.math.roundToInt
 
 class Movie(
     uuid: String,
-    val backdropPath: String,
     posterUrl: String,
     posterPath: String,
+    serverId: Int? = null,
+    val backdropPath: String,
     val title: String,
     val year: Int,
     val overview: String,
@@ -15,12 +16,14 @@ class Movie(
     uuid = uuid,
     posterUrl = posterUrl,
     name = title,
-    posterPath = posterPath
+    posterPath = posterPath,
+    serverId = serverId
 ) {
     var fileUUIDs: MutableList<String> = mutableListOf()
 
+    // TODO: This was before I learned about multiple constructors; refactor
     companion object {
-        fun createFromGraphQLMovieBase(m: fragment.MovieBase): Movie {
+        fun createFromGraphQLMovieBase(m: fragment.MovieBase, serverId: Int): Movie {
             val movie = Movie(
                 title = m.title,
                 year = m.year.toInt(),
@@ -29,7 +32,8 @@ class Movie(
                 uuid = m.uuid,
                 backdropPath = m.backdropPath,
                 posterUrl = m.posterURL,
-                posterPath = m.posterPath
+                posterPath = m.posterPath,
+                serverId = serverId
             )
             if (m.files.isNotEmpty()) {
                 for (file in m.files) {

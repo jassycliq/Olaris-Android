@@ -8,13 +8,13 @@ class Episode(name: String,
               private val stillPath: String,
               val airDate: String,
               val episodeNumber: Int,
-              uuid: String) : MediaItem(uuid = uuid, name = name, posterPath = stillPath, posterUrl = "olaris/m/images/tmdb/w300/${stillPath}") {
+              uuid: String, serverId: Int? = null) : MediaItem(uuid = uuid, name = name, posterPath = stillPath, posterUrl = "olaris/m/images/tmdb/w300/${stillPath}", serverId = serverId) {
 
     //lateinit var posterUrl: String
 
-    constructor(base: EpisodeBase) : this(base.name, base.overview, base.stillPath, base.airDate, base.episodeNumber, base.uuid)
+    constructor(base: EpisodeBase, serverId: Int) : this(base.name, base.overview, base.stillPath, base.airDate, base.episodeNumber, base.uuid, serverId)
 
-    constructor(base: EpisodeBase, seasonBase: SeasonBase?) : this(base.name, base.overview, base.stillPath, base.airDate, base.episodeNumber, base.uuid){
+    constructor(base: EpisodeBase, seasonBase: SeasonBase?, serverId: Int) : this(base.name, base.overview, base.stillPath, base.airDate, base.episodeNumber, base.uuid, serverId){
         if(seasonBase != null) {
             this.posterUrl = "olaris/m/images/tmdb/w300/${seasonBase.posterPath}"
             this.posterPath = seasonBase.posterPath

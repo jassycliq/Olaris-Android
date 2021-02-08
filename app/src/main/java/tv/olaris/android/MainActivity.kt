@@ -9,7 +9,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
@@ -48,17 +47,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     if (OlarisApplication.applicationContext().checkServer(s)) {
                         menu.removeGroup(s.id)
 
-                        menu.add(s.id, 0, 0, "Dashboard").setOnMenuItemClickListener {
-                            navigateTo(R.id.dashboard, s.id)
-                            true
+                        if (it.size > 1) {
+                            menu.add(s.id, 1, 0, "Dashboard").setOnMenuItemClickListener {
+                                navigateTo(R.id.dashboard, s.id)
+                                true
+                            }
                         }
 
-                        menu.add(s.id, 1, 0, "Movies").setOnMenuItemClickListener {
+                        menu.add(s.id, 2, 0, "Movies").setOnMenuItemClickListener {
                             navigateTo(R.id.movieLibraryFragment, s.id)
                             true
                         }
 
-                        menu.add(s.id, 2, 0, "TV Shows").setOnMenuItemClickListener {
+                        menu.add(s.id, 3, 0, "TV Shows").setOnMenuItemClickListener {
                             navigateTo(R.id.fragmentShowLibrary, s.id)
                             true
                         }
@@ -68,20 +69,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
 
                 // TODO: Replace this with a proper dashboard that replaces the Server overview as start
-                if (it.isNotEmpty() && !OlarisApplication.applicationContext().initialNavigation) {
+
+                if (it.isEmpty() && !OlarisApplication.applicationContext().initialNavigation) {
                     OlarisApplication.applicationContext().initialNavigation = true
-                    val s = it.first()
-                    if (OlarisApplication.applicationContext().checkServer(s)) {
-                        val bundle = bundleOf("serverId" to s.id)
-                        navController.graph.startDestination = R.id.dashboard
-                        val navOptions =
-                            NavOptions.Builder().setPopUpTo(R.id.fragmentServerList, false).build()
-                        navController.navigate(
-                            R.id.action_fragmentServerList_to_dashboard,
-                            bundle,
-                            navOptions
-                        )
-                    }
+                    navController.navigate(R.id.fragmentServerList)
                 }
             }
         }

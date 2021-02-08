@@ -5,6 +5,7 @@ open class MediaItem(
     var posterUrl: String,
     var posterPath: String,
     val name: String,
+    val serverId: Int?,
     var runtime: Double = 0.0,
     var subTitle: String = "",
     var fileUuid: String = "",
