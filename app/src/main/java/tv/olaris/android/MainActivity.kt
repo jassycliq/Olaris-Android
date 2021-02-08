@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
+    private val serverIdList: MutableList<Int> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +44,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         lifecycleScope.launch {
             OlarisApplication.applicationContext().serversRepository.allServers.collect {
+                // There is a change in the serverList, update all menu items
+                for (id in serverIdList) {
+                    menu.removeGroup(id)
+                }
+                serverIdList.clear()
+
                 for (s in it) {
+                    serverIdList.add(s.id)
+
                     if (OlarisApplication.applicationContext().checkServer(s)) {
                         menu.removeGroup(s.id)
 
