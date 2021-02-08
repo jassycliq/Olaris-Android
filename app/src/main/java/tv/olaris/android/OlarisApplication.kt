@@ -22,18 +22,18 @@ class OlarisApplication : Application() {
     val applicationScope = CoroutineScope(SupervisorJob())
     val database by lazy { ServerDatabase.getDatabase(this, applicationScope) }
 
-    private val _graphlClients: MutableMap<Int, OlarisGraphQLRepository> = mutableMapOf()
+    private val _graphqlClients: MutableMap<Int, OlarisGraphQLRepository> = mutableMapOf()
 
     // TODO: Is this an ok way of doing this?
     val serversRepository by lazy { ServersRepository(database.serverDoa()) }
 
     suspend fun getOrInitRepo(serverId: Int): OlarisGraphQLRepository {
-        if (!_graphlClients.containsKey(serverId)) {
-            _graphlClients[serverId] =
+        if (!_graphqlClients.containsKey(serverId)) {
+            _graphqlClients[serverId] =
                 OlarisGraphQLRepository(serversRepository.getServerById(serverId))
         }
 
-        return _graphlClients.getValue(serverId)
+        return _graphqlClients.getValue(serverId)
     }
 
     suspend fun checkServerStatus() {
