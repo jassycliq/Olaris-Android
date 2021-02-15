@@ -39,12 +39,10 @@ class MediaPlayerFragment : Fragment() {
             mediaUuid = it.getString(ARG_MEDIA_UUID).toString()
             playbackPosition = it.getInt(ARG_PLAYTIME)
         }
-        activity?.actionBar?.setDisplayShowTitleEnabled(false)
-        activity?.actionBar?.setDisplayHomeAsUpEnabled(false)
-        activity?.actionBar?.hide()
+
+        Log.d("mediaplayer", "Creating view, arguments Server: $serverId")
 
         _binding = FragmentFullScreenMediaPlayerBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -55,7 +53,7 @@ class MediaPlayerFragment : Fragment() {
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
 
         viewModel.player.observe(this) { player ->
-            Log.d("mediaplyer", "Got a player!")
+            Log.d("mediaplayer", "Got a player!")
             if (player == null) parentFragmentManager.popBackStack()
 
             binding.exoPlayerFullScreen.player = player
@@ -66,7 +64,7 @@ class MediaPlayerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.player.observe(viewLifecycleOwner, {
-            Log.d("mediaplyer", "Got a player part two")
+            Log.d("mediaplayer", "Got a player part two")
             binding.exoPlayerFullScreen.player = it
             binding.exoPlayerFullScreen.player!!.addListener(PlayerListener(this.requireActivity().window))
         })

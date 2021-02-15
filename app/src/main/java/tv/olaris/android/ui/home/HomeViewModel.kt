@@ -27,16 +27,14 @@ class HomeViewModel : ViewModel() {
                 val continueList = mutableListOf<MediaItem>()
 
                 for (s in it) {
-                    if (OlarisApplication.applicationContext().checkServer(s)) {
-                        continueList.addAll(
-                            OlarisApplication.applicationContext().getOrInitRepo(s.id)
-                                .findContinueWatchingItems()
-                        )
-                        recentlyAddedList.addAll(
-                            OlarisApplication.applicationContext().getOrInitRepo(s.id)
-                                .findRecentlyAddedItems()
-                        )
-                    }
+                    continueList.addAll(
+                        OlarisApplication.applicationContext().getOrInitRepo(s.id)
+                            .findContinueWatchingItems()
+                    )
+                    recentlyAddedList.addAll(
+                        OlarisApplication.applicationContext().getOrInitRepo(s.id)
+                            .findRecentlyAddedItems()
+                    )
                 }
 
                 _upNextItems.value = continueList

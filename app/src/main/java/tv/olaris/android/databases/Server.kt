@@ -25,6 +25,9 @@ interface ServerDoa {
     @Query("select * from servers")
     fun getServers(): Flow<List<Server>>
 
+    @Query("select * from servers")
+    fun getServersOnce(): List<Server>
+
     @get:Query("select count(*) from servers")
     val serverCount: Int
 

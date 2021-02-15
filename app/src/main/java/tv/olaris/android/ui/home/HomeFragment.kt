@@ -2,7 +2,6 @@ package tv.olaris.android.ui.home
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,13 +49,11 @@ class HomeFragment : Fragment() {
 
         viewModel.recentlyAddedItems.observe(viewLifecycleOwner){
             binding.progressRecentlyAdded.visibility = View.INVISIBLE
-
             recentlyAddedAdapter.submitList(it)
         }
 
         viewModel.upNextItems.observe(viewLifecycleOwner){
             binding.progressBarUpnext.visibility = View.INVISIBLE
-            Log.d(TAG, "onViewCreated: continuewatching")
             continueAdapter.submitList(it)
         }
 

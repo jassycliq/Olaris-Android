@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/fullscreenBackgroundColor"
+    android:theme="@style/ThemeOverlay.OlarisAndroid.FullscreenContainer"
+    tools:context=".MediaPlayerActivity">
+
+    <androidx.fragment.app.FragmentContainerView
+        android:fitsSystemWindows="true"
+        android:id="@+id/fcv_fullscreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.fragment.app.FragmentContainerView>
+</FrameLayout>

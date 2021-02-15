@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         lifecycleScope.launch {
             OlarisApplication.applicationContext().serversRepository.allServers.collect {
+                Log.d("refreshDebug", "Received a collection of servers")
                 // There is a change in the serverList, update all menu items
                 for (id in serverIdList) {
                     menu.removeGroup(id)
@@ -51,9 +52,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 serverIdList.clear()
 
                 for (s in it) {
+                    Log.d("refreshDebug", "Looping server $s.id")
+
                     serverIdList.add(s.id)
 
-                    if (OlarisApplication.applicationContext().checkServer(s)) {
+                    if (OlarisApplication.applicationContext().newCheckServer(s)) {
                         menu.removeGroup(s.id)
 
                         if (it.size > 1) {
@@ -76,8 +79,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         menu.removeGroup(s.id)
                     }
                 }
-
-                // TODO: Replace this with a proper dashboard that replaces the Server overview as start
 
                 if (it.isEmpty() && !OlarisApplication.applicationContext().initialNavigation) {
                     OlarisApplication.applicationContext().initialNavigation = true

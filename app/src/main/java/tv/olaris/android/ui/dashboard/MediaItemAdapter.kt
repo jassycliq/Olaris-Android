@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import tv.olaris.android.R
 import tv.olaris.android.models.MediaItem
+import tv.olaris.android.ui.home.HomeFragmentDirections
 
 class MediaItemAdapter(context: Context) :
     ListAdapter<MediaItem, MediaItemAdapter.MediaItemHolder>(DiffCallback()) {
@@ -57,12 +58,18 @@ class MediaItemAdapter(context: Context) :
             .into(holder.coverArt);
         holder.itemView.setOnClickListener {
             if(mi.serverId != null) {
-                val action = DashboardDirections.actionDashboardToFragmentFullScreenMediaPlayer(
+                val action = HomeFragmentDirections.actionHomeFragmentToMediaPlayerActivity(
                     mediaUuid = mi.uuid,
                     uuid = mi.fileUuid,
                     serverId = mi.serverId!!,
                     playtime = mi.playtime.toInt()
                 )
+                /*val action = DashboardDirections.actionDashboardToFragmentFullScreenMediaPlayer(
+                    mediaUuid = mi.uuid,
+                    uuid = mi.fileUuid,
+                    serverId = mi.serverId!!,
+                    playtime = mi.playtime.toInt())*/
+
                 holder.view.findNavController().navigate(action)
             }else{
                 Toast.makeText(holder.view.context, "Seems there was no server associated with this item, you should never see this, report please.", Toast.LENGTH_LONG).show()

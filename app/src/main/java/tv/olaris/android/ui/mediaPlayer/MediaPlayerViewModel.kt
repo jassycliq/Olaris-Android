@@ -3,18 +3,18 @@ package tv.olaris.android.ui.mediaPlayer
 import androidx.lifecycle.*
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.util.Log
 import com.google.android.exoplayer2.util.MimeTypes
+import io.ktor.utils.io.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tv.olaris.android.OlarisApplication
+
 
 class MediaPlayerLifecycleObserver(private val viewModel: MediaPlayerViewModel) :
     LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onCreate() {
-        Log.d("mediaplayer", "INIT PLAYER")
         viewModel.initPlayer()
     }
 
@@ -38,7 +38,9 @@ class MediaPlayerViewModel() : ViewModel(), Player.EventListener {
     private val lifecycleObserver = MediaPlayerLifecycleObserver(this)
 
     private val streamingUrl: LiveData<String> = liveData {
-        var streamingURL = OlarisApplication.applicationContext().getOrInitRepo(serverId).getStreamingUrl(uuid)
+        var streamingURL = OlarisApplication.applicationContext().getOrInitRepo(serverId).getStreamingUrl(
+            uuid
+        )
         if (streamingURL != null) {
             //TODO: Fix this hardcoded codec crap.
             streamingURL += "?playableCodecs=avc1.640029&playableCodecs=avc1.64001f&playableCodecs=avc1.64001e&playableCodecs=avc1.640020&playableCodecs=avc1.640028&playableCodecs=avc1.640029&playableCodecs=avc1.64001f&playableCodecs=mp4a.40.2"
@@ -48,6 +50,10 @@ class MediaPlayerViewModel() : ViewModel(), Player.EventListener {
 
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
+    }
+
+    override fun onPlayerError(error: ExoPlaybackException) {
+        android.util.Log.d("mediaplayer", "onPlayerError: ${error.message}: ${error.stackTraceToString()}")
     }
 
     // TODO: Fix these arguments here.
@@ -62,9 +68,13 @@ class MediaPlayerViewModel() : ViewModel(), Player.EventListener {
         val player = playerOrNull ?: return
         currentPos = player.currentPosition
 
-        OlarisApplication.applicationContext().getOrInitRepo(serverId).updatePlayState(mediaUUID, false, (currentPos / 1000).toDouble())
+        OlarisApplication.applicationContext().getOrInitRepo(serverId).updatePlayState(
+            mediaUUID,
+            false,
+            (currentPos / 1000).toDouble()
+        )
 
-        Log.d("mediaplayer", currentPos.toString())
+        //Log.d("mediaplayer", currentPos.toString())
     }
 
     private fun setupTimeUpdates() {
@@ -88,11 +98,13 @@ class MediaPlayerViewModel() : ViewModel(), Player.EventListener {
     fun play(mediaUrl: String, uuid: String, startPos: Long = 0) {
         mediaUUID = uuid
         currentPos = startPos * 1000
+
         val player = playerOrNull ?: return
         val mi = MediaItem.Builder()
             .setUri(mediaUrl)
             .setMimeType(MimeTypes.APPLICATION_MPD)
             .build()
+
         player.setMediaItem(mi)
         player.setSeekParameters(SeekParameters.NEXT_SYNC)
         player.prepare()
@@ -104,12 +116,11 @@ class MediaPlayerViewModel() : ViewModel(), Player.EventListener {
         playerOrNull?.playWhenReady = false
     }
 
-
     fun initPlayer() {
         _player.value = SimpleExoPlayer.Builder(OlarisApplication.applicationContext())
             .setTrackSelector(DefaultTrackSelector(OlarisApplication.applicationContext())).build()
             .apply {
-                videoScalingMode = Renderer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
+                videoScalingMode = Renderer.VIDEO_SCALING_MODE_DEFAULT
                 prepare()
             }.apply {
             addListener(this@MediaPlayerViewModel)
@@ -122,7 +133,6 @@ class MediaPlayerViewModel() : ViewModel(), Player.EventListener {
     }
 
     override fun onCleared() {
-        Log.d("playerViewModel", "onCleared()")
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         destroyPlayer()
     }
