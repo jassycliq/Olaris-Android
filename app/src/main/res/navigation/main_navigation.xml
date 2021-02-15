@@ -121,5 +121,27 @@
         android:id="@+id/homeFragment"
         android:name="tv.olaris.android.ui.home.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_mediaPlayerActivity"
+            app:destination="@id/mediaPlayerActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/mediaPlayerActivity"
+        android:name="tv.olaris.android.MediaPlayerActivity"
+        android:label="activity_media_player"
+        tools:layout="@layout/activity_media_player" >
+        <argument
+            android:name="mediaUuid"
+            app:argType="string" />
+        <argument
+            android:name="uuid"
+            app:argType="string" />
+        <argument
+            android:name="serverId"
+            app:argType="integer" />
+        <argument
+            android:name="playtime"
+            app:argType="integer" />
+    </activity>
 </navigation>

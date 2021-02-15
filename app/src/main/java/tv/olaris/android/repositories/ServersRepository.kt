@@ -1,5 +1,6 @@
 package tv.olaris.android.repositories
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import tv.olaris.android.databases.Server
 import tv.olaris.android.databases.ServerDoa
@@ -9,6 +10,11 @@ import tv.olaris.android.service.http.model.LoginResponse
 class ServersRepository(private val serverDoa: ServerDoa) {
     val allServers: Flow<List<Server>> = serverDoa.getServers()
 
+
+    fun servers(): List<Server> {
+     return serverDoa.getServersOnce()
+    }
+
     suspend fun insertServer(server: Server) {
         serverDoa.insertServer(server)
     }
@@ -17,17 +23,8 @@ class ServersRepository(private val serverDoa: ServerDoa) {
         return serverDoa.getServerById(id)
     }
 
-    suspend fun refreshJwt(serverId: Int) : Server {
-        val server = getServerById(serverId)
-        val result: LoginResponse =
-            OlarisHttpService(server.url).loginUser(server.username, server.password)
-        if (!result.hasError && result.jwt != null) {
-            server.currentJWT = result.jwt
-        }
-        updateServer(server)
 
-        return server
-    }
+
 
     suspend fun updateServer(server: Server) {
         serverDoa.update(server)

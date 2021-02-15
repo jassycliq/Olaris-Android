@@ -5,12 +5,13 @@ import android.util.Log
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import tv.olaris.android.databases.Server
 import tv.olaris.android.databases.ServerDatabase
 import tv.olaris.android.repositories.OlarisGraphQLRepository
 import tv.olaris.android.repositories.ServersRepository
+import tv.olaris.android.service.graphql.GraphqlClient
+import tv.olaris.android.service.graphql.GrapqhClientManager
 import tv.olaris.android.service.http.OlarisHttpService
 import java.net.ConnectException
 import java.util.*
@@ -22,13 +23,23 @@ class OlarisApplication : Application() {
     val applicationScope = CoroutineScope(SupervisorJob())
     val database by lazy { ServerDatabase.getDatabase(this, applicationScope) }
 
+    // For the GraphQLClient I rewrote this to a manager class, should we do that here as well?
     private val _graphqlClients: MutableMap<Int, OlarisGraphQLRepository> = mutableMapOf()
+
+    private val clientManager = GrapqhClientManager()
 
     // TODO: Is this an ok way of doing this?
     val serversRepository by lazy { ServersRepository(database.serverDoa()) }
 
+    fun getClient(server: Server): GraphqlClient {
+        return clientManager.createOrInit(server)
+    }
+
     suspend fun getOrInitRepo(serverId: Int): OlarisGraphQLRepository {
+        val TAG = "mediaplayer"
         if (!_graphqlClients.containsKey(serverId)) {
+            Log.d(TAG, "getOrInitRepo: $serverId")
+
             _graphqlClients[serverId] =
                 OlarisGraphQLRepository(serversRepository.getServerById(serverId))
         }
@@ -37,14 +48,25 @@ class OlarisApplication : Application() {
     }
 
     suspend fun checkServerStatus() {
-        serversRepository.allServers.collect {
-            for (server in it) {
+        applicationScope.launch {
+            for (server in serversRepository.servers()) {
                 checkServer(server)
             }
         }
     }
 
-    suspend fun checkServer(server: Server): Boolean {
+    suspend fun newCheckServer(server: Server): Boolean {
+        return try {
+            OlarisHttpService(server.url).getVersion()
+            true
+        } catch (e: ConnectException) {
+            false
+        }
+    }
+
+    suspend fun checkServer(server: Server, updateRecord: Boolean = true): Boolean {
+        Log.d("refreshDebug", "Checking if server is online")
+
         try {
             val version = OlarisHttpService(server.url).getVersion()
 
@@ -53,14 +75,25 @@ class OlarisApplication : Application() {
                 if (!server.isOnline) {
                     server.isOnline = true
                 }
-                serversRepository.updateServer(server)
+                Log.d("refreshDebug", "Server is ${server.isOnline}")
+
+                if (updateRecord) {
+                    Log.d("refreshDebug", "Updating record")
+
+                    serversRepository.updateServer(server)
+                }
             }
             return true
 
         } catch (e: ConnectException) {
             if (server.isOnline) {
                 server.isOnline = false
-                serversRepository.updateServer(server)
+                Log.d("refreshDebug", "Server is ${server.isOnline}")
+
+                if (updateRecord) {
+                    Log.d("refreshDebug", "Updating record")
+                    serversRepository.updateServer(server)
+                }
             }
             return false
         }
@@ -73,11 +106,11 @@ class OlarisApplication : Application() {
             override fun run() {
                 Log.d("ASD", "run: checking")
 
-                 applicationScope.launch {
+                applicationScope.launch {
                     checkServerStatus()
                 }
             }
-        }, 0, 10000)
+        }, 1000, 10000)
     }
 
     companion object {

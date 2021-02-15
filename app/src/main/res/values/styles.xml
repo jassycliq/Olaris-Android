@@ -41,4 +41,8 @@
         <item name="android:foregroundTint">@color/olaris_purple</item>
         <item name="android:progressTint">@color/olaris_pink</item>
     </style>
+
+    <style name="Widget.Theme.OlarisAndroid.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
 </resources>

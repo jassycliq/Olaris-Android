@@ -14,16 +14,19 @@ import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.exception.ApolloException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import tv.olaris.android.OlarisApplication
 import tv.olaris.android.databases.Server
 import tv.olaris.android.models.*
 import tv.olaris.android.service.graphql.GraphqlClient
 
 class OlarisGraphQLRepository(private var server: Server) {
+    private val olarisClient: GraphqlClient = OlarisApplication.applicationContext().getClient(server)
+
     // TODO: DRY these two methods up as they are essentially the same thing with a different GrapqhL class. Perhaps use GrapphQL interfaces here? Would need changes on the server side
     suspend fun findRecentlyAddedItems(): List<MediaItem> {
         val list = mutableListOf<MediaItem>()
         try {
-            val res = GraphqlClient(server).get().query(RecentlyAddedQuery()).await()
+            val res = olarisClient.get().query(RecentlyAddedQuery()).await()
             if (res.data != null && !res.data!!.recentlyAdded.isNullOrEmpty()) {
                 for (item in res.data!!.recentlyAdded!!) {
                     if (item!!.__typename == "Movie") {
@@ -50,7 +53,7 @@ class OlarisGraphQLRepository(private var server: Server) {
     suspend fun findContinueWatchingItems(): List<MediaItem> {
         val list = mutableListOf<MediaItem>()
         try {
-            val res = GraphqlClient(server).get().query(ContinueWatchingQuery()).await()
+            val res = olarisClient.get().query(ContinueWatchingQuery()).await()
             if (res.data != null && !res.data!!.upNext.isNullOrEmpty()) {
                 for (item in res.data!!.upNext!!) {
                     if (item!!.__typename == "Movie") {
@@ -84,7 +87,7 @@ class OlarisGraphQLRepository(private var server: Server) {
                     finished = finished,
                     playtime = playtime
                 )
-            GraphqlClient(server).get().mutate(m).await()
+            olarisClient.get().mutate(m).await()
         } catch (e: ApolloException) {
             logException(e)
         }
@@ -93,7 +96,7 @@ class OlarisGraphQLRepository(private var server: Server) {
     suspend fun getStreamingUrl(uuid: String): String? {
         val m = CreateStreamingTicketMutation(uuid = uuid)
         try {
-            val res = GraphqlClient(server).get().mutate(m).await()
+            val res = olarisClient.get().mutate(m).await()
 
             if (res.data != null && res.data?.createStreamingTicket != null) {
                 return "${server.url}${res.data!!.createStreamingTicket.dashStreamingPath}"
@@ -108,7 +111,7 @@ class OlarisGraphQLRepository(private var server: Server) {
     suspend fun findMovieByUUID(uuid: String): Movie? = withContext(Dispatchers.IO) {
         var movie: Movie? = null
         try {
-            val res = GraphqlClient(server).get().query(FindMovieQuery(uuid = uuid)).await()
+            val res = olarisClient.get().query(FindMovieQuery(uuid = uuid)).await()
             if (res.data != null && res.data?.movies != null) {
                 var m = res.data!!.movies.first()!!
                 movie = Movie.createFromGraphQLMovieBase(m.fragments.movieBase, server.id)
@@ -125,7 +128,7 @@ class OlarisGraphQLRepository(private var server: Server) {
         var movies: MutableList<Movie> = mutableListOf()
 
         try {
-            val res = GraphqlClient(server).get().query(AllMoviesQuery()).await()
+            val res = olarisClient.get().query(AllMoviesQuery()).await()
 
             if (res.data != null && res.data?.movies != null) {
                 for (movie in res.data!!.movies) {
@@ -143,7 +146,7 @@ class OlarisGraphQLRepository(private var server: Server) {
 
     suspend fun findSeasonByUUID(uuid: String): Season? {
         try {
-            val res = GraphqlClient(server).get().query(FindSeasonQuery(uuid)).await()
+            val res = olarisClient.get().query(FindSeasonQuery(uuid)).await()
             if (res.data != null) {
                 return Show.buildSeason(res.data!!.season.fragments.seasonBase, server.id)
             }
@@ -156,7 +159,7 @@ class OlarisGraphQLRepository(private var server: Server) {
     suspend fun getAllShows(): List<Show> {
         val shows: MutableList<Show> = mutableListOf()
         try {
-            val res = GraphqlClient(server).get().query(AllSeriesQuery()).await()
+            val res = olarisClient.get().query(AllSeriesQuery()).await()
             Log.d("shows", res.toString())
 
             if (res.data != null && res.data?.series != null) {
@@ -174,7 +177,7 @@ class OlarisGraphQLRepository(private var server: Server) {
 
     suspend fun findShowByUUID(uuid: String): Show? {
         try {
-            val res = GraphqlClient(server).get().query(FindSeriesQuery(uuid)).await()
+            val res = olarisClient.get().query(FindSeriesQuery(uuid)).await()
             if (res.data != null && res.data!!.series.isNotEmpty()) {
                 return Show.createFromGraphQLSeriesBase(res.data!!.series.first()!!.fragments.seriesBase, server.id)
             }
@@ -185,7 +188,7 @@ class OlarisGraphQLRepository(private var server: Server) {
     }
 
     private fun logException(e: ApolloException) {
-        Log.e("apollo", "Error getting movies: ${e.localizedMessage}")
+        Log.e("apollo", "Error getting data: ${e.localizedMessage}")
         Log.e("apollo", "Cause: ${e.cause}")
         Log.e("apollo", e.toString())
     }

@@ -2,24 +2,32 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="tv.olaris.android">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.READ_PHONE_STATE"
+        tools:node="remove" />
 
     <application
         android:name=".OlarisApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.OlarisAndroid">
+        android:theme="@style/Theme.OlarisAndroid"
+        android:usesCleartextTraffic="true">
+
+        <activity
+            android:name=".MediaPlayerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_media_player"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        </activity>
 
         <activity android:name=".MainActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
