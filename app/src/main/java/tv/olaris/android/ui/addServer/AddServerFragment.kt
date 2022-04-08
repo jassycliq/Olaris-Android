@@ -5,9 +5,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.coroutineScope
 import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -23,28 +23,19 @@ class AddServerFragment : Fragment() {
     private var _binding: FragmentAddServerBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val viewModel: ServerViewModel by viewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.btnAddServer.setOnClickListener{
             var hasErrors = false
             hideKeyboard()
 
-            with(binding.textEditServerUrl){
-                if(this.text != null && this.text.toString() != ""){
-                    if(!URLUtil.isValidUrl(this.text.toString())){
-                        this.error = context.getString(R.string.error_invalid_url)
-                        hasErrors = true
-                    }
-                }else{
-                    this.error = context.getString(R.string.error_invalid_url_format)
-                    hasErrors = true
+            with(viewModel.validateUrl(binding.textEditServerUrl.text.toString())){
+                if(!this.valid){
+                    binding.textEditServerUrl.error = this.errorText
                 }
             }
 
@@ -68,7 +59,7 @@ class AddServerFragment : Fragment() {
                 }
             }
 
-            Log.d("http", "Starting login: ${hasErrors.toString()}")
+            Log.d("http", "Starting login: $hasErrors")
 
             if(!hasErrors){
                 Log.d("http", "No errors!")
@@ -84,7 +75,7 @@ class AddServerFragment : Fragment() {
                         Snackbar.make(view, "Error: ${loginResponse.message}", Snackbar.LENGTH_LONG).show()
                     }else {
                         Log.d("http", "Everything ok! ${loginResponse.jwt}")
-                        Toast.makeText(view.context, "Succesfully added server.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(view.context, "Successfully added server.", Toast.LENGTH_LONG).show()
                         val version = service.getVersion()
                         OlarisApplication.applicationContext().serversRepository.insertServer(
                             Server(
